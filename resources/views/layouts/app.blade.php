@@ -16,16 +16,13 @@
             
             <div id="main" class='layout-navbar'>
                 @include('layouts.partials.header')
-                <div id="main-content">
-
+                <div class="main pe-4">
                     <div class="page-heading">
                         <div class="page-title">
                             {{ $header }}
                         </div>
                         {{ $slot }}
                     </div>
-
-                    @include('layouts.partials.footer')
                 </div>
             </div>
         </div>
