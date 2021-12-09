@@ -1,3 +1,3 @@
 <x-app-layout>
-<livewire:detaildocument/>
+<livewire:department/>
 </x-app-layout>

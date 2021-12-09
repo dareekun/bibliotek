@@ -6,6 +6,5 @@
 <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css') }}">
 @livewireStyles
-
-{{ $style ?? '' }}

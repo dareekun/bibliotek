@@ -4,19 +4,16 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>{{ config('app.name', 'Laravel') }}</title>
-
         <!-- Styles -->
         @include('layouts.partials.styles')
     </head>
     <body>
         <div id="app">
             @include('layouts.partials.sidebar')
-            
             <div id="main" class='layout-navbar'>
                 @include('layouts.partials.header')
-                <div class="main pe-4">
+                <div class="main pe-4 ps-1">
                     <div class="page-heading">
                         <div class="page-title">
                             {{ $header }}
@@ -26,9 +23,7 @@
                 </div>
             </div>
         </div>
-
         <!-- Scripts -->
         @include('layouts.partials.scripts')
-
     </body>
 </html>
