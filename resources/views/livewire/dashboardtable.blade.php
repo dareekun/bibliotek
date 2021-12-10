@@ -72,7 +72,8 @@
                             <td><a href="/document/0001">0001</a></td>
                             <td>Tiger Nixon</td>
                             <td>Edinburgh</td>
-                            <td>61</td>
+                            <td>21 - 12 - 2021</td>
+                            <td>21 - 12 - 2021</td>
                             <td><i class="fas fa-check-circle text-primary"></i></td>
                         </tr>
                     </tbody>
@@ -101,6 +102,10 @@
                         <div class="input-group mb-3">
                             <input type="number" required name="reminder" id="reminder" class="form-control">
                             <span class="input-group-text" id="basic-addon2">days</span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="end" class="form-label">Remark</label>
+                            <input type="text" required name="end" id="end" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label for="attachment" class="form-label">Attachment</label>
