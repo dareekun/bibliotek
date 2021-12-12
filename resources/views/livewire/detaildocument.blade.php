@@ -1,4 +1,4 @@
-<x-slot name="header">
+<div>
     <div class="row">
         <div class="col-12">
             <div class="card border">
@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-</x-slot>
+</div>
 <section class="section">
     <div class="row">
         <div class="col-12">
@@ -88,10 +88,12 @@
                     </div>
                     <div class="row py-2">
                         <div class="col-6 text-center">
-                            <button class="btn btn-outline-warning"><i class="fas fa-history"></i> Update Document</button>
+                            <button class="btn btn-outline-warning"><i class="fas fa-history"></i> Update
+                                Document</button>
                         </div>
                         <div class="col-6 text-center">
-                            <button class="btn btn-outline-danger"><i class="fas fa-exclamation-circle"></i> Deactive Document</button>
+                            <button class="btn btn-outline-danger"><i class="fas fa-exclamation-circle"></i> Deactive
+                                Document</button>
                         </div>
                     </div>
                 </div>

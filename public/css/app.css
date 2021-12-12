@@ -1062,12 +1062,6 @@
 .page-item .page-link:focus {
   box-shadow: none;
 }
-.page-item:first-child {
-  margin-right: 0.4rem;
-}
-.page-item:last-child {
-  margin-left: 0.4rem;
-}
 
 .table td, .dataTable-table td, .table thead th, .dataTable-table thead th {
   vertical-align: middle;

@@ -1,3 +1,4 @@
-<x-app-layout>
+@extends('layouts.app')
+@section('content')
 <livewire:setting/>
-</x-app-layout>
+@endsection

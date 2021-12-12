@@ -1,3 +1,6 @@
-<x-app-layout>
+@extends('layouts.app')
+@section('content')
 <livewire:detaildocument/>
-</x-app-layout>
+@stop
+@push('scripts')
+@endpush

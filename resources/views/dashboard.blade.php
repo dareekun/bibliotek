@@ -1,3 +1,4 @@
-<x-app-layout>
+@extends('layouts.app')
+@section('content')
 <livewire:dashboardtable/>
-</x-app-layout>
+@endsection

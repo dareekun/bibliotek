@@ -1,4 +1,4 @@
-<x-slot name="header">
+<div>
     <div class="row">
         <div class="col-12">
             <div class="card border">
@@ -19,4 +19,4 @@
             </div>
         </div>
     </div>
-</x-slot>
+</div>

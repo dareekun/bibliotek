@@ -1,7 +1,7 @@
 <x-guest-layout>
 
     <div id="auth-left">
-        <h1 class="auth-title">Log in.</h1>
+        <h1 class="auth-title text-white">Log in.</h1>
         @if (session('status'))
         <div class="mb-4 font-medium text-sm text-green-600">
             {{ session('status') }}
@@ -30,7 +30,7 @@
             </div>
             <div class="form-check form-check-lg d-flex align-items-end">
                 <input class="form-check-input me-2" type="checkbox" name="remember" id="flexCheckDefault">
-                <label class="form-check-label text-gray-600" for="flexCheckDefault">
+                <label class="form-check-label text-white" for="flexCheckDefault">
                     Keep me logged in
                 </label>
             </div>

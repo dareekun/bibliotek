@@ -18,6 +18,11 @@
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <link rel="stylesheet" href="{{ mix('css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ mix('css/pages/auth.css') }}">
+        <style>
+            .forlogin {
+                
+            }
+        </style>
 
 
         <!-- Scripts -->
@@ -27,13 +32,10 @@
     <body>
         <div id="auth">
             <div class="row h-100">
-                <div class="col-lg-5 col-12">
+                <div class="col-lg-5 col-12" style="background: linear-gradient(180deg, #2d499d, #7f5491);">
                     {{ $slot }}
                 </div>
-                <div class="col-lg-7 d-none d-lg-block">
-                    <div id="auth-right">
-
-                    </div>
+                <div class="col-lg-7" id="auth-right" style ="background-image: url('/images/bg/background.jpg');">
                 </div>
             </div>
         </div>
