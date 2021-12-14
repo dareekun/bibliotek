@@ -9,7 +9,6 @@ use Auth;
 class Dashboardtable extends Component
 {
 
-    public $pin = 1;
     public $documents = [];
     
     public function render()

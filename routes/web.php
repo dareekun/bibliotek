@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 Route::middleware(['auth:sanctum', 'verified'])->get('/document/{id}', [HomeController::class, 'document'])->name('document');
+Route::middleware(['auth:sanctum', 'verified'])->get('/newdocument', [HomeController::class, 'newdocument'])->name('newdocument');
 Route::get('/test', [HomeController::class, 'test']);
 
 // Level Admin Be Advice

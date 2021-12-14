@@ -64,7 +64,7 @@
             <!-- Toaster -->
             <div aria-live="polite" aria-atomic="true" class="position-relative">
                 <div class="toast-container position-absolute py-3">
-                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast fixed-top" role="alert" aria-live="assertive" aria-atomic="true">
                         <div class="toast-header" id="toaster_symbol">
                             <i class="fas fa-exclamation-circle me-1 text-white"></i>
                             <strong class="me-auto text-white" id="toaster_tittle"> Bootstrap</strong>

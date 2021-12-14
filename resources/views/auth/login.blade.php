@@ -15,7 +15,7 @@
         <form action="{{ route('login') }}" method="POST">
             @csrf
             <div class="form-group position-relative has-icon-left mb-4">
-                <input class="form-control form-control-xl" type="number" name="nik" placeholder="Nik"
+                <input class="form-control form-control-xl" type="text" name="nik" placeholder="Nik"
                     value="{{ old('nik') }}">
                 <div class="form-control-icon">
                     <i class="fas fa-user"></i>

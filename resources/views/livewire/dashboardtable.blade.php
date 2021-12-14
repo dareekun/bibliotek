@@ -47,8 +47,8 @@
     </div>
     <div class="row">
         <div class="col-6 col-sm-12">
-            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <i class="far fa-plus-square"></i> <span> Add Document</span></button>
+            <a class="btn btn-outline-success" href="/newdocument">
+                <i class="far fa-plus-square"></i> <span> Add Document</span></a>
         </div>
     </div>
     <div class="row mt-4">
@@ -87,61 +87,6 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Document</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                        <form wire:submit.prevent="adddocument">
-                    <div class="mb-3">
-                        <label for="start" class="form-label">No Document</label>
-                        <input type="text" required name="start" id="start" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="end" class="form-label">End Date</label>
-                        <input type="date" required name="end" id="end" class="form-control">
-                    </div>
-                    <label for="reminder" class="form-label">Remind Me Before</label>
-                    <div class="input-group mb-3">
-                        <input type="number" required name="reminder" id="reminder" class="form-control">
-                        <span class="input-group-text" id="basic-addon2">days</span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="end" class="form-label">Remark</label>
-                        <input type="text" required name="end" id="end" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="attachment" class="form-label">Attachment</label>
-                        <input type="file" required name="attachment" id="attachment" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="attachment" class="form-label">Person in Charge</label>
-                        <input type="email" required name="attachment" id="attachment" class="form-control">
-                    </div>
-                    <label for="person" class="form-label">Person in Notify</label>
-                    @for ($i = 1; $i < $pin ; $i++)
-                    <div class="input-group mb-3">
-                        <input type="email" required wire:model.defer="pin[0]" aria-describedby="basic-addon2"
-                            class="form-control">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary"  type="button"><i class="fas fa-user-plus"></i></button>
-                        </div>
-                    </div>
-                    @endfor
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-outline-success">Save changes</button>
-                </div>
-                    </form>
-            </div>
         </div>
     </div>
 </div>

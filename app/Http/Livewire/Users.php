@@ -135,8 +135,8 @@ class Users extends Component
             $this->departments = DB::table('department')->get();
         } else {
             $location    = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-            $this->users = DB::table('users')->join('department', 'users.department'. '=', 'department.id')
-            ->where('department.location', '$location')->where('users.role', '<>', 'developer')
+            $this->users = DB::table('users')->join('department', 'users.department', '=', 'department.id')
+            ->where('department.location', $location)->where('users.role', '<>', 'developer')
             ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
             'users.role as role', 'users.status as status', 'department.id as idpt')
             ->get();

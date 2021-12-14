@@ -20,4 +20,8 @@ class HomeController extends Controller
     public function test(){
         return Auth::user()->role;
     }
+
+    public function newdocument(){
+        return view('newdocument');
+    }
 }
