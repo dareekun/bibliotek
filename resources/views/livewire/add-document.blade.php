@@ -13,11 +13,21 @@
                                 <input type="text" required wire:model.defer="nodoc" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label for="end" class="form-label">Create Date</label>
+                                <label for="start" class="form-label">Document Category</label>
+                                <select class="form-select" required wire:model.defer="category"
+                                    aria-label="Default select example">
+                                    <option selected>Select Category</option>
+                                    @foreach ($category as $cat)
+                                    <option value="{{$cat->id}}">{{$cat->desc}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="end" class="form-label">Issued date</label>
                                 <input type="date" required wire:model.defer="createdate" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label for="end" class="form-label">Expired Date</label>
+                                <label for="end" class="form-label">Expired date</label>
                                 <input type="date" required wire:model.defer="expiredate" class="form-control">
                             </div>
                             <label for="reminder" class="form-label">Remind Me Before</label>
@@ -26,7 +36,7 @@
                                 <span class="input-group-text" id="basic-addon2">days</span>
                             </div>
                             <div class="mb-3">
-                                <input type="file" required wire:model.defer="file" class="form-control">
+                                <input type="file" accept=".pdf" required wire:model.defer="file" class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="end" class="form-label">Remark</label>

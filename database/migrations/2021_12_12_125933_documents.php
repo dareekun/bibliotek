@@ -15,11 +15,14 @@ class Documents extends Migration
     {
         Schema::create('document', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('nodoc')->unique();
             $table->string('pic');
+            $table->string('department');
             $table->string('category');
             $table->string('issuedate');
             $table->string('expireddate');
+            $table->integer('remider');
+            $table->string('file');
+            $table->string('remark');
             $table->boolean('statusdoc');
             $table->string('location');
             $table->boolean('status');

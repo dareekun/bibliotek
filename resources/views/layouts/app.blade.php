@@ -62,17 +62,13 @@
         </div>
         <div id="main" class='layout-navbar'>
             <!-- Toaster -->
-            <div aria-live="polite" aria-atomic="true" class="position-relative">
-                <div class="toast-container position-absolute py-3">
-                    <div class="toast fixed-top" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="toast-header" id="toaster_symbol">
-                            <i class="fas fa-exclamation-circle me-1 text-white"></i>
-                            <strong class="me-auto text-white" id="toaster_tittle"> Bootstrap</strong>
-                        </div>
-                        <div class="toast-body" id="toaster_message">
-                            Hello, world! This is a toast message.
-                        </div>
-                    </div>
+            <div class="toast fixed-top mx-auto" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header" id="toaster_symbol">
+                    <i class="fas fa-exclamation-circle me-1 text-white"></i>
+                    <strong class="me-auto text-white" id="toaster_tittle"> Judul Snack Toaster</strong>
+                </div>
+                <div class="toast-body" id="toaster_message">
+                    Delicioso Snack Toaster With Chocolato.
                 </div>
             </div>
             <!-- Header -->
@@ -145,7 +141,7 @@
             <div class="main pe-4 ps-1">
                 <div class="page-heading">
                     <div class="page-title">
-                    @yield('content')
+                        @yield('content')
                     </div>
                 </div>
             </div>

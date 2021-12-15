@@ -9,6 +9,7 @@ use Auth;
 class Department extends Component
 {
     public $departments = [];
+    public $locations = [];
     public $search;
     public $deletedepart;
     public $inputcode;
@@ -112,6 +113,7 @@ class Department extends Component
     {
         if (Auth::user()->role == 'developer') {
             $this->departments = DB::table('department')->get();
+            $this->locations = DB::table('location')->get();
         } else {
             $this->location = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
             $this->departments = DB::table('department')->where('location', $this->location)->get();

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class History extends Migration
+class Pnotify extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class History extends Migration
      */
     public function up()
     {
-        Schema::create('history', function (Blueprint $table) {
+        Schema::create('notify', function (Blueprint $table) {
             $table->id();
             $table->string('refer');
-            $table->string('code');
-            $table->boolean('statusdoc');
+            $table->string('user');
             $table->boolean('status');
         });
     }

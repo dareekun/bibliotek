@@ -21,7 +21,7 @@
                         <th>Email</th>
                         <th>Department</th>
                         <th>Role</th>
-                        <th></th>
+                        <th style="width:130px"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,8 +46,8 @@
                                     <option value="user">User</option>
                                 </select>
                         </td>
-                        <td>
-                            <button class="btn btn-small btn-outline-success"
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-success"
                                 wire:click="save('{{$usr->id}}', {{$index}})"><i class="fas fa-save"></i> Save</button>
                         </td>
                         @else
@@ -55,11 +55,11 @@
                         <td>{{$usr->name}}</td>
                         <td>{{$usr->email}}</td>
                         <td>{{$usr->department}}</td>
-                        <td>{{$usr->role}}</td>
+                        <td>{{ucwords($usr->role)}}</td>
                         <td>
-                            <button class="btn btn-small btn-outline-primary" wire:click="edit('{{$usr->id}}')"><i class="far fa-edit"></i></button>
-                            <button class="btn btn-small btn-outline-primary" wire:click="changepass('{{$usr->id}}')"><i class="fas fa-key"></i></button>
-                            <button class="btn btn-small btn-outline-danger" wire:click="delete('{{$usr->id}}')"><i
+                            <button class="btn btn-sm btn-outline-primary" wire:click="edit('{{$usr->id}}')"><i class="far fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-primary" wire:click="changepass('{{$usr->id}}')"><i class="fas fa-key"></i></button>
+                            <button class="btn btn-sm btn-outline-danger" wire:click="delete('{{$usr->id}}')"><i
                                     class="far fa-trash-alt"></i></button>
                         </td>
                         @endif

@@ -31,7 +31,14 @@
                         <td><input class="form-control" wire:model.defer="departments.{{$index}}.code" type="text"></td>
                         <td><input class="form-control" wire:model.defer="departments.{{$index}}.department" type="text"></td>
                         @can('isDeveloper')
-                        <td><input class="form-control" wire:model.defer="departments.{{$index}}.location" type="text"></td>
+                        <td>
+                            <select class="form-select" required wire.model.defer="departments.{{$index}}.location"
+                                aria-label="Default select example">
+                                @foreach ($locations as $loc)
+                                <option @if($dpt->location == $loc->id) selected @else @endif value="{{$loc->id}}">{{$loc->desc}}</option>
+                                @endforeach
+                            </select>
+                        </td>
                         @endcan
                         <td>
                             <button class="btn btn-small btn-outline-success"
@@ -79,7 +86,13 @@
                             @can('isDeveloper')
                             <div class="mb-3">
                                 <label class="form-label">Department Location</label>
-                                <input type="text" required wire:model.defer="inputloc" class="form-control">
+                                <select class="form-select" required wire.model.defer="inputloc"
+                                aria-label="Default select example">
+                                <option selected>Select Location</option>
+                                @foreach ($locations as $loc)
+                                <option value="{{$loc->id}}">{{$loc->desc}}</option>
+                                @endforeach
+                            </select>
                             </div>
                             @endcan
                     </div>

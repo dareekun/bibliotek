@@ -14,13 +14,14 @@ class AddDocument extends Component
     public $count = 1;
     public $pin = [];
     public $users = [];
+    public $category = [];
+    public $pic;
     public $nodoc;
     public $createdate;
     public $expiredate;
     public $reminder;
     public $file;
     public $remark;
-
 
     public function plus(){
         if ($this->count < 5) {
@@ -39,10 +40,55 @@ class AddDocument extends Component
     public function submit()
     {
         $this->validate([
-            'file' => 'image|max:2048', // 1MB Max
+            'file' => 'max:20480',
         ]);
- 
-        $this->photo->store('photos');
+        $refer     = strtoupper(base_convert(date('YmdHis').sprintf('%02d', rand(1,99)),10,32));
+        $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+        if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
+            $statusdoc = 3;
+            DB::table('email_job')->insert([
+                'refer'     => $refer,
+                'condition' => 0
+            ]);
+        }elseif (date('Ymd', strtotime($this->expiredate.' - '.  $this->reminder. ' days')) < date('Ymd') && (date('Ymd', strtotime($this->expiredate)) > date('Ymd'))) {
+            $statusdoc = 2;
+            DB::table('email_job')->insert([
+                'refer'     => $refer,
+                'condition' => 0
+            ]);
+        } else {
+            $statusdoc = 1;
+        }
+        $docname = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
+        DB::table('document')->insert([
+            'id' => $refer,
+            'pic' => $this->pic,
+            'department' => Auth::user()->department,
+            'category' => $this->category,
+            'issuedate' => $this->createdate,
+            'expireddate' => $this->expiredate,
+            'reminder' => $this->reminder,
+            'file' => $docname,
+            'remark' => $this->remark,
+            'statusdoc' => $statusdoc,
+            'location' => $location,
+            'status' => 0,
+        ]);
+        DB::table('history')->insert([
+            'refer' => $refer,
+            'code' => $this->nodoc,
+            'statusdoc' => $statusdoc,
+            'status' => 0,
+        ]);
+        for ($i = 0; $i < count($this->pin); $i++) {
+            DB::table('notify')->insert([
+                'refer'  => $refer,
+                'user'   => $this->pin[$i],
+                'status' => 0
+            ]);
+        }
+        $this->file->store('docs', $statusdoc);
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Email Limit']);
     }
 
     public function render()
@@ -51,6 +97,7 @@ class AddDocument extends Component
         $this->users = DB::table('users')->join('department', 'users.department', '=', 'department.id')
         ->where('department.location', $location)->where('users.role', '<>', 'developer')
         ->select('users.id as id', 'users.nik as nik', 'users.name as name')->get();
+        $this->category = DB::table('category')->where('location', $location)->get();
         return view('livewire.add-document');
     }
 }

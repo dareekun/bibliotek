@@ -65,7 +65,7 @@ class Users extends Component
     }
 
     public function edit($tag){
-        if (DB::table('users')->where('status', $tag)->doesntExist()) {
+        if (DB::table('users')->where('status', 1)->doesntExist()) {
             DB::table('users')->where('id', $tag)->update([
                 'status' => 1,
             ]);
@@ -90,6 +90,12 @@ class Users extends Component
                     'role' => $this->inputrole,
                 ]);
                 $this->dispatchBrowserEvent('closemodal', ['modalid' => '#exampleModal']);
+                $this->inputnik   = '';
+                $this->inputname  = '';
+                $this->inputemail = '';
+                $this->inputpass  = '';
+                $this->inputdept  = '';
+                $this->inputrole  = '';
                 $this->dispatchBrowserEvent('toaster', ['message' => 'User added successfully', 'color' => '#28a745', 'title' => 'Add User']);
             }
         } else {
@@ -107,20 +113,25 @@ class Users extends Component
                 'department' => $this->users[$ind]['idpt'],
                 'role' => $this->users[$ind]['role'],
                 'status' => 0,
-            ]);
+            ]);                
+            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#changepassword']);
+            $this->dispatchBrowserEvent('toaster', ['message' => 'User data changed successfully', 'color' => '#28a745', 'title' => 'Change user data']);
         }else {
             if (DB::table('users')->where('id', '<>' ,$tag)->where('nik', $this->users[$ind]['nik'])->exists()) {
                 $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate data user', 'color' => '#dc3545', 'title' => 'Duplicate User']);
             } elseif (DB::table('users')->where('id', '<>', $tag)->where('email', $this->users[$ind]['email'])->exists()) {
                 $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate data user', 'color' => '#dc3545', 'title' => 'Duplicate User']);
-            }else {DB::table('users')->where('id', $tag)->update([
+            }else {
+                DB::table('users')->where('id', $tag)->update([
                 'nik' => $this->users[$ind]['nik'],
                 'name' => $this->users[$ind]['name'],
                 'email' => $this->users[$ind]['email'],
                 'department' => $this->users[$ind]['idpt'],
                 'role' => $this->users[$ind]['role'],
                 'status' => 0,
-            ]);
+            ]);                
+            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#changepassword']);
+            $this->dispatchBrowserEvent('toaster', ['message' => 'User data changed successfully', 'color' => '#28a745', 'title' => 'Change user data']);
             }
         }
     }
@@ -128,7 +139,7 @@ class Users extends Component
     public function render()
     {
         if (Auth::user()->role == 'developer') {
-            $this->users = DB::table('users')->join('department', 'users.department', '=', 'department.id')
+            $this->users = DB::table('users')->leftjoin('department', 'users.department', '=', 'department.id')
             ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
             'users.role as role', 'users.status as status', 'department.id as idpt')
             ->get();

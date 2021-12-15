@@ -5,18 +5,19 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class DatabaseSeeder extends Seeder
+class setting extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        $this->call([
-        UserSeeder::class,
-        AppSetting::class,
+        DB::table('setting')->insert([
+            'nama' => 'remindays',
+            'value' => '0',
+            'location' => '1',
         ]);
     }
 }

@@ -17,7 +17,6 @@ class Setting extends Migration
             $table->id();
             $table->string('nama');
             $table->string('value');
-            $table->string('tipe');
             $table->string('location');
         });
     }
