@@ -3,15 +3,28 @@
         <div class="col-12">
             <div class="card border">
                 <div class="card-header">
-                    Setting Configuration
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-current="page">
+                                Setting Configuration</a>
+                        </li>
+                        @can('isDeveloper')
+                        <li class="nav-item">
+                            <a class="nav-link" href="/tabsetting">Table Setting</a>
+                        </li>
+                        @endcan
+                    </ul>
                 </div>
                 <div class="card-body pt-4">
+                    @can('isDeveloper')
+                    <strong class="text-danger">PLease Use Tab Setting To Configure setting on other location</strong>
+                    @endcan
                     <div class="row">
                         <div class="col-5">
                             <label for="reminder" class="form-label">Remind Me Every</label>
                             <div class="input-group mb-3">
-                                <input type="number" name="reminder" id="reminder" class="form-control">
-                                <span class="input-group-text" id="basic-addon2">days</span>
+                                <input type="number" required wire:model.defer="inputremind" class="form-control">
+                                <span class="input-group-text">days</span>
                                 <button class="btn btn-outline-success" wire:click="update">update</span></button>
                             </div>
                         </div>
@@ -40,7 +53,7 @@
                                         @can('isDeveloper')
                                         <th>Location</th>
                                         @endcan
-                                        <th style="width:130px"></th>
+                                        <th style="width:100px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,13 +64,21 @@
                                         <td><input class="form-control" wire:model.defer="categorys.{{$index}}.desc"
                                                 type="text"></td>
                                         @can('isDeveloper')
-                                        <td><input class="form-control" wire:model.defer="categorys.{{$index}}.location"
-                                                type="text"></td>
+                                        <td>
+                                            <select class="form-select" required wire:model.defer="categorys.{{$index}}.location"
+                                                aria-label="Default select example">
+                                                <option value="">Select Location</option>
+                                                @foreach ($locations as $loc)
+                                                <option @if($cat->location == $loc->id) selected @else @endif value="{{$loc->id}}">{{$loc->desc}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
                                         @endcan
                                         <td>
                                             <button class="btn btn-sm w-100 btn-outline-success"
                                                 wire:click="savecat('{{$cat->id}}', {{$index}})"><i
-                                                    class="fas fa-save"></i> Save</button>
+                                                    class="fas fa-save"></i>
+                                                Save</button>
                                         </td>
                                         @else
                                         <td>{{$index + 1}}</td>
@@ -67,7 +88,8 @@
                                         @endcan
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary"
-                                                wire:click="editcat('{{$cat->id}}')"><i class="far fa-edit"></i></button>
+                                                wire:click="editcat('{{$cat->id}}')"><i
+                                                    class="far fa-edit"></i></button>
                                             <button class="btn btn-sm btn-outline-danger"
                                                 wire:click="deletecat('{{$cat->id}}')"><i
                                                     class="far fa-trash-alt"></i></button>
@@ -85,7 +107,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Location</th>
-                                        <th style="width:130px"></th>
+                                        <th style="width:100px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -98,14 +120,16 @@
                                         <td>
                                             <button class="btn btn-sm w-100 btn-outline-success"
                                                 wire:click="saveloc('{{$loc->id}}', {{$index}})"><i
-                                                    class="fas fa-save"></i> Save</button>
+                                                    class="fas fa-save"></i>
+                                                Save</button>
                                         </td>
                                         @else
                                         <td>{{$index + 1}}</td>
                                         <td>{{$loc->desc}}</td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary"
-                                                wire:click="editloc('{{$loc->id}}')"><i class="far fa-edit"></i></button>
+                                                wire:click="editloc('{{$loc->id}}')"><i
+                                                    class="far fa-edit"></i></button>
                                             <button class="btn btn-sm btn-outline-danger"
                                                 wire:click="deleteloc('{{$loc->id}}')"><i
                                                     class="far fa-trash-alt"></i></button>
@@ -142,7 +166,7 @@
                             <label class="form-label">Category Location</label>
                             <select class="form-select" required wire:model.defer="input2"
                                 aria-label="Default select example">
-                                <option selected>Select Location</option>
+                                <option value="">Select Location</option>
                                 @foreach ($locations as $loc)
                                 <option value="{{$loc->id}}">{{$loc->desc}}</option>
                                 @endforeach
@@ -186,24 +210,24 @@
     @endcan
 
     <!-- Modal for delete confirmation -->
-    <div class="modal fade" id="deleteuser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Delete {{ucwords($modaltittle)}}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {{ $tulisan }}
-                        <p>{{ $referdesc }}</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-danger" wire:click="confirm">Yes</button>
-                    </div>
+    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete {{ucwords($modaltittle)}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ $tulisan }}
+                    <p>{{ $referdesc }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger" wire:click="confirm">Yes</button>
                 </div>
             </div>
         </div>
+    </div>
 
 
 </div>

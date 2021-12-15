@@ -5,10 +5,10 @@
                 <div class="card-body">
                     <div class="row align-middle">
                         <span class="col-sm-3 align-middle">
-                            <h2>50</h2>
+                            <h2>{{$green}}</h2>
                         </span>
                         <span class="col-sm-9 align-middle">
-                            <h2> Total</h2>
+                            <h2> Total Document</h2>
                         </span>
                     </div>
                 </div>
@@ -19,10 +19,10 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-3 align-middle">
-                            <h2>50</h2>
+                            <h2>{{$yellow}}</h2>
                         </div>
                         <div class="col-sm-9 align-middle">
-                            <h2> Progress</h2>
+                            <h2> Deadlines Document</h2>
                         </div>
                     </div>
                 </div>
@@ -34,10 +34,10 @@
                     <div class="row">
                         <div class="row">
                             <div class="col-sm-3 align-middle">
-                                <h2>50</h2>
+                                <h2>{{$red}}</h2>
                             </div>
                             <div class="col-sm-9 align-middle">
-                                <h2> Expired</h2>
+                                <h2> Expired Document</h2>
                             </div>
                         </div>
                     </div>

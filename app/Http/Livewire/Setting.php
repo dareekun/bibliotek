@@ -11,7 +11,7 @@ class Setting extends Component
 
     public $categorys = [];
     public $locations = [];
-    public $remindays;
+    public $inputremind;
     public $inputloc;
     public $input1;
     public $input2;
@@ -19,6 +19,7 @@ class Setting extends Component
     public $tulisan;
     public $referdesc;
     public $modaltittle;
+    public $countloc;
 
     public function submitcat(){
         if(Auth::user()->role == 'developer') {
@@ -82,11 +83,9 @@ class Setting extends Component
             DB::table('location')->where('id', $id)->update([
                 'desc' => $this->locations[$index]['desc'],
                 'status' => 0,
-            ]);                
-            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#changepassword']);
+            ]);
             $this->dispatchBrowserEvent('toaster', ['message' => 'Location data changed successfully', 'color' => '#28a745', 'title' => 'Change location data']);
         } else {
-            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addlocation']);
             $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
         }
     }
@@ -105,10 +104,8 @@ class Setting extends Component
                     'status'   => 0,
                 ]);  
             }            
-            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#changepassword']);
             $this->dispatchBrowserEvent('toaster', ['message' => 'Location data changed successfully', 'color' => '#28a745', 'title' => 'Change location data']);
         } else {
-            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addlocation']);
             $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
         }
     }
@@ -118,6 +115,7 @@ class Setting extends Component
         $this->referid     = $id;
         $this->tulisan     = 'Are You sure want to delete this category?';
         $this->referdesc   = DB::table('category')->where('id', $id)->value('desc');
+        $this->dispatchBrowserEvent('openmodal', ['modalid' => '#delete']);
     }
 
     public function deleteloc($id){
@@ -125,6 +123,7 @@ class Setting extends Component
         $this->referid     = $id;
         $this->tulisan     = 'Are You sure want to delete this location?';
         $this->referdesc   = DB::table('location')->where('id', $id)->value('desc');
+        $this->dispatchBrowserEvent('openmodal', ['modalid' => '#delete']);
     }
 
     public function confirm(){
@@ -133,20 +132,29 @@ class Setting extends Component
         $this->referid     = '';
         $this->tulisan     = '';
         $this->referdesc   = '';
-        $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addlocation']);
+        $this->dispatchBrowserEvent('closemodal', ['modalid' => '#delete']);
         $this->dispatchBrowserEvent('toaster', ['message' => ucwords($this->modaltittle).' remove successfully', 'color' => '#28a745', 'title' => 'Delete successfull']);
         
     }
 
+    public function update(){
+        $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+        DB::table('setting')->updateOrInsert(
+        ['name' => 'remindays', 'location' => $location],
+        ['value' => $this->inputremind]);
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Value Save successfully', 'color' => '#28a745', 'title' => 'Save successfull']);
+    }
+
     public function render()
     {
-        $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-        $remindays = DB::table('setting')->where('nama', 'remindays')->value('value');
+        $location          = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+        $this->inputremind = DB::table('setting')->where('name', 'remindays')->where('location', $location)->value('value');
         if (Auth::user()->role == 'developer') {
-            $this->categorys = DB::table('category')->get();
-            $this->locations = DB::table('location')->get();
+            $this->categorys  = DB::table('category')->get();
+            $this->locations  = DB::table('location')->get();
         } else {
-        $this->category = DB::table('category')->where('location', $location)->get();
+        $this->category   = DB::table('category')->where('location', $location)->get();
+        $this->setreminds = DB::table('location')->leftjoin('setting', 'location.id', '=', 'setting.location')->where('locations.id', $location)->where('setting.name', 'remindays')->get();
         }
         return view('livewire.setting');
     }

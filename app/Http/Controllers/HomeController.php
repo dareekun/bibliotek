@@ -18,7 +18,8 @@ class HomeController extends Controller
     }
 
     public function test(){
-        return Auth::user()->role;
+        $data = DB::table('location')->leftjoin('setting', 'location.id', '=', 'setting.location')->get();
+        return $data;
     }
 
     public function newdocument(){

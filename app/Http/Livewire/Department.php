@@ -112,7 +112,9 @@ class Department extends Component
     public function render()
     {
         if (Auth::user()->role == 'developer') {
-            $this->departments = DB::table('department')->get();
+            $this->departments = DB::table('department')->join('location', 'location.id', '=', 'department.location')
+            ->select('department.id as id', 'department.code as code', 'department.department as department', 'location.desc as location', 'department.status as status')
+            ->get();
             $this->locations = DB::table('location')->get();
         } else {
             $this->location = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');

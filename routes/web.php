@@ -28,3 +28,6 @@ Route::get('/test', [HomeController::class, 'test']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/setting', [AdminController::class, 'setting'])->name('setting');
 Route::middleware(['auth:sanctum', 'verified'])->get('/department', [AdminController::class, 'department'])->name('department');
 Route::middleware(['auth:sanctum', 'verified'])->get('/users', [AdminController::class, 'users'])->name('users');
+
+//Level Developer please be Advice
+Route::middleware(['auth:sanctum', 'verified'])->get('/tabsetting', [AdminController::class, 'tabsetting'])->name('tabsetting');

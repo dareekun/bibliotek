@@ -15,7 +15,7 @@ class Setting extends Migration
     {
         Schema::create('setting', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('name');
             $table->string('value');
             $table->string('location');
         });

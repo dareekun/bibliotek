@@ -67,7 +67,7 @@
                     <i class="fas fa-exclamation-circle me-1 text-white"></i>
                     <strong class="me-auto text-white" id="toaster_tittle"> Judul Snack Toaster</strong>
                 </div>
-                <div class="toast-body" id="toaster_message">
+                <div class="toast-body bg-white" id="toaster_message">
                     Delicioso Snack Toaster With Chocolato.
                 </div>
             </div>
