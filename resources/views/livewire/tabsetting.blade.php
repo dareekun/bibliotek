@@ -33,6 +33,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if (count($settings) == 0)
+                                    <tr>
+                                        <td class="text-center" colspan="6">No data yet.</td>
+                                    </tr>
+                                    @else
                                     @foreach ($settings as $index => $set)
                                     <tr>
                                         @if ($set->status == 1)
@@ -53,10 +58,13 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm w-100 btn-outline-success"
+                                            <button class="btn btn-sm btn-outline-success"
                                                 wire:click="save('{{$cat->id}}', {{$index}})"><i
                                                     class="fas fa-save"></i>
-                                                Save</button>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                wire:click="cancel('{{$cat->id}}')"><i
+                                                    class="fas fa-window-close"></i></button>
                                         </td>
                                         @else
                                         <td>{{$index + 1}}</td>
@@ -73,6 +81,7 @@
                                         @endif
                                     </tr>
                                     @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -127,9 +136,9 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="text-danger">
-                    Please Be Carefull When Delete Setting, It May Be Broke Some Of Configuration!.</h5>
+                        Please Be Carefull When Delete Setting, It May Be Broke Some Of Configuration!.</h5>
                     <p> Are you sure want to delete this configuration? <br>
-                    {{ $name }} - {{ $value }} - {{ $location }}  </p>
+                        {{ $name }} - {{ $value }} - {{ $location }} </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning" data-bs-dismiss="modal">No</button>
@@ -138,6 +147,4 @@
             </div>
         </div>
     </div>
-
-
 </div>

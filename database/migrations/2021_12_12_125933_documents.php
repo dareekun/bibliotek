@@ -15,6 +15,8 @@ class Documents extends Migration
     {
         Schema::create('document', function (Blueprint $table) {
             $table->string('id')->primary();
+            $table->string('title');
+            $table->string('creator');
             $table->string('pic');
             $table->string('department');
             $table->string('category');
@@ -25,7 +27,7 @@ class Documents extends Migration
             $table->string('remark');
             $table->boolean('statusdoc');
             $table->string('location');
-            $table->boolean('status');
+            $table->timestamp('created_at', $precision = 0);
         });
     }
 

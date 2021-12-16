@@ -73,6 +73,12 @@ class Users extends Component
             $this->dispatchBrowserEvent('toaster', ['message' => 'Oops Looks like you still have one not saved yet', 'color' => '#dc3545', 'title' => 'Undone Job']);
         }
     }
+    
+    public function cancel($id){
+        DB::table('users')->where('id', $id)->update([
+            'status' => 0,
+        ]);
+    }
 
     public function submit()
     {

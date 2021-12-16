@@ -9,6 +9,10 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3">
+                                <label for="start" class="form-label">Title Document</label>
+                                <input type="text" required wire:model.defer="title" class="form-control">
+                            </div>
+                            <div class="mb-3">
                                 <label for="start" class="form-label">No Document</label>
                                 <input type="text" required wire:model.defer="nodoc" class="form-control">
                             </div>
@@ -17,7 +21,7 @@
                                 <select class="form-select" required wire:model.defer="category"
                                     aria-label="Default select example">
                                     <option selected>Select Category</option>
-                                    @foreach ($category as $cat)
+                                    @foreach ($categorys as $cat)
                                     <option value="{{$cat->id}}">{{$cat->desc}}</option>
                                     @endforeach
                                 </select>

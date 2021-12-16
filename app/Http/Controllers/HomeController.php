@@ -14,12 +14,13 @@ class HomeController extends Controller
     }
 
     public function document($id){
-        return view('detaildocument');
+        return view('detaildocument', ['refer' => $id]);
     }
 
     public function test(){
-        $data = DB::table('location')->leftjoin('setting', 'location.id', '=', 'setting.location')->get();
-        return $data;
+        $data = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+        $category   = DB::table('category')->where('location', $data)->get();
+        return $category;
     }
 
     public function newdocument(){

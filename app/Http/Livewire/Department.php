@@ -70,7 +70,7 @@ class Department extends Component
         $copycode  = DB::table('department')->where('id', $tag)->value('code');
         if ($copycode == $this->departments[$ind]['code']) {
             if (Auth::user()->role == 'developer'){
-                $location = $this->departments[$ind]['location'];
+                $location = $this->departments[$ind]['dptloc'];
             }else {
                 $location = DB::table('department')->where('id', $tag)->value('location');
             }
@@ -108,12 +108,18 @@ class Department extends Component
             $this->dispatchBrowserEvent('toaster', ['message' => 'Oops Looks like you still have one not saved yet', 'color' => '#dc3545', 'title' => 'Undone Job']);
         }
     }
+
+    public function cancel($id){
+        DB::table('department')->where('id', $id)->update([
+            'status' => 0,
+        ]);
+    }
     
     public function render()
     {
         if (Auth::user()->role == 'developer') {
-            $this->departments = DB::table('department')->join('location', 'location.id', '=', 'department.location')
-            ->select('department.id as id', 'department.code as code', 'department.department as department', 'location.desc as location', 'department.status as status')
+            $this->departments = DB::table('department')->leftjoin('location', 'location.id', '=', 'department.location')
+            ->select('department.id as id', 'department.code as code', 'department.department as department', 'location.desc as location', 'department.location as dptloc', 'department.status as status')
             ->get();
             $this->locations = DB::table('location')->get();
         } else {

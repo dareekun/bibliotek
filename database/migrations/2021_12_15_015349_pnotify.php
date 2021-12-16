@@ -17,7 +17,6 @@ class Pnotify extends Migration
             $table->id();
             $table->string('refer');
             $table->string('user');
-            $table->boolean('status');
         });
     }
 

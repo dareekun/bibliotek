@@ -16,7 +16,6 @@ class Location extends Migration
         Schema::create('location', function (Blueprint $table) {
             $table->id();
             $table->string('desc')->unique();
-            $table->string('status');
         });
     }
 

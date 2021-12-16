@@ -19,6 +19,7 @@ class History extends Migration
             $table->string('code');
             $table->boolean('statusdoc');
             $table->boolean('status');
+            $table->timestamp('created_at', $precision = 0);
         });
     }
 

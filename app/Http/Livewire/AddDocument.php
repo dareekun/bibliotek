@@ -4,8 +4,10 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use File;
 
 class AddDocument extends Component
 {
@@ -14,8 +16,10 @@ class AddDocument extends Component
     public $count = 1;
     public $pin = [];
     public $users = [];
-    public $category = [];
+    public $categorys = [];
+    public $category;
     public $pic;
+    public $title;
     public $nodoc;
     public $createdate;
     public $expiredate;
@@ -44,6 +48,9 @@ class AddDocument extends Component
         ]);
         $refer     = strtoupper(base_convert(date('YmdHis').sprintf('%02d', rand(1,99)),10,32));
         $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+        
+        $docname = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
+        $this->file->storeAs('docs', $docname.'.pdf');
         if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
             $statusdoc = 3;
             DB::table('email_job')->insert([
@@ -59,26 +66,27 @@ class AddDocument extends Component
         } else {
             $statusdoc = 1;
         }
-        $docname = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
         DB::table('document')->insert([
-            'id' => $refer,
-            'pic' => $this->pic,
-            'department' => Auth::user()->department,
-            'category' => $this->category,
-            'issuedate' => $this->createdate,
+            'id'          => $refer,
+            'pic'         => $this->pic,
+            'creator'     => Auth::user()->id,
+            'title'       => $this->title,
+            'department'  => Auth::user()->department,
+            'category'    => $this->category,
+            'issuedate'   => $this->createdate,
             'expireddate' => $this->expiredate,
-            'reminder' => $this->reminder,
-            'file' => $docname,
-            'remark' => $this->remark,
-            'statusdoc' => $statusdoc,
-            'location' => $location,
-            'status' => 0,
+            'reminder'    => $this->reminder,
+            'file'        => $docname,
+            'remark'      => $this->remark,
+            'statusdoc'   => $statusdoc,
+            'location'    => $location,
+            'status'      => 0,
         ]);
         DB::table('history')->insert([
-            'refer' => $refer,
-            'code' => $this->nodoc,
+            'refer'     => $refer,
+            'code'      => $this->nodoc,
             'statusdoc' => $statusdoc,
-            'status' => 0,
+            'status'    => 0,
         ]);
         for ($i = 0; $i < count($this->pin); $i++) {
             DB::table('notify')->insert([
@@ -87,8 +95,8 @@ class AddDocument extends Component
                 'status' => 0
             ]);
         }
-        $this->file->store('docs', $statusdoc);
-        $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Email Limit']);
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Save Successfull']);
+        return redirect()->to('/document/'.$refer);
     }
 
     public function render()
@@ -97,7 +105,7 @@ class AddDocument extends Component
         $this->users = DB::table('users')->join('department', 'users.department', '=', 'department.id')
         ->where('department.location', $location)->where('users.role', '<>', 'developer')
         ->select('users.id as id', 'users.nik as nik', 'users.name as name')->get();
-        $this->category = DB::table('category')->where('location', $location)->get();
+        $this->categorys = DB::table('category')->where('location', $location)->get();
         return view('livewire.add-document');
     }
 }

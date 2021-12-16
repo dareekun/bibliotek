@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-body pt-4">
                     @can('isDeveloper')
-                    <strong class="text-danger">PLease Use Tab Setting To Configure setting on other location</strong>
+                    <strong class="text-danger">Please Use Tab Setting To Configure setting on other location</strong>
                     @endcan
                     <div class="row">
                         <div class="col-5">
@@ -57,6 +57,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if (count($categorys) == 0)
+                                    <tr>
+                                        <td class="text-center" colspan="6">No document yet.</td>
+                                    </tr>
+                                    @else
                                     @foreach ($categorys as $index => $cat)
                                     <tr>
                                         @if ($cat->status == 1)
@@ -65,20 +70,24 @@
                                                 type="text"></td>
                                         @can('isDeveloper')
                                         <td>
-                                            <select class="form-select" required wire:model.defer="categorys.{{$index}}.location"
+                                            <select class="form-select" required
+                                                wire:model.defer="categorys.{{$index}}.location"
                                                 aria-label="Default select example">
                                                 <option value="">Select Location</option>
                                                 @foreach ($locations as $loc)
-                                                <option @if($cat->location == $loc->id) selected @else @endif value="{{$loc->id}}">{{$loc->desc}}</option>
+                                                <option @if($cat->location == $loc->id) selected @else @endif
+                                                    value="{{$loc->id}}">{{$loc->desc}}</option>
                                                 @endforeach
                                             </select>
                                         </td>
                                         @endcan
                                         <td>
-                                            <button class="btn btn-sm w-100 btn-outline-success"
+                                            <button class="btn btn-sm btn-outline-success"
                                                 wire:click="savecat('{{$cat->id}}', {{$index}})"><i
-                                                    class="fas fa-save"></i>
-                                                Save</button>
+                                                    class="fas fa-save"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                wire:click="cancelcat('{{$cat->id}}')"><i
+                                                    class="fas fa-window-close"></i></button>
                                         </td>
                                         @else
                                         <td>{{$index + 1}}</td>
@@ -97,6 +106,7 @@
                                         @endif
                                     </tr>
                                     @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -111,6 +121,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if (count($locations) == 0)
+                                    <tr>
+                                        <td class="text-center" colspan="6">No document yet.</td>
+                                    </tr>
+                                    @else
                                     @foreach ($locations as $index => $loc)
                                     <tr>
                                         @if ($loc->status == 1)
@@ -118,10 +133,12 @@
                                         <td><input class="form-control" wire:model.defer="locations.{{$index}}.desc"
                                                 type="text"></td>
                                         <td>
-                                            <button class="btn btn-sm w-100 btn-outline-success"
+                                            <button class="btn btn-sm w-25 btn-outline-success"
                                                 wire:click="saveloc('{{$loc->id}}', {{$index}})"><i
-                                                    class="fas fa-save"></i>
-                                                Save</button>
+                                                    class="fas fa-save"></i></button>
+                                            <button class="btn btn-sm w-25 btn-outline-danger"
+                                                wire:click="cancelloc('{{$cat->id}}')"><i
+                                                    class="fas fa-window-close"></i></button>
                                         </td>
                                         @else
                                         <td>{{$index + 1}}</td>
@@ -137,6 +154,7 @@
                                         @endif
                                     </tr>
                                     @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

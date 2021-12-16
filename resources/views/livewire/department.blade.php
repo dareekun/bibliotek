@@ -25,6 +25,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if (count($departments) == 0)
+                    <tr>
+                        <td class="text-center" colspan="6">No data yet.</td>
+                    </tr>
+                    @else 
                     @foreach ($departments as $index => $dpt)
                     <tr>
                         @if ($dpt->status == 1)
@@ -32,17 +37,19 @@
                         <td><input class="form-control" wire:model.defer="departments.{{$index}}.department" type="text"></td>
                         @can('isDeveloper')
                         <td>
-                            <select class="form-select" required wire:model.defer="departments.{{$index}}.location"
+                            <select class="form-select" required wire:model.defer="departments.{{$index}}.dptloc"
                                 aria-label="Default select example">
                                 @foreach ($locations as $loc)
-                                <option @if($dpt->location == $loc->id) selected @else @endif value="{{$loc->id}}">{{$loc->desc}}</option>
+                                <option @if($dpt->dptloc == $loc->id) selected @else @endif value="{{$loc->id}}">{{$loc->desc}}</option>
                                 @endforeach
                             </select>
                         </td>
                         @endcan
                         <td>
-                            <button class="btn btn-small btn-outline-success"
-                                wire:click="save('{{$dpt->id}}', {{$index}})"><i class="fas fa-save"></i> Save</button>
+                            <button class="btn btn-sm btn-outline-success"
+                                wire:click="save('{{$dpt->id}}', {{$index}})"><i class="fas fa-save"></i></button>
+                            <button class="btn btn-sm btn-outline-danger"
+                                wire:click="cancel('{{$dpt->id}}')"><i class="fas fa-window-close"></i></button>
                         </td>
                         @else
                         <td>{{$dpt->code}}</td>
@@ -51,13 +58,14 @@
                         <td>{{$dpt->location}}</td>
                         @endcan
                         <td>
-                            <button class="btn btn-small btn-outline-primary" wire:click="edit('{{$dpt->id}}')"><i class="far fa-edit"></i></button>
-                            <button class="btn btn-small btn-outline-danger" wire:click="delete('{{$dpt->id}}')"><i
+                            <button class="btn btn-sm btn-outline-primary" wire:click="edit('{{$dpt->id}}')"><i class="far fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger" wire:click="delete('{{$dpt->id}}')"><i
                                     class="far fa-trash-alt"></i></button>
                         </td>
                         @endif
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<livewire:detaildocument/>
+<livewire:detaildocument :pass="$refer"/>
 @stop
 @push('scripts')
 @endpush

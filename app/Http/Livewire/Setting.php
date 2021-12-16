@@ -68,6 +68,12 @@ class Setting extends Component
         }
     }
 
+    public function cancelloc($id){
+        DB::table('location')->where('id', $id)->update([
+            'status' => 0,
+        ]);
+    }
+
     public function editcat($id){
         if (DB::table('category')->where('status', 1)->doesntExist() || DB::table('location')->where('status', 1)->doesntExist() ) {
             DB::table('category')->where('id', $id)->update([
@@ -76,6 +82,12 @@ class Setting extends Component
         } else {
             $this->dispatchBrowserEvent('toaster', ['message' => 'Oops Looks like you still have one not saved yet', 'color' => '#dc3545', 'title' => 'Undone Job']);
         }
+    }
+
+    public function cancelcat($id){
+        DB::table('category')->where('id', $id)->update([
+            'status' => 0,
+        ]);
     }
 
     public function saveloc($id, $index){
@@ -150,11 +162,12 @@ class Setting extends Component
         $location          = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
         $this->inputremind = DB::table('setting')->where('name', 'remindays')->where('location', $location)->value('value');
         if (Auth::user()->role == 'developer') {
-            $this->categorys  = DB::table('category')->get();
+            $this->categorys  = DB::table('category')->join('location', 'location.id', '=', 'category.location')
+            ->select('category.id as id', 'category.desc as desc', 'location.desc as location', 'category.status as status')
+            ->get();
             $this->locations  = DB::table('location')->get();
         } else {
-        $this->category   = DB::table('category')->where('location', $location)->get();
-        $this->setreminds = DB::table('location')->leftjoin('setting', 'location.id', '=', 'setting.location')->where('locations.id', $location)->where('setting.name', 'remindays')->get();
+        $this->categorys   = DB::table('category')->where('location', $location)->get();
         }
         return view('livewire.setting');
     }

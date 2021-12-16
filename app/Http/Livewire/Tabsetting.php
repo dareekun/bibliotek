@@ -18,12 +18,18 @@ class Tabsetting extends Component
 
     public function edit($id){
         if(DB::table('setting')->where('status', 1)->doesntExist()){
-            DB::table('location')->where('id', $id)->update([
+            DB::table('setting')->where('id', $id)->update([
                 'status' => 1
             ]);
         } else {
             $this->dispatchBrowserEvent('toaster', ['message' => 'Oops Looks like you still have one not saved yet', 'color' => '#dc3545', 'title' => 'Undone Job']);
         }
+    }
+
+    public function cancel($id){
+        DB::table('setting')->where('id', $id)->update([
+            'status' => 0,
+        ]);
     }
 
     public function save($id, $index){

@@ -4,7 +4,7 @@
             <div class="card border text-white bg-success mb-3">
                 <div class="card-body">
                     <div class="row align-middle">
-                        <span class="col-sm-3 align-middle">
+                        <span class="col-sm-3 align-middle my-auto text-center">
                             <h2>{{$green}}</h2>
                         </span>
                         <span class="col-sm-9 align-middle">
@@ -18,7 +18,7 @@
             <div class="card border text-white bg-warning mb-3">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-3 align-middle">
+                        <div class="col-sm-3 align-middle text-center my-auto">
                             <h2>{{$yellow}}</h2>
                         </div>
                         <div class="col-sm-9 align-middle">
@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="row">
-                            <div class="col-sm-3 align-middle">
+                            <div class="col-sm-3 align-middle text-center my-auto">
                                 <h2>{{$red}}</h2>
                             </div>
                             <div class="col-sm-9 align-middle">
@@ -46,7 +46,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6 col-sm-12">
+        <div class="col-sm-4">
+            <input class="form-control" placeholder="Search" wire:model.defer="inputsearch" type="text">
+        </div>
+        <div class="col-sm-8 text-end">
             <a class="btn btn-outline-success" href="/newdocument">
                 <i class="far fa-plus-square"></i> <span> Add Document</span></a>
         </div>
@@ -56,7 +59,7 @@
             <table id="example" class="display table border table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th>No Document</th>
+                        <th>Document</th>
                         <th>Pic</th>
                         <th>Category</th>
                         <th>Issue date</th>
@@ -65,9 +68,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($documents as $index => $dcm)
+                    @if (count($documents) == 0)
                     <tr>
-                        <td><a href="/document/{{$dcm->id}}">{{$dcm->nodoc}}</a></td>
+                        <td class="text-center" colspan="6">No data yet.</td>
+                    </tr>
+                    @else 
+                    @foreach ($documents as $index => $dcm)
+                    <tr>
+                        <td><a href="/document/{{$dcm->id}}">{{$dcm->title}}</a></td>
                         <td>{{$dcm->pic}}</td>
                         <td>{{$dcm->category}}</td>
                         <td>{{$dcm->issuedate}}</td>
@@ -85,6 +93,7 @@
                         </td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

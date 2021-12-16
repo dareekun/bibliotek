@@ -25,12 +25,23 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if (count($users) == 0)
+                    <tr>
+                        <td class="text-center" colspan="6">No data yet.</td>
+                    </tr>
+                    @else 
                     @foreach ($users as $index => $usr)
                     <tr>
                         @if ($usr->status == 1)
-                        <td><input class="form-control" wire:model.defer="users.{{$index}}.nik" type="text"></td>
+                        <td>
+                            @can('isDeveloper')
+                            <input class="form-control" wire:model.defer="users.{{$index}}.nik" type="text">
+                            @else
+                            <input class="form-control" wire:model.defer="users.{{$index}}.nik" type="number">
+                            @endcan
+                        </td>
                         <td><input class="form-control" wire:model.defer="users.{{$index}}.name" type="text"></td>
-                        <td><input class="form-control" wire:model.defer="users.{{$index}}.email" type="text"></td>
+                        <td><input class="form-control" wire:model.defer="users.{{$index}}.email" type="email"></td>
                         <td>
                             <select class="form-select" required wire.model.defer="users.{{$index}}.idpt"
                                 aria-label="Default select example">
@@ -48,7 +59,9 @@
                         </td>
                         <td class="text-center">
                             <button class="btn btn-sm btn-outline-success"
-                                wire:click="save('{{$usr->id}}', {{$index}})"><i class="fas fa-save"></i> Save</button>
+                                wire:click="save('{{$usr->id}}', {{$index}})"><i class="fas fa-save"></i></button>
+                            <button class="btn btn-sm btn-outline-danger"
+                                wire:click="cancel('{{$usr->id}}')"><i class="fas fa-window-close"></i></button>
                         </td>
                         @else
                         <td>{{$usr->nik}}</td>
@@ -65,6 +78,7 @@
                         @endif
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -82,11 +96,19 @@
                     </div>
                     <div class="modal-body">
                         <form wire:submit.prevent="submit">
+                            @can('isDeveloper')
+                            <div class="mb-3">
+                                <label for="nik" class="form-label">NIK</label>
+                                <input type="text" required wire:model.defer="inputnik"
+                                    class="form-control">
+                            </div>
+                            @else
                             <div class="mb-3">
                                 <label for="nik" class="form-label">NIK</label>
                                 <input type="number" required wire:model.defer="inputnik"
                                     class="form-control">
                             </div>
+                            @endcan
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" required wire:model.defer="inputname"
