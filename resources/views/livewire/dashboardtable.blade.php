@@ -75,20 +75,20 @@
                     @else 
                     @foreach ($documents as $index => $dcm)
                     <tr>
-                        <td><a href="/document/{{$dcm->id}}">{{$dcm->title}}</a></td>
+                        <td><a href="/document/{{$dcm->id}}">{{ucwords($dcm->title)}}</a></td>
                         <td>{{$dcm->pic}}</td>
                         <td>{{$dcm->category}}</td>
                         <td>{{$dcm->issuedate}}</td>
                         <td>{{$dcm->expireddate}}</td>
                         <td>
                         @if($dcm->statusdoc == 1) 
-                        <i class="fas fa-check-circle text-secondary"></i>
-                        @elsif($dcm->statusdoc == 2)
                         <i class="fas fa-check-circle text-success"></i>
-                        @elsif($dcm->statusdoc == 3)
+                        @elseif($dcm->statusdoc == 2)
                         <i class="fas fa-check-circle text-warning"></i>
-                        @else
+                        @elseif($dcm->statusdoc == 3)
                         <i class="fas fa-check-circle text-danger"></i>
+                        @else
+                        <i class="fas fa-check-circle text-secondary"></i>
                         @endif
                         </td>
                     </tr>
