@@ -23,10 +23,10 @@ class Documents extends Migration
             $table->string('issuedate');
             $table->string('expireddate');
             $table->integer('remider');
-            $table->string('file');
             $table->string('remark');
-            $table->boolean('statusdoc');
+            $table->string('docloc');
             $table->string('location');
+            $table->boolean('statusdoc');
             $table->timestamp('created_at', $precision = 0);
         });
     }
