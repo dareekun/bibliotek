@@ -6,29 +6,16 @@
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a class="nav-link disabled" aria-current="page">
-                                Setting Configuration</a>
+                                Category Configuration</a>
                         </li>
                         @can('isDeveloper')
                         <li class="nav-item">
-                            <a class="nav-link" href="/tabsetting">Table Setting</a>
+                            <a class="nav-link" href="/tabsetting">Location Setting</a>
                         </li>
                         @endcan
                     </ul>
                 </div>
                 <div class="card-body pt-4">
-                    @can('isDeveloper')
-                    <strong class="text-danger">Please Use Tab Setting To Configure setting on other location</strong>
-                    @endcan
-                    <div class="row">
-                        <div class="col-5">
-                            <label for="reminder" class="form-label">Remind Me Every</label>
-                            <div class="input-group mb-3">
-                                <input type="number" required wire:model.defer="inputremind" class="form-control">
-                                <span class="input-group-text">days</span>
-                                <button class="btn btn-outline-success" wire:click="update">update</span></button>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row my-4">
                         <div class="col-6">
                             <button class="btn btn-outline-success" data-bs-toggle="modal"
@@ -39,7 +26,7 @@
                         <div class="col-6">
                             <button class="btn btn-outline-primary" data-bs-toggle="modal"
                                 data-bs-target="#addlocation">
-                                <i class="far fa-plus-square"></i> <span> Add Location</span></button>
+                                <i class="far fa-plus-square"></i> <span> Add Sub-Category</span></button>
                         </div>
                         @endcan
                     </div>
@@ -59,12 +46,12 @@
                                 <tbody>
                                     @if (count($categorys) == 0)
                                     <tr>
-                                        <td class="text-center" colspan="6">No document yet.</td>
+                                        <td class="text-center" colspan="6">No data yet.</td>
                                     </tr>
                                     @else
                                     @foreach ($categorys as $index => $cat)
                                     <tr>
-                                        @if ($cat->status == 1)
+                                        @if ($statuscat[$index] == 1)
                                         <td>{{$index + 1}}</td>
                                         <td><input class="form-control" wire:model.defer="categorys.{{$index}}.desc"
                                                 type="text"></td>
@@ -110,55 +97,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        @can('isDeveloper')
-                        <div class="col-6">
-                            <table id="example" class="display table border table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Location</th>
-                                        <th style="width:100px"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (count($locations) == 0)
-                                    <tr>
-                                        <td class="text-center" colspan="6">No document yet.</td>
-                                    </tr>
-                                    @else
-                                    @foreach ($locations as $index => $loc)
-                                    <tr>
-                                        @if ($loc->status == 1)
-                                        <td>{{$index + 1}}</td>
-                                        <td><input class="form-control" wire:model.defer="locations.{{$index}}.desc"
-                                                type="text"></td>
-                                        <td>
-                                            <button class="btn btn-sm w-25 btn-outline-success"
-                                                wire:click="saveloc('{{$loc->id}}', {{$index}})"><i
-                                                    class="fas fa-save"></i></button>
-                                            <button class="btn btn-sm w-25 btn-outline-danger"
-                                                wire:click="cancelloc('{{$cat->id}}')"><i
-                                                    class="fas fa-window-close"></i></button>
-                                        </td>
-                                        @else
-                                        <td>{{$index + 1}}</td>
-                                        <td>{{$loc->desc}}</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary"
-                                                wire:click="editloc('{{$loc->id}}')"><i
-                                                    class="far fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-outline-danger"
-                                                wire:click="deleteloc('{{$loc->id}}')"><i
-                                                    class="far fa-trash-alt"></i></button>
-                                        </td>
-                                        @endif
-                                    </tr>
-                                    @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-                        @endcan
                     </div>
                 </div>
             </div>

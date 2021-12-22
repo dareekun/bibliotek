@@ -18,7 +18,6 @@ class Department extends Migration
             $table->string('code')->unique();
             $table->string('department');
             $table->string('location');
-            $table->boolean('status')->default(0);
         });
     }
 

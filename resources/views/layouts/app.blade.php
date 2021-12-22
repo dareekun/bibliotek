@@ -151,7 +151,7 @@
     <!-- Scripts -->
     <!-- <script src="{{ mix('js/app.js') }}"></script> -->
     <script src="{{ asset('/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>\
+    <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
     <!-- <script src="{{ asset('/js/bootstrap-select.min.js') }}"></script> -->
     <script src="{{ asset('/js/main.js') }}"></script>
     @livewireScripts
@@ -171,6 +171,12 @@
         let bsAlert = new bootstrap.Toast(myAlert);
         bsAlert.show();
     });
+    </script>
+    <script>
+    function showpdf(namafile) {
+        document.getElementById("pdfloc").setAttribute("src", '/storage/docs/' + namafile);
+        $('#modalpdf').modal('show');
+    }
     </script>
 </body>
 

@@ -22,7 +22,7 @@ class Documents extends Migration
             $table->string('category');
             $table->string('issuedate');
             $table->string('expireddate');
-            $table->integer('remider');
+            $table->integer('reminder');
             $table->string('remark');
             $table->string('docloc');
             $table->string('location');

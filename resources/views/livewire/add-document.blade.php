@@ -20,7 +20,7 @@
                                 <label for="start" class="form-label">Document Category</label>
                                 <select class="form-select" required wire:model.defer="category"
                                     aria-label="Default select example">
-                                    <option selected>Select Category</option>
+                                    <option value="">Select Category</option>
                                     @foreach ($categorys as $cat)
                                     <option value="{{$cat->id}}">{{$cat->desc}}</option>
                                     @endforeach
@@ -49,10 +49,14 @@
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
+                                <label for="end" class="form-label">Location</label>
+                                <input type="text" required wire:model.defer="docloc" class="form-control">
+                            </div>
+                            <div class="mb-3">
                                 <label for="attachment" class="form-label">Person in Charge</label>
                                 <select class="form-select" required wire:model.defer="pic"
                                     aria-label="Default select example">
-                                    <option selected>Select Users</option>
+                                    <option value="">Select Users</option>
                                     @foreach ($users as $usr)
                                     <option value="{{$usr->id}}">{{$usr->nik}} - {{$usr->name}}</option>
                                     @endforeach
@@ -63,7 +67,7 @@
                             <div class="input-group mb-3">
                                 <select class="form-select" required wire:model.defer="pin.{{$i}}"
                                     aria-label="Default select example">
-                                    <option selected>Select Users</option>
+                                    <option value="">Select Users</option>
                                     @foreach ($users as $usr)
                                     <option value="{{$usr->id}}">{{$usr->nik}} - {{$usr->name}}</option>
                                     @endforeach

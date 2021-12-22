@@ -14,7 +14,7 @@
                                 <i class="fas fa-pencil-alt"></i> <span> Edit</span></button>
                             @else
                             <button class="btn btn-sm btn-outline-danger" wire:click="canceldoc()">
-                            <i class="fas fa-undo"></i> <span> Cancel</span></button>
+                                <i class="fas fa-undo"></i> <span> Cancel</span></button>
                             @endif
                         </div>
                     </div>
@@ -74,7 +74,8 @@
                             </div>
                             @endforeach
                         </div>
-                        <div class="col-2"><button class="btn btn-outline-success w-100"><i class="fas fa-save"></i> Save</button></div>
+                        <div class="col-2"><button class="btn btn-outline-success w-100" wire:click="save({{$rcd->id}}, {{$index}})"><i class="fas fa-save"></i>
+                                Save</button></div>
                     </div>
                     @else
                     <div class="row">
@@ -110,6 +111,8 @@
                             {{$ntf->name}} <br>
                             @endforeach
                         </div>
+                        <div class="col-2">Location</div>
+                        <div class="col-3">{{$rcd->docloc}}</div>
                     </div>
                     @endif
                     @endforeach
@@ -131,12 +134,29 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($table as $index => $tbl)
                     <tr>
-                        <td><a href="/document/{{$pass}}">0001</a></td>
-                        <td>21 - 12 - 2021</td>
-                        <td>21 - 12 - 2021</td>
-                        <td><i class="fas fa-check-circle text-primary"></i></td>
+                        <td><button class="btn btn-sm btn-outline-link" onclick="showpdf('{{$tbl->file}}.pdf')">{{$tbl->code}}</button></td>
+                        <td>{{$tbl->issuedate}}</td>
+                        <td>{{$tbl->expirdate}}</td>
+                        <td>
+                            @if ($rcd->statusdoc == 5)
+                            <span><button class="btn btn-sm btn-warning">Waiting</button></span>
+                            @elseif ($rcd->statusdoc == 4)
+                            <span><button class="btn btn-sm btn-warning">Pending</button></span>
+                            @elseif ($rcd->statusdoc == 3)
+                            <span class="text-danger"><i class="fas fa-check-circle"></i></span>
+                            @elseif ($rcd->statusdoc == 2)
+                            <span class="text-warning"><i class="fas fa-check-circle"></i></span>
+                            @elseif ($rcd->statusdoc == 1)
+                            <span class="text-success"><i class="fas fa-check-circle"></i></span>
+                            @elseif ($rcd->statusdoc == 0)
+                            <span class="text-secondary"><i class="fas fa-check-circle"></i></span>
+                            @endif
+
+                        </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -168,6 +188,17 @@
                                 Document</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal PDF -->
+    <div class="modal fade bd-example-modal-lg" id="modalpdf" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl h-100">
+            <div class="modal-content h-90">
+                <div class="modal-body">
+                    <embed id="pdfloc" src="{{asset('storage/4ONNS1DQ.pdf')}}" type="application/pdf" width="100%" height="100%">
                 </div>
             </div>
         </div>

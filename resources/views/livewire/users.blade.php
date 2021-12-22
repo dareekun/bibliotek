@@ -32,7 +32,7 @@
                     @else 
                     @foreach ($users as $index => $usr)
                     <tr>
-                        @if ($usr->status == 1)
+                        @if ($status[$index] == 1)
                         <td>
                             @can('isDeveloper')
                             <input class="form-control" wire:model.defer="users.{{$index}}.nik" type="text">
@@ -59,9 +59,9 @@
                         </td>
                         <td class="text-center">
                             <button class="btn btn-sm btn-outline-success"
-                                wire:click="save('{{$usr->id}}', {{$index}})"><i class="fas fa-save"></i></button>
+                                wire:click="save({{$usr->id}}, {{$index}})"><i class="fas fa-save"></i></button>
                             <button class="btn btn-sm btn-outline-danger"
-                                wire:click="cancel('{{$usr->id}}')"><i class="fas fa-window-close"></i></button>
+                                wire:click="cancel({{$index}})"><i class="fas fa-window-close"></i></button>
                         </td>
                         @else
                         <td>{{$usr->nik}}</td>
@@ -70,7 +70,7 @@
                         <td>{{$usr->department}}</td>
                         <td>{{ucwords($usr->role)}}</td>
                         <td>
-                            <button class="btn btn-sm btn-outline-primary" wire:click="edit('{{$usr->id}}')"><i class="far fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-primary" wire:click="edit({{$index}})"><i class="far fa-edit"></i></button>
                             <button class="btn btn-sm btn-outline-primary" wire:click="changepass('{{$usr->id}}')"><i class="fas fa-key"></i></button>
                             <button class="btn btn-sm btn-outline-danger" wire:click="delete('{{$usr->id}}')"><i
                                     class="far fa-trash-alt"></i></button>

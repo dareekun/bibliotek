@@ -15,9 +15,10 @@
                 </div>
                 <div class="card-body pt-4">
                     <div class="row">
-                        <div class="col-3 mb-4">
-                            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addsetting">
-                                <i class="far fa-plus-square"></i> <span> Add Setting</span></button>
+                        <div class="col-6">
+                            <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                data-bs-target="#addlocation">
+                                <i class="far fa-plus-square"></i> <span> Add Location</span></button>
                         </div>
                     </div>
                     <div class="row">
@@ -26,56 +27,39 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Setting Name</th>
-                                        <th>Setting Values</th>
-                                        <th>Setting Location</th>
+                                        <th>Location</th>
                                         <th style="width:100px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (count($settings) == 0)
+                                    @if (count($locations) == 0)
                                     <tr>
                                         <td class="text-center" colspan="6">No data yet.</td>
                                     </tr>
                                     @else
-                                    @foreach ($settings as $index => $set)
+                                    @foreach ($locations as $index => $loc)
                                     <tr>
-                                        @if ($set->status == 1)
+                                        @if ($statusloc[$index] == 1)
                                         <td>{{$index + 1}}</td>
-                                        <td><input class="form-control" wire:model.defer="settings.{{$index}}.name"
-                                                type="text"></td>
-                                        <td><input class="form-control" wire:model.defer="settings.{{$index}}.values"
+                                        <td><input class="form-control" wire:model.defer="locations.{{$index}}.desc"
                                                 type="text"></td>
                                         <td>
-                                            <select class="form-select" required
-                                                wire:model.defer="settings.{{$index}}.location"
-                                                aria-label="Default select example">
-                                                <option value="">Select Location</option>
-                                                @foreach ($locations as $loc)
-                                                <option @if($cat->location == $loc->id) selected @else @endif
-                                                    value="{{$loc->id}}">{{$loc->desc}}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-success"
-                                                wire:click="save('{{$cat->id}}', {{$index}})"><i
-                                                    class="fas fa-save"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger"
-                                                wire:click="cancel('{{$cat->id}}')"><i
+                                            <button class="btn btn-sm w-25 btn-outline-success"
+                                                wire:click="saveloc('{{$loc->id}}', {{$index}})"><i
+                                                    class="fas fa-save"></i></button>
+                                            <button class="btn btn-sm w-25 btn-outline-danger"
+                                                wire:click="cancelloc('{{$cat->id}}')"><i
                                                     class="fas fa-window-close"></i></button>
                                         </td>
                                         @else
                                         <td>{{$index + 1}}</td>
-                                        <td>{{$set->name}}</td>
-                                        <td>{{$set->value}}</td>
-                                        <td>{{$set->location}}</td>
+                                        <td>{{$loc->desc}}</td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary"
-                                                wire:click="edit('{{$set->id}}')"><i class="far fa-edit"></i></button>
+                                                wire:click="editloc('{{$loc->id}}')"><i
+                                                    class="far fa-edit"></i></button>
                                             <button class="btn btn-sm btn-outline-danger"
-                                                wire:click="delete('{{$set->id}}')"><i
+                                                wire:click="deleteloc('{{$loc->id}}')"><i
                                                     class="far fa-trash-alt"></i></button>
                                         </td>
                                         @endif

@@ -10,6 +10,7 @@ class Users extends Component
 {
     public $users = [];
     public $departments = [];
+    public $status = [];
     public $inputnik;
     public $inputname;
     public $inputemail;
@@ -65,19 +66,15 @@ class Users extends Component
     }
 
     public function edit($tag){
-        if (DB::table('users')->where('status', 1)->doesntExist()) {
-            DB::table('users')->where('id', $tag)->update([
-                'status' => 1,
-            ]);
-        } else {
+        if (in_array(1, $this->status)) {
             $this->dispatchBrowserEvent('toaster', ['message' => 'Oops Looks like you still have one not saved yet', 'color' => '#dc3545', 'title' => 'Undone Job']);
+        } else {
+            $this->status[$tag] = 1;
         }
     }
     
-    public function cancel($id){
-        DB::table('users')->where('id', $id)->update([
-            'status' => 0,
-        ]);
+    public function cancel($tag){
+        $this->status[$tag] = 0;
     }
 
     public function submit()
@@ -118,9 +115,8 @@ class Users extends Component
                 'name' => $this->users[$ind]['name'],
                 'department' => $this->users[$ind]['idpt'],
                 'role' => $this->users[$ind]['role'],
-                'status' => 0,
             ]);                
-            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#changepassword']);
+            $this->status[$ind] = 0;
             $this->dispatchBrowserEvent('toaster', ['message' => 'User data changed successfully', 'color' => '#28a745', 'title' => 'Change user data']);
         }else {
             if (DB::table('users')->where('id', '<>' ,$tag)->where('nik', $this->users[$ind]['nik'])->exists()) {
@@ -134,9 +130,8 @@ class Users extends Component
                 'email' => $this->users[$ind]['email'],
                 'department' => $this->users[$ind]['idpt'],
                 'role' => $this->users[$ind]['role'],
-                'status' => 0,
             ]);                
-            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#changepassword']);
+            $this->status[$ind] = 0;
             $this->dispatchBrowserEvent('toaster', ['message' => 'User data changed successfully', 'color' => '#28a745', 'title' => 'Change user data']);
             }
         }
@@ -147,17 +142,23 @@ class Users extends Component
         if (Auth::user()->role == 'developer') {
             $this->users = DB::table('users')->leftjoin('department', 'users.department', '=', 'department.id')
             ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
-            'users.role as role', 'users.status as status', 'department.id as idpt')
+            'users.role as role', 'department.id as idpt')
             ->get();
             $this->departments = DB::table('department')->get();
+            for ($i = 0; $i < count($this->users); $i++) {
+                array_push($this->status, 0);
+            }
         } else {
             $location    = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
             $this->users = DB::table('users')->join('department', 'users.department', '=', 'department.id')
             ->where('department.location', $location)->where('users.role', '<>', 'developer')
             ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
-            'users.role as role', 'users.status as status', 'department.id as idpt')
+            'users.role as role', 'department.id as idpt')
             ->get();
             $this->departments = DB::table('department')->where('location', $location)->get();
+            for ($i = 0; $i < count($this->users); $i++) {
+                array_push($this->status, 0);
+            }
         }
         return view('livewire.users');
     }

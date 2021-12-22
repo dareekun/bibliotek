@@ -10,6 +10,7 @@ class Department extends Component
 {
     public $departments = [];
     public $locations = [];
+    public $status = [];
     public $search;
     public $deletedepart;
     public $inputcode;
@@ -24,7 +25,6 @@ class Department extends Component
 
     public function delete($id)
     {
-        
         $this->deleteid   = $id;
         $this->deletecode = DB::table('department')->where('id', $id)->value('code');
         $this->deletedpt  = DB::table('department')->where('id', $id)->value('department');
@@ -77,8 +77,9 @@ class Department extends Component
             DB::table('department')->where('id', $tag)->update([
                 'department' => $this->departments[$ind]['department'],
                 'location' => $location,
-                'status' => 0,
             ]);
+            $this->status[$ind] = 0;
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Department data changed successfully', 'color' => '#28a745', 'title' => 'Change department data']);
         } else {
             if (DB::table('department')->where('id', '<>' ,$tag)->where('code', $this->departments[$ind]['code'])->exists()) {
                 $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Data Department', 'color' => '#dc3545', 'title' => 'Duplicate Department']);
@@ -92,39 +93,42 @@ class Department extends Component
                     'code' => $this->departments[$ind]['code'],
                     'department' => $this->departments[$ind]['department'],
                     'location' => $location,
-                    'status' => 0,
                 ]);
+                $this->status[$ind] = 0;
+                $this->dispatchBrowserEvent('toaster', ['message' => 'Department data changed successfully', 'color' => '#28a745', 'title' => 'Change department data']);
             }
         }
         
     }
 
-    public function edit($id){
-        if (DB::table('department')->where('status', $id)->doesntExist()) {
-            DB::table('department')->where('id', $id)->update([
-                'status' => 1,
-            ]);
-        } else {
+    public function edit($tag){
+        if (in_array(1, $this->status)) {
             $this->dispatchBrowserEvent('toaster', ['message' => 'Oops Looks like you still have one not saved yet', 'color' => '#dc3545', 'title' => 'Undone Job']);
+        } else {
+            $this->status[$tag] = 1;
         }
     }
-
-    public function cancel($id){
-        DB::table('department')->where('id', $id)->update([
-            'status' => 0,
-        ]);
+    
+    public function cancel($tag){
+        $this->status[$tag] = 0;
     }
     
     public function render()
     {
         if (Auth::user()->role == 'developer') {
             $this->departments = DB::table('department')->leftjoin('location', 'location.id', '=', 'department.location')
-            ->select('department.id as id', 'department.code as code', 'department.department as department', 'location.desc as location', 'department.location as dptloc', 'department.status as status')
+            ->select('department.id as id', 'department.code as code', 'department.department as department', 'location.desc as location', 'department.location as dptloc')
             ->get();
             $this->locations = DB::table('location')->get();
+            for ($i = 0; $i < count($this->departments); $i++) {
+                array_push($this->status, 0);
+            }
         } else {
             $this->location = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
             $this->departments = DB::table('department')->where('location', $this->location)->get();
+            for ($i = 0; $i < count($this->departments); $i++) {
+                array_push($this->status, 0);
+            }
         }
         return view('livewire.department');
     }

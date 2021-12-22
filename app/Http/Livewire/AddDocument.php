@@ -26,6 +26,7 @@ class AddDocument extends Component
     public $reminder;
     public $file;
     public $remark;
+    public $docloc;
 
     public function plus(){
         if ($this->count < 5) {
@@ -50,7 +51,6 @@ class AddDocument extends Component
         $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
         
         $docname = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
-        $this->file->storeAs('docs', $docname.'.pdf');
         if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
             $statusdoc = 3;
             DB::table('email_job')->insert([
@@ -76,25 +76,26 @@ class AddDocument extends Component
             'issuedate'   => $this->createdate,
             'expireddate' => $this->expiredate,
             'reminder'    => $this->reminder,
-            'file'        => $docname,
             'remark'      => $this->remark,
             'statusdoc'   => $statusdoc,
             'location'    => $location,
-            'status'      => 0,
+            'docloc'      => $this->docloc,
         ]);
         DB::table('history')->insert([
-            'refer'     => $refer,
-            'code'      => $this->nodoc,
-            'statusdoc' => $statusdoc,
-            'status'    => 0,
+            'refer'       => $refer,
+            'code'        => $this->nodoc,
+            'statusdoc'   => $statusdoc,
+            'file'        => $docname,
+            'issuedate'   => $this->createdate,
+            'expirdate'   => $this->expiredate,
         ]);
         for ($i = 0; $i < count($this->pin); $i++) {
             DB::table('notify')->insert([
                 'refer'  => $refer,
                 'user'   => $this->pin[$i],
-                'status' => 0
             ]);
         }
+        $this->file->storePubliclyAs('public/docs', $docname.'.pdf');
         $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Save Successfull']);
         return redirect()->to('/document/'.$refer);
     }

@@ -32,7 +32,7 @@
                     @else 
                     @foreach ($departments as $index => $dpt)
                     <tr>
-                        @if ($dpt->status == 1)
+                        @if ($status[$index] == 1)
                         <td><input class="form-control" wire:model.defer="departments.{{$index}}.code" type="text"></td>
                         <td><input class="form-control" wire:model.defer="departments.{{$index}}.department" type="text"></td>
                         @can('isDeveloper')
@@ -47,9 +47,9 @@
                         @endcan
                         <td>
                             <button class="btn btn-sm btn-outline-success"
-                                wire:click="save('{{$dpt->id}}', {{$index}})"><i class="fas fa-save"></i></button>
+                                wire:click="save({{$dpt->id}}, {{$index}})"><i class="fas fa-save"></i></button>
                             <button class="btn btn-sm btn-outline-danger"
-                                wire:click="cancel('{{$dpt->id}}')"><i class="fas fa-window-close"></i></button>
+                                wire:click="cancel({{$index}})"><i class="fas fa-window-close"></i></button>
                         </td>
                         @else
                         <td>{{$dpt->code}}</td>
@@ -58,7 +58,7 @@
                         <td>{{$dpt->location}}</td>
                         @endcan
                         <td>
-                            <button class="btn btn-sm btn-outline-primary" wire:click="edit('{{$dpt->id}}')"><i class="far fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-primary" wire:click="edit({{$index}})"><i class="far fa-edit"></i></button>
                             <button class="btn btn-sm btn-outline-danger" wire:click="delete('{{$dpt->id}}')"><i
                                     class="far fa-trash-alt"></i></button>
                         </td>
