@@ -453,8 +453,9 @@ progress {
 }
 
 .lead {
-  font-size: 1.25rem;
-  font-weight: 300;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 0 !important;
 }
 
 .display-1 {

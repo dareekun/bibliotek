@@ -10,9 +10,8 @@ class Tabsetting extends Component
 {
     public $locations = [];
     public $statusloc = [];
+    public $inputcode;
     public $inputloc;
-    public $input1;
-    public $input2;
     public $referid;
     public $tulisan;
     public $referdesc;
@@ -20,12 +19,14 @@ class Tabsetting extends Component
     public $countloc;
 
     public function submitloc(){
-        if (DB::table('location')->where('desc', $this->inputloc)->doesntExist()) {
+        if (DB::table('location')->where('code', $this->inputloc)->doesntExist()) {
             DB::table('location')->insert([
+                'code' => $this->inputcode,
                 'desc' => $this->inputloc,
             ]);
             $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addlocation']);
-            $this->inputloc = '';
+            $this->inputcode = '';
+            $this->inputloc  = '';
             $this->dispatchBrowserEvent('toaster', ['message' => 'Location added successfully', 'color' => '#28a745', 'title' => 'Success Add Location']);
         } else {
         $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addlocation']);
@@ -46,7 +47,7 @@ class Tabsetting extends Component
     }
 
     public function deleteloc($id){
-        $this->modaltittle = 'location';
+        $this->modaltittle = 'Location';
         $this->referid     = $id;
         $this->tulisan     = 'Are You sure want to delete this location?';
         $this->referdesc   = DB::table('location')->where('id', $id)->value('desc');

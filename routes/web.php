@@ -18,11 +18,16 @@ use App\Http\Controllers\AdminController;
 Route::get('/', function () {
     return redirect('/dashboard');
 });
+Route::post('catdrop',  [HomeController::class, 'catdrop'])->name('catdrop');
+Route::get('/test', [HomeController::class, 'test']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-Route::middleware(['auth:sanctum', 'verified'])->get('/document/{id}', [HomeController::class, 'document'])->name('document');
+Route::middleware(['auth:sanctum', 'verified'])->get('/detail/{id}', [HomeController::class, 'detail'])->name('detail');
 Route::middleware(['auth:sanctum', 'verified'])->get('/newdocument', [HomeController::class, 'newdocument'])->name('newdocument');
-Route::get('/test', [HomeController::class, 'test']);
+
+// Document List
+Route::middleware(['auth:sanctum', 'verified'])->get('/document/{id}', [HomeController::class, 'documenttype'])->name('documenttype');
+
 
 // Level Admin Be Advice
 Route::middleware(['auth:sanctum', 'verified'])->get('/setting', [AdminController::class, 'setting'])->name('setting');

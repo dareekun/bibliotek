@@ -70,6 +70,10 @@
   font-weight: bold;
 }
 
+a{
+  text-decoration: none !important;
+}
+
 .alert-success {
   background-color: #4fbe87;
   color: #fff;
@@ -811,7 +815,7 @@
 }
 
 .sidebar-wrapper {
-  width: 300px;
+  width: 250px;
   height: 100vh;
   position: fixed;
   top: 0;
@@ -838,7 +842,7 @@
 .sidebar-wrapper .menu {
   padding-left: 0;
   margin-top: 2rem;
-  padding: 0 2rem;
+  padding: 0 1rem;
   font-weight: 600;
 }
 .sidebar-wrapper .menu .sidebar-title {

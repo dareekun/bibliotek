@@ -11,13 +11,21 @@ class Setting extends Component
 
     public $locations = [];
     public $categorys = [];
+    public $subs      = [];
     public $statuscat = [];
+    public $statussub = [];
+    public $cats      = [];
+    public $input0;
     public $input1;
     public $input2;
     public $referid;
     public $tulisan;
     public $referdesc;
-    public $modaltittle;
+    public $modaltitle;
+    public $subloc;
+    public $subcat;
+    public $subcode;
+    public $subdesc;
 
     public function submitcat(){
         if(Auth::user()->role == 'developer') {
@@ -25,12 +33,14 @@ class Setting extends Component
         } else {
             $location = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
         }
-        if (DB::table('category')->where('desc', $this->input1)->where('location', $location)->doesntExist()) {
+        if (DB::table('category')->where('code', $this->input0)->where('location', $location)->doesntExist()) {
         DB::table('category')->insert([
+            'code' => $this->input0,
             'desc' => $this->input1,
             'location' => $location,
         ]);
         $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addcategory']);
+        $this->input0 = '';
         $this->input1 = '';
         $this->input2 = '';
         $this->dispatchBrowserEvent('toaster', ['message' => 'Location added successfully', 'color' => '#28a745', 'title' => 'Success Add Category']);
@@ -40,6 +50,29 @@ class Setting extends Component
         }
     }
 
+    public function submitsubcat(){
+        if(Auth::user()->role == 'developer') {
+            $location =  $this->subloc;
+        } else {
+            $location = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+        }
+        if (DB::table('subcategory')->where('code', $this->input0)->where('location', $location)->doesntExist()) {
+        DB::table('subcategory')->insert([
+            'code'     => $this->subcode,
+            'cat'      => $this->subcat,
+            'desc'     => $this->subdesc,
+            'location' => $location,
+        ]);
+        $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addsubcategory']);
+        $this->input0 = '';
+        $this->input1 = '';
+        $this->input2 = '';
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Location added successfully', 'color' => '#28a745', 'title' => 'Success Add Category']);
+        } else {
+        $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addsubcategory']);
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
+        }
+    }
     public function editcat($id){
         if (in_array(1, $this->statuscat)) {
             $this->dispatchBrowserEvent('toaster', ['message' => 'Oops Looks like you still have one not saved yet', 'color' => '#dc3545', 'title' => 'Undone Job']);
@@ -52,78 +85,91 @@ class Setting extends Component
         $this->statuscat[$id] = 0;
     }
 
-    public function saveloc($id, $index){
-        if(DB::table('location')->where('id', '!=', $id)->where('desc', $this->locations[$index]['desc'])->doesntExist()) {
-            DB::table('location')->where('id', $id)->update([
-                'desc' => $this->locations[$index]['desc'],
-            ]);
-            $this->dispatchBrowserEvent('toaster', ['message' => 'Location data changed successfully', 'color' => '#28a745', 'title' => 'Change location data']);
+    public function savesub($id, $index){
+        if(DB::table('subcategory')->where('id', '!=', $id)->where('code', $this->subs[$index]['code'])->doesntExist()) {
+            if(Auth::user()->role == 'developer') { 
+                DB::table('subcategory')->where('id', $id)->update([
+                    'code'     => $this->subs[$index]['code'],
+                    'cat'      => $this->subs[$index]['cat'],
+                    'desc'     => $this->subs[$index]['desc'],
+                    'location' => $this->subs[$index]['location'],
+                ]);
+            } else { 
+                DB::table('subcategory')->where('id', $id)->update([
+                    'code'     => $this->subs[$index]['code'],
+                    'cat'      => $this->subs[$index]['cat'],
+                    'desc'     => $this->subs[$index]['desc'],
+                ]); 
+            }
+            $this->statussub[$index] = 0;
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Sub-Category data changed successfully', 'color' => '#28a745', 'title' => 'Change location data']);
         } else {
             $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
         }
     }
 
     public function savecat($id, $index){
-        if(DB::table('category')->where('id', '!=', $id)->where('desc', $this->locations[$index]['desc'])->doesntExist()) {
+        if(DB::table('category')->where('id', '!=', $id)->where('code', $this->categorys[$index]['code'])->doesntExist()) {
             if(Auth::user()->role == 'developer') {
                 DB::table('category')->where('id', $id)->update([
+                    'code'     => $this->categorys[$index]['code'],
                     'desc'     => $this->categorys[$index]['desc'],
                     'location' => $this->categorys[$index]['location'],
                 ]);  
             } else {
                 DB::table('category')->where('id', $id)->update([
+                    'code'     => $this->categorys[$index]['code'],
                     'desc'     => $this->categorys[$index]['desc'],
                 ]);  
-            }            
-            $this->dispatchBrowserEvent('toaster', ['message' => 'Location data changed successfully', 'color' => '#28a745', 'title' => 'Change location data']);
+            }     
+            $this->statuscat[$index] = 0;       
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Category data changed successfully', 'color' => '#28a745', 'title' => 'Change location data']);
         } else {
-            $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Category Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
         }
     }
 
     public function deletecat($id){
-        $this->modaltittle = 'category';
-        $this->referid     = $id;
-        $this->tulisan     = 'Are You sure want to delete this category?';
-        $this->referdesc   = DB::table('category')->where('id', $id)->value('desc');
+        $this->modaltitle = 'category';
+        $this->referid    = $id;
+        $this->tulisan    = 'Are You sure want to delete this category?';
+        $this->referdesc  = DB::table('category')->where('id', $id)->value('desc');
         $this->dispatchBrowserEvent('openmodal', ['modalid' => '#delete']);
     }
 
-    public function deleteloc($id){
-        $this->modaltittle = 'location';
-        $this->referid     = $id;
-        $this->tulisan     = 'Are You sure want to delete this location?';
-        $this->referdesc   = DB::table('location')->where('id', $id)->value('desc');
+    public function deletesub($id){
+        $this->modaltitle = 'subcategory';
+        $this->referid    = $id;
+        $this->tulisan    = 'Are You sure want to delete this location?';
+        $this->referdesc  = DB::table('location')->where('id', $id)->value('desc');
         $this->dispatchBrowserEvent('openmodal', ['modalid' => '#delete']);
     }
 
     public function confirm(){
-        DB::table($this->modaltittle)->where('id', $this->referid)->delete();
-        $this->modaltittle = '';
-        $this->referid     = '';
-        $this->tulisan     = '';
-        $this->referdesc   = '';
+        DB::table($this->modaltitle)->where('id', $this->referid)->delete();
+        $this->modaltitle = '';
+        $this->referid    = '';
+        $this->tulisan    = '';
+        $this->referdesc  = '';
         $this->dispatchBrowserEvent('closemodal', ['modalid' => '#delete']);
-        $this->dispatchBrowserEvent('toaster', ['message' => ucwords($this->modaltittle).' remove successfully', 'color' => '#28a745', 'title' => 'Delete successfull']);
+        $this->dispatchBrowserEvent('toaster', ['message' => ucwords($this->modaltitle).' remove successfully', 'color' => '#28a745', 'title' => 'Delete successfull']);
         
-    }
-
-    public function update(){
-        $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-        DB::table('setting')->updateOrInsert(
-        ['name' => 'remindays', 'location' => $location],
-        ['value' => $this->inputremind]);
-        $this->dispatchBrowserEvent('toaster', ['message' => 'Value Save successfully', 'color' => '#28a745', 'title' => 'Save successfull']);
     }
 
     public function render()
     {
         if (Auth::user()->role == 'developer') {
             $this->categorys  = DB::table('category')->join('location', 'location.id', '=', 'category.location')
-            ->select('category.id as id', 'category.desc as desc', 'location.desc as location',)
+            ->select('category.id as id', 'category.desc as desc', 'category.code as code', 'category.location as locid', 'location.desc as location',)
             ->get();
             for ($n = 0; $n < count($this->categorys); $n++) {
                 array_push($this->statuscat, 0);
+            }
+            $this->subs      = DB::table('subcategory')->join('location', 'location.id', '=', 'subcategory.location')->join('category', 'category.id', '=', 'subcategory.cat')
+            ->select('subcategory.id as id', 'subcategory.desc as desc', 'category.desc as cat', 'subcategory.code as code', 'subcategory.location as locid', 'location.desc as location',)
+            ->get();
+            for ($n = 0; $n < count($this->subs); $n++) {
+                array_push($this->statussub, 0);
             }
             $this->locations  = DB::table('location')->get();
         } else {
@@ -131,6 +177,12 @@ class Setting extends Component
         $this->categorys   = DB::table('category')->where('location', $location)->get();
         for ($i = 0; $i < count($this->categorys); $i++) {
             array_push($this->statuscat, 0);
+        }
+        $this->subs        = DB::table('subcategory')->join('category', 'category.id', '=', 'subcategory.cat')->where('subcategory.location', $location)
+        ->select('subcategory.id as id', 'subcategory.code as code', 'subcategory.desc as desc', 'category.desc as cat', )
+        ->get();
+        for ($i = 0; $i < count($this->subs); $i++) {
+            array_push($this->statussub, 0);
         }
         }
         return view('livewire.setting');

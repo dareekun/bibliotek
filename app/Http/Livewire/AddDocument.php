@@ -97,7 +97,7 @@ class AddDocument extends Component
         }
         $this->file->storePubliclyAs('public/docs', $docname.'.pdf');
         $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Save Successfull']);
-        return redirect()->to('/document/'.$refer);
+        return redirect()->route('detail', [$refer]);
     }
 
     public function render()

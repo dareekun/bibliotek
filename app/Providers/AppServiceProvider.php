@@ -29,11 +29,26 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
         });
+        Gate::define('isSadmin', function($user) {
+            if ($user->role == 'sadmin') {
+                return true;
+            }
+        });
         Gate::define('isAdmin', function($user) {
             if ($user->role == 'admin') {
                 return true;
             }
-         });
+        });
+        Gate::define('isManager', function($user) {
+            if ($user->role == 'manager') {
+                return true;
+            }
+        });
+        Gate::define('isPIC', function($user) {
+            if ($user->role == 'pic') {
+                return true;
+            }
+        });
         Gate::define('isUser', function($user) {
             if ($user->role == 'user') {
                 return true;

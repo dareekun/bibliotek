@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Location extends Migration
+class Subcategory extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class Location extends Migration
      */
     public function up()
     {
-        Schema::create('location', function (Blueprint $table) {
+        Schema::create('subcategory', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
+            $table->string('cat');
             $table->string('desc');
+            $table->string('location');
         });
     }
 

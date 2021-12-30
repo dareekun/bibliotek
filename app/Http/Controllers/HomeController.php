@@ -13,7 +13,7 @@ class HomeController extends Controller
         return view('dashboard');
     }
 
-    public function document($id){
+    public function detail($id){
         return view('detaildocument', ['refer' => $id]);
     }
 
@@ -25,5 +25,16 @@ class HomeController extends Controller
 
     public function newdocument(){
         return view('newdocument');
+    }
+
+    public function catdrop(Request $request)
+    {
+        $data = DB::table('category')->where('location', $request->get('loc'))->pluck('id', 'desc');
+        return response()->json($data);
+    }
+
+    public function documenttype($id){
+        $type = 0;
+        return view('document', ['condition' => $type]);
     }
 }

@@ -30,12 +30,34 @@
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
-                        <li class="sidebar-title">Menu</li>
                         <li class="sidebar-item">
                             <a href="{{ route('dashboard') }}" class='sidebar-link'>
                                 <i class="fas fa-home"></i>
                                 <span>Dashboard</span>
                             </a>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class="sidebar-link">
+                            <i class="fas fa-file-invoice"></i>
+                                <span>Document</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="{{ route('documenttype', 'valid') }}">Valid</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="{{ route('documenttype', 'pending') }}">Pending</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="{{ route('documenttype', 'ongoing') }}">On Going</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="{{ route('documenttype', 'wiating') }}">Waiting</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="{{ route('documenttype', 'deactive') }}">Deactive</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{ route('setting') }}" class='sidebar-link'>
@@ -149,11 +171,11 @@
     </div>
 
     <!-- Scripts -->
-    <!-- <script src="{{ mix('js/app.js') }}"></script> -->
     <script src="{{ asset('/js/jquery.min.js') }}"></script>
     <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- <script src="{{ asset('/js/bootstrap-select.min.js') }}"></script> -->
     <script src="{{ asset('/js/main.js') }}"></script>
+    <script src="{{ asset('/js/axios.min.js') }}"></script>
+    <script src="{{ asset('/js/chart.min.js') }}"></script>
     @livewireScripts
     @stack('scripts')
     <script>
