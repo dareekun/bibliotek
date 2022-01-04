@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<livewire:document :pass="$condition"/>
+<livewire:document :condition="$value"/>
 @stop
 @push('scripts')
 @endpush

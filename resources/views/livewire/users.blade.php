@@ -128,7 +128,7 @@
                                 <label for="department" class="form-label">Department</label>
                                 <select class="form-select" required wire:model.defer="inputdept"
                                     aria-label="Default select example">
-                                    <option value="">Select Department</option>
+                                    <option>Select Department</option>
                                     @foreach ($departments as $dpt)
                                     <option value="{{$dpt->id}}">{{$dpt->department}}</option>
                                     @endforeach
@@ -138,9 +138,12 @@
                                 <label for="role" class="form-label">Role</label>
                                 <select class="form-select" required wire:model.defer="inputrole"
                                     aria-label="Default select example">
-                                    <option value="">Select Role</option>
+                                    <option>Select Role</option>
+                                    <option value="sadmin">Super Admin</option>
                                     <option value="admin">Admin</option>
+                                    <option value="manager">Manager</option>
                                     <option value="user">User</option>
+                                    <option value="pic">Pic</option>
                                 </select>
                             </div>
                     </div>

@@ -18,9 +18,15 @@ class HomeController extends Controller
     }
 
     public function test(){
-        $data = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-        $category   = DB::table('category')->where('location', $data)->get();
-        return $category;
+        // $data = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+        // $category   = DB::table('category')->where('location', $data)->get();
+        // return $category;
+        
+        $cc  = DB::table('notify')->join('users', 'users.id', '=', 'notify.user')->pluck('users.email')->toArray();
+        $mgr = DB::table('users')->where('role', 'manager')->where('department', 2)->limit(1)->value('email');
+        array_push($cc, $mgr);
+        $cc  = array_filter($cc);
+        return $cc;
     }
 
     public function newdocument(){
@@ -34,7 +40,8 @@ class HomeController extends Controller
     }
 
     public function documenttype($id){
-        $type = 0;
-        return view('document', ['condition' => $type]);
+        $array = ['deactive', 'valid', 'pending', 'ongoing', 'waiting'];
+        $type  = array_search($id, $array);
+        return view('document', ['value' => $type]);
     }
 }
