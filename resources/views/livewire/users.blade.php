@@ -34,7 +34,7 @@
                     <tr>
                         @if ($status[$index] == 1)
                         <td>
-                            @can('isDeveloper')
+                            @can('isSadmin')
                             <input class="form-control" wire:model.defer="users.{{$index}}.nik" type="text">
                             @else
                             <input class="form-control" wire:model.defer="users.{{$index}}.nik" type="number">

@@ -35,7 +35,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Category</th>
-                                        @can('isDeveloper')
+                                        @can('isSadmin')
                                         <th>Location</th>
                                         @endcan
                                         <th style="width:100px"></th>
@@ -54,7 +54,7 @@
                                                 type="text"></td>
                                         <td><input class="form-control" wire:model.defer="categorys.{{$index}}.desc"
                                                 type="text"></td>
-                                        @can('isDeveloper')
+                                        @can('isSadmin')
                                         <td>
                                             <select class="form-select" required
                                                 wire:model.defer="categorys.{{$index}}.locid"
@@ -77,7 +77,7 @@
                                         @else
                                         <td>{{$cat->code}}</td>
                                         <td>{{$cat->desc}}</td>
-                                        @can('isDeveloper')
+                                        @can('isSadmin')
                                         <td>{{$cat->location}}</td>
                                         @endcan
                                         <td>
@@ -102,7 +102,7 @@
                                         <th>ID</th>
                                         <th>Category</th>
                                         <th>Sub Category</th>
-                                        @can('isDeveloper')
+                                        @can('isSadmin')
                                         <th>Location</th>
                                         @endcan
                                         <th style="width:100px"></th>
@@ -123,7 +123,7 @@
                                                 type="text"></td>
                                         <td><input class="form-control" wire:model.defer="subs.{{$index}}.desc"
                                                 type="text"></td>
-                                        @can('isDeveloper')
+                                        @can('isSadmin')
                                         <td>
                                             <select class="form-select" required
                                                 wire:model.defer="subs.{{$index}}.locid"
@@ -147,7 +147,7 @@
                                         <td>{{$sub->code}}</td>
                                         <td>{{$sub->cat}}</td>
                                         <td>{{$sub->desc}}</td>
-                                        @can('isDeveloper')
+                                        @can('isSadmin')
                                         <td>{{$sub->location}}</td>
                                         @endcan
                                         <td>
@@ -189,7 +189,7 @@
                             <label class="form-label">Category Description</label>
                             <input type="text" required wire:model.defer="input1" class="form-control">
                         </div>
-                        @can('isDeveloper')
+                        @can('isSadmin')
                         <div class="mb-3">
                             <label class="form-label">Category Location</label>
                             <select class="form-select" required wire:model.defer="input2"
@@ -221,7 +221,7 @@
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="submitsubcat">
-                        @can('isDeveloper')
+                        @can('isSadmin')
                         <div class="mb-3">
                             <label class="form-label">Location</label>
                             <select  id="locmaster" class="form-select" required wire:model.defer="subloc"

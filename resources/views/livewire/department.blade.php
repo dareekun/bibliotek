@@ -18,7 +18,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Department Name</th>
-                        @can('isDeveloper')
+                        @can('isSadmin')
                         <th>Location</th>
                         @endcan
                         <th></th>
@@ -35,7 +35,7 @@
                         @if ($status[$index] == 1)
                         <td><input class="form-control" wire:model.defer="departments.{{$index}}.code" type="text"></td>
                         <td><input class="form-control" wire:model.defer="departments.{{$index}}.department" type="text"></td>
-                        @can('isDeveloper')
+                        @can('isSadmin')
                         <td>
                             <select class="form-select" required wire:model.defer="departments.{{$index}}.dptloc"
                                 aria-label="Default select example">
@@ -54,7 +54,7 @@
                         @else
                         <td>{{$dpt->code}}</td>
                         <td>{{$dpt->department}}</td>
-                        @can('isDeveloper')
+                        @can('isSadmin')
                         <td>{{$dpt->location}}</td>
                         @endcan
                         <td>
@@ -91,7 +91,7 @@
                                 <label class="form-label">Department Name</label>
                                 <input type="text" required wire:model.defer="inputname" class="form-control">
                             </div>
-                            @can('isDeveloper')
+                            @can('isSadmin')
                             <div class="mb-3">
                                 <label class="form-label">Department Location</label>
                                 <select class="form-select" required wire:model.defer="inputloc"

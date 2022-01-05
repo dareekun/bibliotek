@@ -28,15 +28,15 @@ class Setting extends Component
     public $subdesc;
 
     public function submitcat(){
-        if(Auth::user()->role == 'developer') {
+        if(Auth::user()->can('isSadmin')) {
             $location =  $this->input2;
         } else {
             $location = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
         }
         if (DB::table('category')->where('code', $this->input0)->where('location', $location)->doesntExist()) {
         DB::table('category')->insert([
-            'code' => $this->input0,
-            'desc' => $this->input1,
+            'code'     => $this->input0,
+            'desc'     => $this->input1,
             'location' => $location,
         ]);
         $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addcategory']);
@@ -51,7 +51,7 @@ class Setting extends Component
     }
 
     public function submitsubcat(){
-        if(Auth::user()->role == 'developer') {
+        if(Auth::user()->can('isSadmin')) {
             $location =  $this->subloc;
         } else {
             $location = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
@@ -87,7 +87,7 @@ class Setting extends Component
 
     public function savesub($id, $index){
         if(DB::table('subcategory')->where('id', '!=', $id)->where('code', $this->subs[$index]['code'])->doesntExist()) {
-            if(Auth::user()->role == 'developer') { 
+            if(Auth::user()->can('isSadmin')) { 
                 DB::table('subcategory')->where('id', $id)->update([
                     'code'     => $this->subs[$index]['code'],
                     'cat'      => $this->subs[$index]['cat'],
@@ -110,7 +110,7 @@ class Setting extends Component
 
     public function savecat($id, $index){
         if(DB::table('category')->where('id', '!=', $id)->where('code', $this->categorys[$index]['code'])->doesntExist()) {
-            if(Auth::user()->role == 'developer') {
+            if(Auth::user()->can('isSadmin')) {
                 DB::table('category')->where('id', $id)->update([
                     'code'     => $this->categorys[$index]['code'],
                     'desc'     => $this->categorys[$index]['desc'],
@@ -158,7 +158,7 @@ class Setting extends Component
 
     public function render()
     {
-        if (Auth::user()->role == 'developer') {
+        if (Auth::user()->can('isSadmin')) {
             $this->categorys  = DB::table('category')->join('location', 'location.id', '=', 'category.location')
             ->select('category.id as id', 'category.desc as desc', 'category.code as code', 'category.location as locid', 'location.desc as location',)
             ->get();

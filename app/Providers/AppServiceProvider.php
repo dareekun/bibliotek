@@ -30,12 +30,12 @@ class AppServiceProvider extends ServiceProvider
             }
         });
         Gate::define('isSadmin', function($user) {
-            if ($user->role == 'sadmin') {
+            if ($user->role == 'sadmin' || $user->role == 'developer') {
                 return true;
             }
         });
         Gate::define('isAdmin', function($user) {
-            if ($user->role == 'admin') {
+            if ($user->role == 'admin' || $user->role == 'sadmin' || $user->role == 'developer') {
                 return true;
             }
         });
@@ -50,7 +50,7 @@ class AppServiceProvider extends ServiceProvider
             }
         });
         Gate::define('isUser', function($user) {
-            if ($user->role == 'user') {
+            if ($user->role == 'user' || $user->role == 'admin' || $user->role == 'sadmin' || $user->role == 'developer') {
                 return true;
             }
         });

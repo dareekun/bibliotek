@@ -30,6 +30,8 @@ class Documents extends Migration
             $table->timestamp('created_at', $precision = 0);
         });
     }
+    
+    // ALTER TABLE `document` ADD `no` INT(5) NOT NULL AUTO_INCREMENT AFTER `id`, ADD UNIQUE (`no`);
 
     /**
      * Reverse the migrations.

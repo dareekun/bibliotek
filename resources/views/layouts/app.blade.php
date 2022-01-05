@@ -77,6 +77,14 @@
                                 <span>Users</span>
                             </a>
                         </li>
+                        @can('isSadmin')
+                        <li class="sidebar-item">
+                            <a href="{{ route('log_horizon') }}" class='sidebar-link'>
+                                <i class="fas fa-history"></i>
+                                <span>Session Log</span>
+                            </a>
+                        </li>
+                        @endcan
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i class="bi bi-x"></i></button>

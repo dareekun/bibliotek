@@ -23,7 +23,7 @@ Route::get('/test', [HomeController::class, 'test']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 Route::middleware(['auth:sanctum', 'verified'])->get('/detail/{id}', [HomeController::class, 'detail'])->name('detail');
-Route::middleware(['auth:sanctum', 'verified'])->get('/newdocument', [HomeController::class, 'newdocument'])->name('newdocument');
+Route::middleware(['auth:sanctum', 'verified'])->get('/newdocument', [HomeController::class, 'newdocument'])->name('newdocument')->middleware('can:isUser');
 
 // Document List
 Route::middleware(['auth:sanctum', 'verified'])->get('/document/{id}', [HomeController::class, 'documenttype'])->name('documenttype');
@@ -33,6 +33,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/document/{id}', [HomeCont
 Route::middleware(['auth:sanctum', 'verified'])->get('/setting', [AdminController::class, 'setting'])->name('setting');
 Route::middleware(['auth:sanctum', 'verified'])->get('/department', [AdminController::class, 'department'])->name('department');
 Route::middleware(['auth:sanctum', 'verified'])->get('/users', [AdminController::class, 'users'])->name('users');
+
+// Level Super Admin Be Advice
+Route::middleware(['auth:sanctum', 'verified'])->get('/loghorizon', [AdminController::class, 'loghorizon'])->name('log_horizon');
 
 //Level Developer please be Advice
 Route::middleware(['auth:sanctum', 'verified'])->get('/tabsetting', [AdminController::class, 'tabsetting'])->name('tabsetting');

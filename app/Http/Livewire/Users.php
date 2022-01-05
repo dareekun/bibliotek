@@ -93,18 +93,18 @@ class Users extends Component
                     'role' => $this->inputrole,
                 ]);
                 $this->dispatchBrowserEvent('closemodal', ['modalid' => '#exampleModal']);
-                $this->inputnik   = '';
-                $this->inputname  = '';
-                $this->inputemail = '';
-                $this->inputpass  = '';
-                $this->inputdept  = '';
-                $this->inputrole  = '';
                 $this->dispatchBrowserEvent('toaster', ['message' => 'User added successfully', 'color' => '#28a745', 'title' => 'Add User']);
             }
         } else {
             $this->dispatchBrowserEvent('closemodal', ['modalid' => '#exampleModal']);
             $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate data user', 'color' => '#dc3545', 'title' => 'Duplicate User']);
         }
+        $this->inputnik   = '';
+        $this->inputname  = '';
+        $this->inputemail = '';
+        $this->inputpass  = '';
+        $this->inputdept  = '';
+        $this->inputrole  = '';
     }
 
     public function save($tag, $ind){
@@ -139,7 +139,7 @@ class Users extends Component
 
     public function render()
     {
-        if (Auth::user()->role == 'developer') {
+        if (Auth::user()->can('isDeveloper')) {
             $this->users = DB::table('users')->leftjoin('department', 'users.department', '=', 'department.id')
             ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
             'users.role as role', 'department.id as idpt')
