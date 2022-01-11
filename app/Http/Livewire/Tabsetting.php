@@ -42,6 +42,23 @@ class Tabsetting extends Component
         }
     }
 
+    public function saveloc($id, $index){
+        if(DB::table('location')->where('id', '!=', $id)->where('code', $this->locations[$index]['code'])->doesntExist()) {
+                DB::table('location')->where('id', $id)->update([
+                    'code'     => $this->locations[$index]['code'],
+                    'desc'     => $this->locations[$index]['desc'],
+                ]);  
+                DB::table('location')->where('id', $id)->update([
+                    'code'     => $this->locations[$index]['code'],
+                    'desc'     => $this->locations[$index]['desc'],
+                ]);  
+            $this->statusloc[$index] = 0;       
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Location data changed successfully', 'color' => '#28a745', 'title' => 'Change location data']);
+        } else {
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
+        }
+    }
+
     public function cancelloc($id){
         $this->statusloc[$id] = 0;
     }
@@ -67,9 +84,6 @@ class Tabsetting extends Component
 
     public function render()
     {
-        $this->settings  = DB::table('setting')->join('location', 'location.id', '=', 'setting.location')
-        ->select('setting.id as id', 'setting.name as name', 'setting.value as value', 'location.desc as location')
-        ->get();
         $this->locations  = DB::table('location')->get();
         for ($i = 0; $i < count($this->locations); $i++) {
             array_push($this->statusloc, 0);

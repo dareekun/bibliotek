@@ -115,7 +115,7 @@ class Department extends Component
     
     public function render()
     {
-        if (Auth::user()->role == 'developer') {
+        if (Auth::user()->can('isSadmin')) {
             $this->departments = DB::table('department')->leftjoin('location', 'location.id', '=', 'department.location')
             ->select('department.id as id', 'department.code as code', 'department.department as department', 'location.desc as location', 'department.location as dptloc')
             ->get();

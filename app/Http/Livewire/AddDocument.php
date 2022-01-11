@@ -29,10 +29,10 @@ class AddDocument extends Component
     public $docloc;
 
     public function plus(){
-        if ($this->count < 5) {
+        if ($this->count < 3) {
             $this->count++;
         } else {
-            $this->dispatchBrowserEvent('toaster', ['message' => 'Maximal Notification 5 Person', 'color' => '#dc3545', 'title' => 'Email Limit']);
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Maximal Notification 3 Person', 'color' => '#dc3545', 'title' => 'Email Limit']);
         }
     }
 

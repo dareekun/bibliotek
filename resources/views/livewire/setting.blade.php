@@ -8,7 +8,7 @@
                             <a class="nav-link disabled" aria-current="page">
                                 Category Setting</a>
                         </li>
-                        @can('isDeveloper')
+                        @can('isSadmin')
                         <li class="nav-item">
                             <a class="nav-link" href="/tabsetting">Location Setting</a>
                         </li>

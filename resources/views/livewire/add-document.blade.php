@@ -1,9 +1,6 @@
 <div class="row">
     <div class="col-12">
         <div class="card border">
-            <div class="card-header">
-                Add New Document
-            </div>
             <div class="card-body pt-4">
                 <form wire:submit.prevent="submit">
                     <div class="row">
@@ -18,9 +15,9 @@
                             </div>
                             <div class="mb-3">
                                 <label for="start" class="form-label">Document Category</label>
-                                <select class="form-select" required wire:model.defer="category"
+                                <select class="form-select" id="docat" required wire:model.defer="category"
                                     aria-label="Default select example">
-                                    <option value="">Select Category</option>
+                                    <option>Select Category</option>
                                     @foreach ($categorys as $cat)
                                     <option value="{{$cat->id}}">{{$cat->desc}}</option>
                                     @endforeach
@@ -42,21 +39,28 @@
                             <div class="mb-3">
                                 <input type="file" accept=".pdf" required wire:model.defer="file" class="form-control">
                             </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="end" class="form-label"> File Location</label>
+                                <input type="text" required wire:model.defer="docloc" class="form-control">
+                            </div>
                             <div class="mb-3">
                                 <label for="end" class="form-label">Remark</label>
                                 <input type="text" required wire:model.defer="remark" class="form-control">
                             </div>
-                        </div>
-                        <div class="col-6">
                             <div class="mb-3">
-                                <label for="end" class="form-label">Location</label>
-                                <input type="text" required wire:model.defer="docloc" class="form-control">
+                                <label for="start" class="form-label">Document Sub-Category</label>
+                                <select class="form-select" id="forsubcat" required wire:model.defer="category"
+                                    aria-label="Default select example">
+                                    <option>Select Sub-Category</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="attachment" class="form-label">Person in Charge</label>
                                 <select class="form-select" required wire:model.defer="pic"
                                     aria-label="Default select example">
-                                    <option value="">Select Users</option>
+                                    <option>Select Users</option>
                                     @foreach ($users as $usr)
                                     <option value="{{$usr->id}}">{{$usr->nik}} - {{$usr->name}}</option>
                                     @endforeach
@@ -65,9 +69,9 @@
                             <label for="person" class="form-label">Person in Notify</label>
                             @for ($i = 0; $i < $count ; $i++) 
                             <div class="input-group mb-3">
-                                <select class="form-select" required wire:model.defer="pin.{{$i}}"
+                                <select class="form-select" wire:model.defer="pin.{{$i}}"
                                     aria-label="Default select example">
-                                    <option value="">Select Users</option>
+                                    <option>Select Users</option>
                                     @foreach ($users as $usr)
                                     <option value="{{$usr->id}}">{{$usr->nik}} - {{$usr->name}}</option>
                                     @endforeach

@@ -53,8 +53,11 @@
                         <td>
                             <select class="form-select" wire:model.defer="users.{{$index}}.role" 
                                     aria-label="Default select example">
+                                    <option value="sadmin">Super Admin</option>
                                     <option value="admin">Admin</option>
+                                    <option value="manager">Manager</option>
                                     <option value="user">User</option>
+                                    <option value="pic">Pic</option>
                                 </select>
                         </td>
                         <td class="text-center">
@@ -130,7 +133,7 @@
                                     aria-label="Default select example">
                                     <option>Select Department</option>
                                     @foreach ($departments as $dpt)
-                                    <option value="{{$dpt->id}}">{{$dpt->department}}</option>
+                                    <option value="{{$dpt->id}}">{{$dpt->department}} - {{$dpt->code}}</option>
                                     @endforeach
                                 </select>
                             </div>

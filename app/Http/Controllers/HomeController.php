@@ -38,6 +38,12 @@ class HomeController extends Controller
         $data = DB::table('category')->where('location', $request->get('loc'))->pluck('id', 'desc');
         return response()->json($data);
     }
+    
+    public function subcatdrop(Request $request)
+    {
+        $data = DB::table('subcategory')->where('cat', $request->get('cat'))->pluck('id', 'desc');
+        return response()->json($data);
+    }
 
     public function documenttype($id){
         $array = ['deactive', 'valid', 'pending', 'ongoing', 'waiting'];

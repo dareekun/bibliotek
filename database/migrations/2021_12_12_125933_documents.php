@@ -20,6 +20,7 @@ class Documents extends Migration
             $table->string('pic');
             $table->string('department');
             $table->string('category');
+            $table->string('subcategory');
             $table->string('issuedate');
             $table->string('expireddate');
             $table->integer('reminder');

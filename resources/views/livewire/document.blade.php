@@ -25,7 +25,7 @@
                 <tbody>
                     @foreach ($documents as $index => $dcm)
                     <tr>
-                        <td><a href="{{ route('documenttype', $dcm->id) }}">{{strtoupper($dcm->locode.'/'.$dcm->catcode.'/'.date('Ymd', strtotime($dcm->created_at)).'/'.$dcm->no)}}</a></td>
+                        <td><a href="{{ route('detail', $dcm->id) }}">{{strtoupper($dcm->locode.'/'.$dcm->deptcode.'/'.$dcm->catcode.'/'.$dcm->subcatcode.'/'.date('Ymd', strtotime($dcm->created_at)).'/'.$dcm->no)}}</a></td>
                         <td>{{$dcm->pic}}</td>
                         <td>{{$dcm->category}}</td>
                         <td>{{$dcm->issuedate}}</td>

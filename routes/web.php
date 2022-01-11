@@ -19,6 +19,7 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 Route::post('catdrop',  [HomeController::class, 'catdrop'])->name('catdrop');
+Route::post('subcatdrop',  [HomeController::class, 'subcatdrop'])->name('subcatdrop');
 Route::get('/test', [HomeController::class, 'test']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');

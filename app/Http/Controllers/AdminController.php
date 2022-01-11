@@ -21,7 +21,7 @@ class AdminController extends Controller
     }
 
     public function tabsetting(){
-        if (Auth::user()->role == 'developer') {
+        if (Auth::user()->can('isSadmin')) {
             return view('tabsetting');
         } else {
             return redirect('/dashboard');
