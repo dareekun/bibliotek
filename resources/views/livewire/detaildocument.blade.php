@@ -74,7 +74,7 @@
                             </div>
                             @endforeach
                         </div>
-                        <div class="col-2"><button class="btn btn-outline-success w-100" wire:click="save({{$rcd->id}}, {{$index}})"><i class="fas fa-save"></i>
+                        <div class="col-2"><button class="btn btn-outline-success w-100" wire:click="savedoc({{$index}})"><i class="fas fa-save"></i>
                                 Save</button></div>
                     </div>
                     @else
@@ -120,8 +120,6 @@
             </div>
         </div>
     </div>
-</div>
-<section class="section">
     <div class="row">
         <div class="col-12">
             <table id="example" class="display table border table-striped" style="width:100%">
@@ -136,7 +134,7 @@
                 <tbody>
                     @foreach ($table as $index => $tbl)
                     <tr>
-                        <td><button class="btn btn-sm btn-outline-link" onclick="showpdf('{{$tbl->file}}.pdf')">{{$tbl->code}}</button></td>
+                        <td><button class="btn btn-sm btn-outline-link" wire:click="showpdf('{{$tbl->file}}')">{{$tbl->code}}</button></td>
                         <td>{{$tbl->issuedate}}</td>
                         <td>{{$tbl->expirdate}}</td>
                         <td>
@@ -161,8 +159,7 @@
             </table>
         </div>
     </div>
-
-    <!-- Modal -->
+    <!-- Modal 1-->
     <div class="modal fade" id="Modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -179,13 +176,51 @@
                     <div class="row py-2">
                         <div class="col-6 text-center">
                             <button class="btn btn-outline-warning" wire:click="update"><i class="fas fa-history"></i>
-                                Update
-                                Document</button>
+                                Update Document</button>
                         </div>
                         <div class="col-6 text-center">
                             <button class="btn btn-outline-danger" wire:click="deactive"><i
-                                    class="fas fa-exclamation-circle"></i> Deactive
-                                Document</button>
+                                    class="fas fa-exclamation-circle"></i> Deactive Document</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal 2-->
+    <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload New Document</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row py-2">
+                        <div class="col-12 text-center">
+                            <div class="mb-3">
+                                <label for="start" class="form-label">No Document</label>
+                                <input type="text" required wire:model.defer="newnodoc" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="end" class="form-label">Issued date</label>
+                                <input type="date" required wire:model.defer="newissuedate" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="end" class="form-label">Expired date</label>
+                                <input type="date" required wire:model.defer="newexpiredate" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <input type="file" accept=".pdf" required wire:model.defer="newfile" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-6 text-center">
+                            <button class="btn btn-outline-success" wire:click="newdoc">Save</button>
+                        </div>
+                        <div class="col-6 text-center">
+                            <button class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -198,9 +233,9 @@
         <div class="modal-dialog modal-xl h-100">
             <div class="modal-content h-90">
                 <div class="modal-body">
-                    <embed id="pdfloc" src="{{asset('storage/4ONNS1DQ.pdf')}}" type="application/pdf" width="100%" height="100%">
+                    <embed id="pdfloc" src="{{asset('storage/docs/'.$document.'.pdf')}}" type="application/pdf" width="100%" height="100%">
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>

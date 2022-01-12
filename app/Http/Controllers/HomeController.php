@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Models\Activity;
 
 use Auth;
 
 class HomeController extends Controller
 {
     public function dashboard(){
+        activity()->log('Dashboard');
         return view('dashboard');
     }
 
@@ -18,15 +20,7 @@ class HomeController extends Controller
     }
 
     public function test(){
-        // $data = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-        // $category   = DB::table('category')->where('location', $data)->get();
-        // return $category;
-        
-        $cc  = DB::table('notify')->join('users', 'users.id', '=', 'notify.user')->pluck('users.email')->toArray();
-        $mgr = DB::table('users')->where('role', 'manager')->where('department', 2)->limit(1)->value('email');
-        array_push($cc, $mgr);
-        $cc  = array_filter($cc);
-        return $cc;
+        return Activity::all();
     }
 
     public function newdocument(){

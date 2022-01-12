@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Models\Activity;
 use Auth;
 use File;
 
@@ -49,10 +50,9 @@ class AddDocument extends Component
         ]);
         $refer     = strtoupper(base_convert(date('YmdHis').sprintf('%02d', rand(1,99)),10,32));
         $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-        
-        $docname = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
+        $docname   = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
         if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
-            $statusdoc = 3;
+            $statusdoc = 0;
             DB::table('email_job')->insert([
                 'refer'     => $refer,
                 'condition' => 0
@@ -97,6 +97,7 @@ class AddDocument extends Component
         }
         $this->file->storePubliclyAs('public/docs', $docname.'.pdf');
         $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Save Successfull']);
+        activity()->log('Add Document');
         return redirect()->route('detail', [$refer]);
     }
 

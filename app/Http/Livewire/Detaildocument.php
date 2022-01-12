@@ -14,7 +14,11 @@ class Detaildocument extends Component
     public $table     = [];
     public $users     = [];
     public $statusdoc = 0;
-
+    public $document;
+    public $newnodoc;
+    public $newissuedate;
+    public $newexpiredate;
+    public $newfile;
 
     public function editdoc(){
         $this->statusdoc = 1;
@@ -24,25 +28,83 @@ class Detaildocument extends Component
         $this->statusdoc = 0;
     }
 
-    public function update($id){
-        DB::table('document')->where('id', $id)->update([
-            'statusdoc' => 4
-        ]);
+    public function update(){
+        $status = DB::table('document')->where('id', $this->pass)->value('statusdoc');
+        if ($status == 4) {
+            $this->dispatchBrowserEvent('openmodal', ['modalid' => '#Modal2']);
+        } else {
+            $newstatus = $status + 1;
+            DB::table('document')->where('id', $this->pass)->update([
+                'statusdoc' => $newstatus
+            ]);
+            activity()->log('Update Document ('.$this->pass.')');
+        }
     }
 
-    public function deactive($id){
-        DB::table('document')->where('id', $id)->update([
+    public function deactive(){
+        DB::table('document')->where('id', $this->pass)->update([
             'statusdoc' => 0
         ]);
+        activity()->log('Deactive Document ('.$this->pass.')');
+        $this->dispatchBrowserEvent('closemodal', ['modalid' => '#Modal1']);
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Document Successfully Deactivate', 'color' => '#28a745', 'title' => 'Deactivate Document']);
     }
 
-    public function save($tag, $index){
+    public function savedoc($index){
+        if (strtotime($this->records[$index]['expireddate'].' - '.  $this->records[$index]['reminder']. ' days') < strtotime('now') && strtotime($this->records[$index]['expireddate']) > strtotime('now')){
+            $newstatus = 2;
+            DB::table('email_job')->insert([
+                'refer'     => $refer,
+                'condition' => 0
+            ]);
+        } else if (strtotime($this->records[$index]['expireddate']) <= strtotime('now')) {
+            $newstatus = 0;
+            DB::table('email_job')->insert([
+                'refer'     => $refer,
+                'condition' => 0
+            ]);
+        } else {
+            $newstatus = 1;
+        }
+        DB::table('document')->where('id', $this->pass)->update([
+            'issuedate' => $this->records[$index]['issuedate'],
+            'expireddate' => $this->records[$index]['expireddate'],
+            'reminder'  => $this->records[$index]['reminder'],
+            'pic'       => $this->records[$index]['idpic'],
+            'remark'    => $this->records[$index]['remark'],
+            'statusdoc' => $newstatus
+        ]);
+        activity()->log('Edited Document ('.$this->pass.')');
+        $this->statusdoc = 0;
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Change Successfully Saved', 'color' => '#28a745', 'title' => 'Edit Document']);
+    }
 
+    public function showpdf($file){
+        $this->document = $file;
+        $this->dispatchBrowserEvent('openmodal', ['modalid' => '#modalpdf']);
+    }
+
+    public function newdoc(){
+        DB::table('history')->insert([
+            'refer' => $this->pass,
+            'code' => $this->newnodoc,
+            'statusdoc' => 1,
+            'issuedate' => $this->newissuedate,
+            'expirdate' => $this->newexpiredate,
+            'file' => $this->newfile
+        ]);
+        DB::table('document')->where('id', $this->pass)->update([
+            'issuedate' => $this->newissuedate,
+            'expirdate' => $this->newexpiredate,
+            'statusdoc' => 1
+        ]);
+        $this->dispatchBrowserEvent('openmodal', ['modalid' => '#Modal2']);
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Document Successfully Updated', 'color' => '#28a745', 'title' => 'Updated Document']);
+        activity()->log('Upload Document ('.$this->pass.')');
     }
 
     public function render()
     {
-        
         if (Auth::user()->role == 'developer') { 
             $this->records = DB::table('document')->join('users', 'users.id', '=', 'document.pic')
             ->select('document.issuedate as issuedate', 'document.expireddate as expireddate', 'document.reminder as reminder',
