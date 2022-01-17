@@ -29,8 +29,16 @@ class AdminController extends Controller
     }
 
     public function loghorizon(){
-        $horizon = DB::table('sessions')->join('users', 'users.id', '=', 'sessions.user_id')
-        ->orderby('last_activity', 'desc')->limit(10)->get();
+        if (Auth::user()->can('isDeveloper')) {
+            $horizon = DB::table('activity_log')->join('users', 'users.id', '=', 'activity_log.causer_id')
+            ->select('users.name as name', 'activity_log.description as description', 'activity_log.created_at as time')
+            ->orderby('activity_log.created_at', 'desc')->limit(300)->get();
+        } else {
+            $horizon = DB::table('activity_log')->join('users', 'users.id', '=', 'activity_log.causer_id')
+            ->select('users.name as name', 'activity_log.description as description', 'activity_log.created_at as time')
+            ->where('users.role', '=!' ,'developer')
+            ->orderby('activity_log.created_at', 'desc')->limit(300)->get();
+        }
         return view('sessions', ['logs' => $horizon]);
     }
 }

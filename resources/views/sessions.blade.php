@@ -9,25 +9,19 @@
                     <tr>
                         <th>No</th>
                         <th>User</th>
-                        <th>IP</th>
-                        <th>Last Login</th>
+                        <th>Description</th>
+                        <th>Time</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($logs) == 0)
-                    <tr>
-                        <td class="text-center" colspan="6">No data yet.</td>
-                    </tr>
-                    @else 
                     @foreach ($logs as $index => $log)
                     <tr>
                         <td>{{$index + 1}}</td>
                         <td>{{$log->name}}</td>
-                        <td>{{$log->ip_address}}</td>
-                        <td>{{date('Y/m/d - H:i:s', $log->last_activity)}}</td>
+                        <td>{{$log->description}}</td>
+                        <td>{{date('Y/m/d - H:i:s', strtotime($log->time))}}</td>
                     </tr>
                     @endforeach
-                    @endif
                 </tbody>
             </table>
         </div>

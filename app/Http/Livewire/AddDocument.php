@@ -90,10 +90,14 @@ class AddDocument extends Component
             'expirdate'   => $this->expiredate,
         ]);
         for ($i = 0; $i < count($this->pin); $i++) {
-            DB::table('notify')->insert([
-                'refer'  => $refer,
-                'user'   => $this->pin[$i],
-            ]);
+            if ($this->pin[$i] != '') {
+                DB::table('notify')->insert([
+                    'refer'  => $refer,
+                    'user'   => $this->pin[$i],
+                ]);
+            } else {
+                // Do Nothing
+            }
         }
         $this->file->storePubliclyAs('public/docs', $docname.'.pdf');
         $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Save Successfull']);

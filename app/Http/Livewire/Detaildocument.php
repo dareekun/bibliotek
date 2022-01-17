@@ -67,13 +67,14 @@ class Detaildocument extends Component
             $newstatus = 1;
         }
         DB::table('document')->where('id', $this->pass)->update([
-            'issuedate' => $this->records[$index]['issuedate'],
+            'issuedate'   => $this->records[$index]['issuedate'],
             'expireddate' => $this->records[$index]['expireddate'],
-            'reminder'  => $this->records[$index]['reminder'],
-            'pic'       => $this->records[$index]['idpic'],
-            'remark'    => $this->records[$index]['remark'],
-            'statusdoc' => $newstatus
+            'reminder'    => $this->records[$index]['reminder'],
+            'pic'         => $this->records[$index]['idpic'],
+            'remark'      => $this->records[$index]['remark'],
+            'statusdoc'   => $newstatus
         ]);
+        DB::table('notify')->where('refer', $this->pass)->where('user', '-')->delete();
         activity()->log('Edited Document ('.$this->pass.')');
         $this->statusdoc = 0;
         $this->dispatchBrowserEvent('toaster', ['message' => 'Change Successfully Saved', 'color' => '#28a745', 'title' => 'Edit Document']);
@@ -84,6 +85,34 @@ class Detaildocument extends Component
         $this->dispatchBrowserEvent('openmodal', ['modalid' => '#modalpdf']);
     }
 
+    public function deletepin($pinid){
+        DB::table('notify')->where('refer', $this->pass)->where('id', $pinid)->delete();
+        activity()->log('Deleted Person Notify On Document ('.$this->pass.')');
+    }
+
+    public function changepin($pinid, $no){
+        $pertama = DB::table('notify')->join('users', 'notify.user', '=', 'users.id')->where('notify.refer', $this->pass)->where('notify.id', $pinid)->value('users.nik');
+        $kedua   = DB::table('users')->where('id', $this->notif[$no]['iduser'])->value('nik');
+        DB::table('notify')->where('refer', $this->pass)->where('id', $pinid)->update([
+            'user' => $this->notif[$no]['iduser']
+        ]);
+        if ($pertama != '') {
+            activity()->log('Change Person Notify On Document ('.$this->pass.') From '.$pertama.' To '.$kedua);
+        } else {
+            activity()->log('Add Person Notify '.$kedua.' On Document ('.$this->pass.')');
+        }
+    }
+
+    public function addpin(){
+        if (count($this->notif) < 3) {
+            DB::table('notify')->insert([
+                'refer' => $this->pass,
+                'user' => '-'
+            ]);
+        } else {
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Maximal Notification 3 Person', 'color' => '#dc3545', 'title' => 'Email Limit']);
+        }
+    }
     public function newdoc(){
         DB::table('history')->insert([
             'refer' => $this->pass,
@@ -111,8 +140,8 @@ class Detaildocument extends Component
             'document.pic as idpic', 'document.docloc as docloc',
             'users.name as name', 'document.remark as remark', 'document.statusdoc as statusdoc')
             ->where('document.id', $this->pass)->get();
-            $this->notif = DB::table('notify')->join('users', 'users.id', '=', 'notify.user')
-            ->select('notify.user as uid', 'users.name as name', 'notify.user as iduser')
+            $this->notif = DB::table('notify')->leftJoin('users', 'users.id', '=', 'notify.user')
+            ->select('notify.id as id','notify.user as uid', 'users.name as name', 'notify.user as iduser')
             ->where('refer', $this->pass)->get();
             $this->users = DB::table('users')->leftjoin('department', 'users.department', '=', 'department.id')
             ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 

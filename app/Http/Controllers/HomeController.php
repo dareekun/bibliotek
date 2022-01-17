@@ -11,7 +11,6 @@ use Auth;
 class HomeController extends Controller
 {
     public function dashboard(){
-        activity()->log('Dashboard');
         return view('dashboard');
     }
 

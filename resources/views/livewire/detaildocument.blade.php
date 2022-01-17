@@ -57,12 +57,13 @@
                     </div>
                     <div class="row">
                         <div class="col-2">Person In Notify</div>
-                        <div class="col-3">
-                            @foreach ($notif as $index => $ntf)
+                        <div class="col-4">
+                            @foreach ($notif as $no => $ntf)
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-10">
                                     <div class="input-group mb-3">
-                                        <select class="form-select" required wire:model.defer="notif.{{$index}}.iduser"
+                                        <select class="form-select" required wire:model.defer="notif.{{$no}}.iduser"
+                                            wire:change="changepin({{$ntf->id}}, {{$no}})"
                                             aria-label="Default select example">
                                             <option selected>Select Users</option>
                                             @foreach ($users as $usr)
@@ -71,10 +72,18 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-2">
+                                <button class="btn btn-outline-danger" wire:click="deletepin({{$ntf->id}})"><i class="fas fa-times-circle"></i></button>
+                                </div>
                             </div>
                             @endforeach
                         </div>
-                        <div class="col-2"><button class="btn btn-outline-success w-100" wire:click="savedoc({{$index}})"><i class="fas fa-save"></i>
+                        <div class="col-2">
+                        <button class="btn btn-outline-primary" wire:click="addpin"><i class="fas fa-plus-circle"></i></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-2"><button class="btn btn-outline-success w-100" wire:click="savedoc({{$index}})"><i class="fas fa-save"></i>
                                 Save</button></div>
                     </div>
                     @else
