@@ -38,18 +38,18 @@ class Dashboardtable extends Component
             $this->deactive = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where('statusdoc', 0)->count();
         } elseif (Auth::user()->role == 'pic'){
             $location       = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-            $this->valid    = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where('pic', Auth::user()->id)->where('statusdoc', 1)->count();
-            $this->pending  = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where('pic', Auth::user()->id)->where('statusdoc', 2)->count();
-            $this->ongoing  = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where('pic', Auth::user()->id)->where('statusdoc', 3)->count();
-            $this->wating   = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where('pic', Auth::user()->id)->where('statusdoc', 4)->count();
-            $this->deactive = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where('pic', Auth::user()->id)->where('statusdoc', 0)->count();
+            $this->valid    = DB::table('document')->where('pic', Auth::user()->id)->where('statusdoc', 1)->count();
+            $this->pending  = DB::table('document')->where('pic', Auth::user()->id)->where('statusdoc', 2)->count();
+            $this->ongoing  = DB::table('document')->where('pic', Auth::user()->id)->where('statusdoc', 3)->count();
+            $this->wating   = DB::table('document')->where('pic', Auth::user()->id)->where('statusdoc', 4)->count();
+            $this->deactive = DB::table('document')->where('pic', Auth::user()->id)->where('statusdoc', 0)->count();
         } elseif (Auth::user()->role == 'user'){
             $location       = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-            $this->valid    = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where(function($query) {$query->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id);})->where('statusdoc', 1)->count();
-            $this->pending  = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where(function($query) {$query->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id);})->where('statusdoc', 2)->count();
-            $this->ongoing  = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where(function($query) {$query->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id);})->where('statusdoc', 3)->count();
-            $this->wating   = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where(function($query) {$query->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id);})->where('statusdoc', 4)->count();
-            $this->deactive = DB::table('document')->where('location', $location)->where('department', Auth::user()->department)->where(function($query) {$query->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id);})->where('statusdoc', 0)->count();
+            $this->valid    = DB::table('document')->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id)->where('statusdoc', 1)->count();
+            $this->pending  = DB::table('document')->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id)->where('statusdoc', 2)->count();
+            $this->ongoing  = DB::table('document')->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id)->where('statusdoc', 3)->count();
+            $this->wating   = DB::table('document')->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id)->where('statusdoc', 4)->count();
+            $this->deactive = DB::table('document')->where('creator', Auth::user()->id)->orWhere('pic', Auth::user()->id)->where('statusdoc', 0)->count();
         }
         return view('livewire.dashboardtable');
     }

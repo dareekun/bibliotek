@@ -3467,8 +3467,8 @@ textarea.form-control-lg {
   --bs-position: end;
 }
 .dropdown-menu-end[data-bs-popper] {
-  right: 0 /* rtl:ignore */;
-  left: auto /* rtl:ignore */;
+  right: 0 /* rtl:ignore */!important;
+  left: auto /* rtl:ignore */!important;
 }
 
 @media (min-width: 576px) {

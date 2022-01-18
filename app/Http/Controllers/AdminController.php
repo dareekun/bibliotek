@@ -8,8 +8,8 @@ use Auth;
 
 class AdminController extends Controller
 {
-    public function setting(){
-        return view('setting');
+    public function category(){
+        return view('category');
     }
 
     public function department(){
@@ -20,9 +20,9 @@ class AdminController extends Controller
         return view('users');
     }
 
-    public function tabsetting(){
+    public function location(){
         if (Auth::user()->can('isSadmin')) {
-            return view('tabsetting');
+            return view('location');
         } else {
             return redirect('/dashboard');
         }
@@ -36,7 +36,7 @@ class AdminController extends Controller
         } else {
             $horizon = DB::table('activity_log')->join('users', 'users.id', '=', 'activity_log.causer_id')
             ->select('users.name as name', 'activity_log.description as description', 'activity_log.created_at as time')
-            ->where('users.role', '=!' ,'developer')
+            ->where('users.role', '!=' ,'developer')
             ->orderby('activity_log.created_at', 'desc')->limit(300)->get();
         }
         return view('sessions', ['logs' => $horizon]);

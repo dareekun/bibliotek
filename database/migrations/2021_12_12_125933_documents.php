@@ -17,14 +17,14 @@ class Documents extends Migration
             $table->string('id')->primary();
             $table->string('title');
             $table->string('creator');
-            $table->string('pic');
+            $table->string('pic')->nullable();
             $table->string('department');
             $table->string('category');
             $table->string('subcategory');
             $table->string('issuedate');
             $table->string('expireddate');
             $table->integer('reminder');
-            $table->string('remark');
+            $table->string('remark')->nullable();
             $table->string('docloc');
             $table->string('location');
             $table->boolean('statusdoc');

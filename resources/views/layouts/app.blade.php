@@ -59,10 +59,11 @@
                                 </li>
                             </ul>
                         </li>
+                        @can('isAdmin')
                         <li class="sidebar-item">
-                            <a href="{{ route('setting') }}" class='sidebar-link'>
-                                <i class="fas fa-cogs"></i>
-                                <span>Setting</span>
+                            <a href="{{ route('category') }}" class='sidebar-link'>
+                                <i class="fas fa-list-ul"></i>
+                                <span>Category</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
@@ -71,13 +72,20 @@
                                 <span>Department</span>
                             </a>
                         </li>
+                        @endcan
+                        @can('isSadmin')
+                        <li class="sidebar-item">
+                            <a href="{{ route('location') }}" class='sidebar-link'>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Location</span>
+                            </a>
+                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('users') }}" class='sidebar-link'>
-                                <i class="fas fa-users"></i>
+                                <i class="fas fa-user"></i>
                                 <span>Users</span>
                             </a>
                         </li>
-                        @can('isSadmin')
                         <li class="sidebar-item">
                             <a href="{{ route('log_horizon') }}" class='sidebar-link'>
                                 <i class="fas fa-history"></i>
@@ -114,7 +122,7 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                                <li class="nav-item dropdown me-3">
+                                <li hidden class="nav-item dropdown me-3">
                                     <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                         aria-expanded="false">
                                         <i class="far fa-bell fs-4 text-gray-600"></i>
@@ -127,21 +135,16 @@
                                     </ul>
                                 </li>
                             </ul>
-                            <div class="dropdown">
+                            <div class="dropdown dropstart">
                                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-menu d-flex">
-                                        <div class="user-name text-end me-3">
+                                        <div class="user-name text-end ms-3">
                                             <h6 class="mb-0 text-gray-600">{{ ucwords(Auth::user()->name) }}</h6>
                                             <p class="mb-0 text-sm text-success">{{ucwords(Auth::user()->role)}}</p>
                                         </div>
-                                        <div class="user-img d-flex align-items-center">
-                                            <div class="avatar avatar-md">
-                                                <img src="{{ asset('/images/faces/0.jpg') }}">
-                                            </div>
-                                        </div>
                                     </div>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
                                         <h6 class="dropdown-header">Hello, {{ strtok(Auth::user()->name, " ") }}!</h6>
                                     </li>
@@ -180,8 +183,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('/js/main.js') }}"></script>
+    <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('/js/axios.min.js') }}"></script>
     <script src="{{ asset('/js/chart.min.js') }}"></script>
     @livewireScripts

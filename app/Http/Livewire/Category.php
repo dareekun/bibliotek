@@ -6,7 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
-class Setting extends Component
+class Category extends Component
 {
 
     public $locations = [];
@@ -185,6 +185,6 @@ class Setting extends Component
             array_push($this->statussub, 0);
         }
         }
-        return view('livewire.setting');
+        return view('livewire.category');
     }
 }

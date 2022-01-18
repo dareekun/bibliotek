@@ -6,7 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
-class Tabsetting extends Component
+class Location extends Component
 {
     public $locations = [];
     public $statusloc = [];
@@ -88,6 +88,6 @@ class Tabsetting extends Component
         for ($i = 0; $i < count($this->locations); $i++) {
             array_push($this->statusloc, 0);
         }
-        return view('livewire.tabsetting');
+        return view('livewire.location');
     }
 }

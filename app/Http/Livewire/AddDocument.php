@@ -18,7 +18,9 @@ class AddDocument extends Component
     public $pin = [];
     public $users = [];
     public $categorys = [];
+    public $subcategorys = [];
     public $category;
+    public $subcategory;
     public $pic;
     public $title;
     public $nodoc;
@@ -41,6 +43,10 @@ class AddDocument extends Component
         unset($this->pin[$array]); 
         $this->pin = array_values($this->pin);
         $this->count--;
+    }
+
+    public function change(){
+        $this->subcategorys = DB::table('subcategory')->where('cat', $this->category)->get();
     }
 
     public function submit()
@@ -73,6 +79,7 @@ class AddDocument extends Component
             'title'       => $this->title,
             'department'  => Auth::user()->department,
             'category'    => $this->category,
+            'subcategory' => $this->subcategory,
             'issuedate'   => $this->createdate,
             'expireddate' => $this->expiredate,
             'reminder'    => $this->reminder,
@@ -111,7 +118,7 @@ class AddDocument extends Component
         $this->users = DB::table('users')->join('department', 'users.department', '=', 'department.id')
         ->where('department.location', $location)->where('users.role', '<>', 'developer')
         ->select('users.id as id', 'users.nik as nik', 'users.name as name')->get();
-        $this->categorys = DB::table('category')->where('location', $location)->get();
+        $this->categorys = DB::table('category')->get();
         return view('livewire.add-document');
     }
 }

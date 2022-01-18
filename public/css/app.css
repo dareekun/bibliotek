@@ -488,10 +488,6 @@ a{
   min-width: 16rem;
 }
 
-.dropdown-menu {
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.03);
-}
-
 .dropdown-item {
   transition: all 0.5s;
 }

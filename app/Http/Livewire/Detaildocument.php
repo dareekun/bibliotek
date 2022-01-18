@@ -25,7 +25,12 @@ class Detaildocument extends Component
     }
 
     public function canceldoc(){
+        DB::table('notify')->where('refer', $this->pass)->where('user', '-')->delete();
         $this->statusdoc = 0;
+    }
+
+    public function mount(){
+        DB::table('notify')->where('refer', $this->pass)->where('user', '-')->delete();
     }
 
     public function update(){

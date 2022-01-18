@@ -98,7 +98,6 @@ class Department extends Component
                 $this->dispatchBrowserEvent('toaster', ['message' => 'Department data changed successfully', 'color' => '#28a745', 'title' => 'Change department data']);
             }
         }
-        
     }
 
     public function edit($tag){

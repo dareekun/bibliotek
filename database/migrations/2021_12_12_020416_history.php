@@ -16,7 +16,7 @@ class History extends Migration
         Schema::create('history', function (Blueprint $table) {
             $table->id();
             $table->string('refer');
-            $table->string('code');
+            $table->string('code')->nullable();
             $table->boolean('statusdoc');
             $table->string('issuedate');
             $table->string('expirdate');

@@ -3,7 +3,7 @@
 <livewire:add-document/>
 @stop
 @push('scripts')
-<script>
+<!-- <script>
     $(function () {
     $('#docat').on('change', function () {
         axios.post('{{ route('subcatdrop') }}', {cat: $(this).val()})
@@ -16,5 +16,5 @@
             });
     });
 });
-</script>
+</script> -->
 @endpush

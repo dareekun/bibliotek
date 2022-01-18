@@ -71,7 +71,13 @@
                         <td>{{$usr->name}}</td>
                         <td>{{$usr->email}}</td>
                         <td>{{$usr->department}}</td>
-                        <td>{{ucwords($usr->role)}}</td>
+                        <td>
+                        @if ($usr->role == 'sadmin') 
+                        Super Admin
+                        @else 
+                        {{ucwords($usr->role)}}
+                        @endif    
+                    </td>
                         <td>
                             <button class="btn btn-sm btn-outline-primary" wire:click="edit({{$index}})"><i class="far fa-edit"></i></button>
                             <button class="btn btn-sm btn-outline-primary" wire:click="changepass('{{$usr->id}}')"><i class="fas fa-key"></i></button>

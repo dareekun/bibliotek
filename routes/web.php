@@ -31,12 +31,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/document/{id}', [HomeCont
 
 
 // Level Admin Be Advice
-Route::middleware(['auth:sanctum', 'verified'])->get('/setting', [AdminController::class, 'setting'])->name('setting');
-Route::middleware(['auth:sanctum', 'verified'])->get('/department', [AdminController::class, 'department'])->name('department');
-Route::middleware(['auth:sanctum', 'verified'])->get('/users', [AdminController::class, 'users'])->name('users');
+Route::middleware(['auth:sanctum', 'verified'])->get('/category', [AdminController::class, 'category'])->name('category')->middleware('can:isAdmin');
+Route::middleware(['auth:sanctum', 'verified'])->get('/department', [AdminController::class, 'department'])->name('department')->middleware('can:isAdmin');
+Route::middleware(['auth:sanctum', 'verified'])->get('/users', [AdminController::class, 'users'])->name('users')->middleware('can:isSadmin');
 
 // Level Super Admin Be Advice
-Route::middleware(['auth:sanctum', 'verified'])->get('/loghorizon', [AdminController::class, 'loghorizon'])->name('log_horizon');
+Route::middleware(['auth:sanctum', 'verified'])->get('/loghorizon', [AdminController::class, 'loghorizon'])->name('log_horizon')->middleware('can:isSadmin');
+Route::middleware(['auth:sanctum', 'verified'])->get('/location', [AdminController::class, 'location'])->name('location')->middleware('can:isSadmin');
 
 //Level Developer please be Advice
-Route::middleware(['auth:sanctum', 'verified'])->get('/tabsetting', [AdminController::class, 'tabsetting'])->name('tabsetting');

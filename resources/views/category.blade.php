@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<livewire:setting/>
+<livewire:category/>
 @stop
 @push('scripts')
 <script>

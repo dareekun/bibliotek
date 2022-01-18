@@ -16,6 +16,7 @@
                             <div class="mb-3">
                                 <label for="start" class="form-label">Document Category</label>
                                 <select class="form-select" id="docat" required wire:model.defer="category"
+                                    wire:change="change"
                                     aria-label="Default select example">
                                     <option>Select Category</option>
                                     @foreach ($categorys as $cat)
@@ -51,14 +52,17 @@
                             </div>
                             <div class="mb-3">
                                 <label for="start" class="form-label">Document Sub-Category</label>
-                                <select class="form-select" id="forsubcat" required wire:model.defer="category"
+                                <select class="form-select" id="forsubcat" required wire:model.defer="subcategory"
                                     aria-label="Default select example">
                                     <option>Select Sub-Category</option>
+                                    @foreach ($subcategorys as $subcat)
+                                    <option value="{{$subcat->id}}">{{$subcat->desc}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="attachment" class="form-label">Person in Charge</label>
-                                <select class="form-select" required wire:model.defer="pic"
+                                <label for="attachment" class="form-label">Document Owner</label>
+                                <select class="form-select" wire:model.defer="pic"
                                     aria-label="Default select example">
                                     <option>Select Users</option>
                                     @foreach ($users as $usr)
