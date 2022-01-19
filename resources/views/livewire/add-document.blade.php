@@ -62,13 +62,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="attachment" class="form-label">Document Owner</label>
-                                <select class="form-select" wire:model.defer="pic"
-                                    aria-label="Default select example">
-                                    <option>Select Users</option>
-                                    @foreach ($users as $usr)
-                                    <option value="{{$usr->id}}">{{$usr->nik}} - {{$usr->name}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" required wire:model.defer="remark" class="form-control">
                             </div>
                             <label for="person" class="form-label">Person in Notify</label>
                             @for ($i = 0; $i < $count ; $i++) 

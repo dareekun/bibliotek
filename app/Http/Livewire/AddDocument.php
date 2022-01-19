@@ -106,9 +106,9 @@ class AddDocument extends Component
                 // Do Nothing
             }
         }
-        $this->file->storePubliclyAs('public/docs', $docname.'.pdf');
+        $this->file->move('doc', $docname.'.pdf');
         $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Save Successfull']);
-        activity()->log('Add Document');
+        activity()->log('Add Document ('.$refer.')');
         return redirect()->route('detail', [$refer]);
     }
 
