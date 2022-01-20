@@ -1,0 +1,222 @@
+[33mcommit f991b54f58c5f7bc7fd7d085a252e4f8d1d47e8c[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: dareekun <dareekun@live.com>
+Date:   Thu Jan 20 12:10:38 2022 +0700
+
+    change category dropdown from axios to livewire
+
+[33mcommit 4f924e42ea3beb0d1faf222867cc6046598db2ea[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: db9c47f 50cfaf1
+Author: dareekun <dareekun@live.com>
+Date:   Thu Jan 20 11:00:14 2022 +0700
+
+    Merge branch 'main' of https://github.com/dareekun/bibliotek into main
+
+[33mcommit db9c47f306a3134334fc7d441e17abc0f8b49ecd[m
+Author: dareekun <dareekun@live.com>
+Date:   Thu Jan 20 10:58:17 2022 +0700
+
+    fix css on deplyment
+
+[33mcommit 3ceb720d4adeb58b8351305273a7577fd3428aa3[m
+Author: dareekun <dareekun@live.com>
+Date:   Thu Jan 20 10:56:44 2022 +0700
+
+    fix css on deplyment
+
+[33mcommit 6b23ec2be1da0f4f75092d9602b45f248f94ec02[m
+Author: dareekun <dareekun@live.com>
+Date:   Thu Jan 20 08:34:10 2022 +0700
+
+    Fix Vuln Problem
+
+[33mcommit 50cfaf18a51983a5c3171581133d6ba8f697d5d0[m
+Author: dareekun <dareekun@live.com>
+Date:   Wed Jan 19 20:48:57 2022 +0700
+
+    Update artisan
+
+[33mcommit 39e3f8cd1f67b6710c91d667f982d08529c2efcd[m
+Author: dareekun <dareekun@live.com>
+Date:   Wed Jan 19 20:48:13 2022 +0700
+
+    Update README.md
+
+[33mcommit 9654109ce9cba278b421fe2aefd24383281d1f05[m
+Author: dareekun <dareekun@live.com>
+Date:   Wed Jan 19 15:15:52 2022 +0700
+
+    first testing deployment
+
+[33mcommit 034655cedb419d82f586e94bb3f1eaf62fe4c8fb[m
+Author: dareekun <dareekun@live.com>
+Date:   Tue Jan 18 16:41:06 2022 +0700
+
+    change decoration
+
+[33mcommit d743e4636777807ec924f1ef7dbb3e52058127f2[m
+Author: dareekun <dareekun@live.com>
+Date:   Mon Jan 17 16:41:22 2022 +0700
+
+    fix log session and person in notify
+
+[33mcommit e2dfa5dc084d5cc1576cbf0edf9dd76a2743003a[m
+Author: dareekun <dareekun@live.com>
+Date:   Wed Jan 12 16:42:30 2022 +0700
+
+    fix edit document
+
+[33mcommit 95095ff578a10dec3348283772648cfc147d3da8[m
+Author: dareekun <dareekun@live.com>
+Date:   Tue Jan 11 15:57:58 2022 +0700
+
+    fix id document
+
+[33mcommit 6c4f05f7004621c1b0ee03bef00d32d42a472878[m
+Author: dareekun <dareekun@live.com>
+Date:   Wed Jan 5 16:29:27 2022 +0700
+
+    add incremental document
+
+[33mcommit ab84ab869df0114e8565e1650381b16365cd2dc4[m
+Author: dareekun <dareekun@live.com>
+Date:   Tue Jan 4 16:19:59 2022 +0700
+
+    add logic adn mail
+
+[33mcommit f6c07f1fdc8cf3007cd3d563177cd5351a2c045f[m
+Author: dareekun <dareekun@live.com>
+Date:   Thu Dec 30 16:24:26 2021 +0700
+
+    change dashboard
+
+[33mcommit 0c734e6b6832723081d64c06a23c37927f0f2b82[m
+Author: dareekun <dareekun@live.com>
+Date:   Wed Dec 22 15:38:03 2021 +0700
+
+    fix status and change location to tabsetting
+
+[33mcommit 206e6711b3894fd0dd6562de400175dbbfdb90bd[m
+Author: dareekun <dareekun@live.com>
+Date:   Mon Dec 20 16:23:32 2021 +0700
+
+    fix history table
+
+[33mcommit 9d3e19000be8cd1a92838d2ff05a9a949f14614f[m
+Author: dareekun <dareekun@live.com>
+Date:   Fri Dec 17 16:37:28 2021 +0700
+
+    fix detail document and dashboard document
+
+[33mcommit 375499e112e8457d9ed03d1cade4f8fc80809f02[m
+Author: dareekun <dareekun@live.com>
+Date:   Thu Dec 16 15:43:47 2021 +0700
+
+    finish add-document and add detail document
+
+[33mcommit e39173da5aff2b8d737aaeea3710fe09f26e829f[m
+Author: dareekun <dareekun@live.com>
+Date:   Thu Dec 16 05:45:48 2021 +0700
+
+    fix remindays setting for developer role
+
+[33mcommit 1f8a5a669f8b266f70eb5af4332bb037d89ae43b[m
+Author: dareekun <dareekun@live.com>
+Date:   Wed Dec 15 16:29:48 2021 +0700
+
+    Add Setting Option Configuration
+
+[33mcommit 69b5afb8e007217c56ac98641258793205d1a130[m
+Author: dareekun <dareekun@live.com>
+Date:   Tue Dec 14 17:04:03 2021 +0700
+
+    change new document from modal to view
+
+[33mcommit 2cb2239c894d8aa91e92760491f1d63e8ae34bb5[m
+Author: dareekun <dareekun@live.com>
+Date:   Mon Dec 13 05:38:54 2021 +0700
+
+    fix user and department view
+
+[33mcommit e18a0bf0b732ecd2d0943e319333809fe0092520[m
+Author: dareekun <dareekun@live.com>
+Date:   Fri Dec 10 16:18:59 2021 +0700
+
+    change modal view
+
+[33mcommit 3f171a24efe2d593db3b12a4678376ec2e61ec6d[m
+Author: dareekun <dareekun@live.com>
+Date:   Thu Dec 9 16:20:02 2021 +0700
+
+    add bootstrap select and bootstrap table
+
+[33mcommit c6490cc871327c45e5be8152c8ec068e8cc65d74[m
+Author: dareekun <dareekun@live.com>
+Date:   Wed Dec 8 16:23:02 2021 +0700
+
+    change theme to zuramai/mazer
+
+[33mcommit 922a3ae78ab2bd55f70d4ebb90e12a9195ced267[m
+Merge: c324c74 ef73d29
+Author: Ahmad Saugi <45036724+zuramai@users.noreply.github.com>
+Date:   Wed May 19 18:38:58 2021 +0700
+
+    Merge pull request #3 from sur2548/bug-fix-and-upgrade
+    
+    Bug fix and upgrade
+
+[33mcommit ef73d2991b20eddc12049f52c201f652bb7848e4[m
+Author: Surajit Mondal <sur2548@gmail.com>
+Date:   Wed Mar 17 14:33:41 2021 +0530
+
+    Added Laravel Debugbar
+
+[33mcommit f4e8ec090fbb3d21347189598b4abec585bafd80[m
+Author: Surajit Mondal <sur2548@gmail.com>
+Date:   Wed Mar 17 14:22:52 2021 +0530
+
+    Added Tailwind CSS In mix
+
+[33mcommit e689003cdd0dfb66e7d329cad8f44e8cbd33dc60[m
+Author: Surajit Mondal <sur2548@gmail.com>
+Date:   Wed Mar 17 14:22:16 2021 +0530
+
+    1. Fixed Logout Bug
+    2. Added Default Admin For Seed
+    3. Extracted Some Components
+    4. Deleted Unnecessary Liviewire Classes
+
+[33mcommit c324c74d36bacd1d1c3235338adecfcc4ec67b6d[m
+Author: Ahmad Saugi <45036724+zuramai@users.noreply.github.com>
+Date:   Mon Jan 25 08:19:59 2021 +0700
+
+    Update README.md
+
+[33mcommit 9e425bfa7adfc5fa07669e3daeaa29d2f41dd078[m
+Author: Ahmad Saugi <45036724+zuramai@users.noreply.github.com>
+Date:   Mon Jan 25 08:19:44 2021 +0700
+
+    :memo: update instructions
+
+[33mcommit 8a41e0737ba973f9126b599b9803c60d0d679720[m
+Author: Ahmad Saugi <45036724+zuramai@users.noreply.github.com>
+Date:   Mon Jan 25 05:12:36 2021 +0700
+
+    :memo: update readme
+
+[33mcommit 455f5d013aac13bc7b23fbb0bbf56de8ebe5bfe3[m
+Author: Ahmad Saugi <45036724+zuramai@users.noreply.github.com>
+Date:   Sun Jan 24 20:40:32 2021 +0700
+
+    :memo: update readme
+
+[33mcommit df9047696304d591f8591c64e264bee1aea98347[m
+Author: Ahmad Saugi <45036724+zuramai@users.noreply.github.com>
+Date:   Sun Jan 24 20:37:44 2021 +0700
+
+    :memo: update readme
+
+[33mcommit c290ed4d60265339ae0d29e33b0d5b98db95956b[m
+Author: zuramai <ahmadsaugigis@yahoo.com>
+Date:   Sun Jan 24 20:26:05 2021 +0700
+
+    :sparkles: whoosh

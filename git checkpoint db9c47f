@@ -1,0 +1,36 @@
+[33mf991b54[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m change category dropdown from axios to livewire
+[33m4f924e4[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'main' of https://github.com/dareekun/bibliotek into main
+[33mdb9c47f[m fix css on deplyment
+[33m3ceb720[m fix css on deplyment
+[33m6b23ec2[m Fix Vuln Problem
+[33m50cfaf1[m Update artisan
+[33m39e3f8c[m Update README.md
+[33m9654109[m first testing deployment
+[33m034655c[m change decoration
+[33md743e46[m fix log session and person in notify
+[33me2dfa5d[m fix edit document
+[33m95095ff[m fix id document
+[33m6c4f05f[m add incremental document
+[33mab84ab8[m add logic adn mail
+[33mf6c07f1[m change dashboard
+[33m0c734e6[m fix status and change location to tabsetting
+[33m206e671[m fix history table
+[33m9d3e190[m fix detail document and dashboard document
+[33m375499e[m finish add-document and add detail document
+[33me39173d[m fix remindays setting for developer role
+[33m1f8a5a6[m Add Setting Option Configuration
+[33m69b5afb[m change new document from modal to view
+[33m2cb2239[m fix user and department view
+[33me18a0bf[m change modal view
+[33m3f171a2[m add bootstrap select and bootstrap table
+[33mc6490cc[m change theme to zuramai/mazer
+[33m922a3ae[m Merge pull request #3 from sur2548/bug-fix-and-upgrade
+[33mef73d29[m Added Laravel Debugbar
+[33mf4e8ec0[m Added Tailwind CSS In mix
+[33me689003[m 1. Fixed Logout Bug 2. Added Default Admin For Seed 3. Extracted Some Components 4. Deleted Unnecessary Liviewire Classes
+[33mc324c74[m Update README.md
+[33m9e425bf[m :memo: update instructions
+[33m8a41e07[m :memo: update readme
+[33m455f5d0[m :memo: update readme
+[33mdf90476[m :memo: update readme
+[33mc290ed4[m :sparkles: whoosh

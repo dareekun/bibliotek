@@ -11,7 +11,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="start" class="form-label">No Document</label>
-                                <input type="text" required wire:model.defer="nodoc" class="form-control">
+                                <input type="text" wire:model.defer="nodoc" class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="start" class="form-label">Document Category</label>
@@ -34,7 +34,7 @@
                             </div>
                             <label for="reminder" class="form-label">Remind Me Before</label>
                             <div class="input-group mb-3">
-                                <input type="number" required wire:model.defer="reminder" class="form-control">
+                                <input type="number" required min="1" wire:model.defer="reminder" class="form-control">
                                 <span class="input-group-text" id="basic-addon2">days</span>
                             </div>
                             <div class="mb-3">
@@ -48,7 +48,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="end" class="form-label">Remark</label>
-                                <input type="text" required wire:model.defer="remark" class="form-control">
+                                <input type="text" wire:model.defer="remark" class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="start" class="form-label">Document Sub-Category</label>
@@ -62,27 +62,19 @@
                             </div>
                             <div class="mb-3">
                                 <label for="attachment" class="form-label">Document Owner</label>
-                                <input type="text" required wire:model.defer="remark" class="form-control">
+                                <input type="text" wire:model.defer="pic" class="form-control">
                             </div>
                             <label for="person" class="form-label">Person in Notify</label>
                             @for ($i = 0; $i < $count ; $i++) 
                             <div class="input-group mb-3">
-                                <select class="form-select" wire:model.defer="pin.{{$i}}"
-                                    aria-label="Default select example">
-                                    <option>Select Users</option>
-                                    @foreach ($users as $usr)
-                                    <option value="{{$usr->id}}">{{$usr->nik}} - {{$usr->name}}</option>
-                                    @endforeach
-                                </select>
-                                <div class="input-group-append">
+                                <input type="text" wire:model.defer="pin.{{$i}}" class="form-control" aria-describedby="button-addon2">
                                     @if ($i == 0)
-                                    <button class="btn btn-primary" wire:click="plus" type="button"><i
+                                    <button class="btn btn-primary" id="button-addon2" wire:click="plus" type="button"><i
                                             class="fas fa-user-plus"></i></button>
                                     @else
-                                    <button class="btn btn-danger" wire:click="minus({{$i}})" type="button"><i
+                                    <button class="btn btn-danger" id="button-addon2" wire:click="minus({{$i}})" type="button"><i
                                             class="fas fa-user-minus"></i></button>
                                     @endif
-                                </div>
                             </div>
                             @endfor
                         </div>

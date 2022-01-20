@@ -57,6 +57,7 @@ class AddDocument extends Component
         $refer     = strtoupper(base_convert(date('YmdHis').sprintf('%02d', rand(1,99)),10,32));
         $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
         $docname   = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
+        $this->file->move(public_path("doc"), $docname.'.pdf');
         if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
             $statusdoc = 0;
             DB::table('email_job')->insert([
@@ -106,7 +107,6 @@ class AddDocument extends Component
                 // Do Nothing
             }
         }
-        $this->file->move('doc', $docname.'.pdf');
         $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Save Successfull']);
         activity()->log('Add Document ('.$refer.')');
         return redirect()->route('detail', [$refer]);
@@ -114,6 +114,7 @@ class AddDocument extends Component
 
     public function render()
     {
+        $this->subcategorys = DB::table('subcategory')->where('cat', $this->category)->get();
         $location    = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
         $this->users = DB::table('users')->join('department', 'users.department', '=', 'department.id')
         ->where('department.location', $location)->where('users.role', '<>', 'developer')
