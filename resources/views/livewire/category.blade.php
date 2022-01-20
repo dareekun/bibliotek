@@ -197,6 +197,7 @@
                         <div class="mb-3">
                             <label class="form-label">Location</label>
                             <select id="locmaster" class="form-select" required wire:model.defer="subloc"
+                                wire:change="changeloc"
                                 aria-label="Default select example">
                                 <option>Select Location</option>
                                 @foreach ($locations as $loc)
@@ -209,6 +210,9 @@
                             <select id="fordev" class="form-select" required wire:model.defer="subcat"
                                 aria-label="Default select example">
                                 <option>Select Category</option>
+                                @foreach ($changel as $cl)
+                                <option value="{{$cl->id}}">{{$cl->desc}}</option>
+                                @endforeach
                             </select>
                         </div>
                         @else
