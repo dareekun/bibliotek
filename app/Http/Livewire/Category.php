@@ -15,7 +15,6 @@ class Category extends Component
     public $statuscat = [];
     public $statussub = [];
     public $cats      = [];
-    public $changel      = [];
     public $input0;
     public $input1;
     public $input2;
@@ -74,11 +73,6 @@ class Category extends Component
         $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
         }
     }
-
-    public function changeloc(){
-        $this->changel = DB::table('category')->where('location', $this->subloc)->get();
-    }
-
     public function editcat($id){
         if (in_array(1, $this->statuscat)) {
             $this->dispatchBrowserEvent('toaster', ['message' => 'Oops Looks like you still have one not saved yet', 'color' => '#dc3545', 'title' => 'Undone Job']);
