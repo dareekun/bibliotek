@@ -18,9 +18,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Category</th>
-                                @can('isSadmin')
-                                <th>Location</th>
-                                @endcan
                                 <th style="width:100px"></th>
                             </tr>
                         </thead>
@@ -37,17 +34,6 @@
                                         type="text"></td>
                                 <td><input class="form-control" wire:model.defer="categorys.{{$index}}.desc"
                                         type="text"></td>
-                                @can('isSadmin')
-                                <td>
-                                    <select class="form-select" required wire:model.defer="categorys.{{$index}}.locid"
-                                        aria-label="Default select example">
-                                        <option>Select Location</option>
-                                        @foreach ($locations as $loc)
-                                        <option value="{{$loc->id}}">{{$loc->desc}}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                @endcan
                                 <td>
                                     <button class="btn btn-sm btn-outline-success"
                                         wire:click="savecat({{$cat->id}}, {{$index}})"><i
@@ -58,9 +44,6 @@
                                 @else
                                 <td>{{$cat->code}}</td>
                                 <td>{{$cat->desc}}</td>
-                                @can('isSadmin')
-                                <td>{{$cat->location}}</td>
-                                @endcan
                                 <td>
                                     <button class="btn btn-sm btn-outline-primary" wire:click="editcat({{$index}})"><i
                                             class="far fa-edit"></i></button>
@@ -81,9 +64,6 @@
                                 <th>ID</th>
                                 <th>Category</th>
                                 <th>Sub Category</th>
-                                @can('isSadmin')
-                                <th>Location</th>
-                                @endcan
                                 <th style="width:100px"></th>
                             </tr>
                         </thead>
@@ -98,39 +78,32 @@
                                 @if ($statussub[$index] == 1)
                                 <td><input class="form-control" wire:model.defer="subs.{{$index}}.code" type="text">
                                 </td>
-                                <td><input class="form-control" wire:model.defer="subs.{{$index}}.cat" type="text"></td>
-                                <td><input class="form-control" wire:model.defer="subs.{{$index}}.desc" type="text">
-                                </td>
-                                @can('isSadmin')
                                 <td>
-                                    <select class="form-select" required wire:model.defer="subs.{{$index}}.locid"
+                                <select class="form-select" required wire:model.defer="subs.{{$index}}.catid"
                                         aria-label="Default select example">
-                                        <option value="">Select Location</option>
-                                        @foreach ($locations as $loc)
-                                        <option value="{{$loc->id}}">{{$loc->desc}}</option>
+                                        @foreach ($categorys as $cat)
+                                        <option value="{{$cat->id}}">{{$cat->desc}}</option>
                                         @endforeach
                                     </select>
                                 </td>
-                                @endcan
+                                <td><input class="form-control" wire:model.defer="subs.{{$index}}.desc" type="text">
+                                </td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-success"
-                                        wire:click="savecat({{$cat->id}}, {{$index}})"><i
+                                        wire:click="savesub({{$sub->id}}, {{$index}})"><i
                                             class="fas fa-save"></i></button>
-                                    <button class="btn btn-sm btn-outline-danger" wire:click="cancelcat({{$index}})"><i
+                                    <button class="btn btn-sm btn-outline-danger" wire:click="cancelsub({{$index}})"><i
                                             class="fas fa-window-close"></i></button>
                                 </td>
                                 @else
                                 <td>{{$sub->code}}</td>
                                 <td>{{$sub->cat}}</td>
                                 <td>{{$sub->desc}}</td>
-                                @can('isSadmin')
-                                <td>{{$sub->location}}</td>
-                                @endcan
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary" wire:click="editcat({{$index}})"><i
+                                    <button class="btn btn-sm btn-outline-primary" wire:click="editsub({{$index}})"><i
                                             class="far fa-edit"></i></button>
                                     <button class="btn btn-sm btn-outline-danger"
-                                        wire:click="deletecat({{$sub->id}})"><i class="far fa-trash-alt"></i></button>
+                                        wire:click="deletesub({{$sub->id}})"><i class="far fa-trash-alt"></i></button>
                                 </td>
                                 @endif
                             </tr>
@@ -161,18 +134,6 @@
                             <label class="form-label">Category Description</label>
                             <input type="text" required wire:model.defer="input1" class="form-control">
                         </div>
-                        @can('isSadmin')
-                        <div class="mb-3">
-                            <label class="form-label">Category Location</label>
-                            <select class="form-select" required wire:model.defer="input2"
-                                aria-label="Default select example">
-                                <option>Select Location</option>
-                                @foreach ($locations as $loc)
-                                <option value="{{$loc->id}}">{{$loc->desc}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        @endcan
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
@@ -193,25 +154,6 @@
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="submitsubcat">
-                        @can('isSadmin')
-                        <div class="mb-3">
-                            <label class="form-label">Location</label>
-                            <select id="locmaster" class="form-select" required wire:model.defer="subloc"
-                                aria-label="Default select example">
-                                <option>Select Location</option>
-                                @foreach ($locations as $loc)
-                                <option value="{{$loc->id}}">{{$loc->desc}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Category</label>
-                            <select id="fordev" class="form-select" required wire:model.defer="subcat"
-                                aria-label="Default select example">
-                                <option>Select Category</option>
-                            </select>
-                        </div>
-                        @else
                         <div class="mb-3">
                             <label class="form-label">Category</label>
                             <select class="form-select" required wire:model.defer="subcat"
@@ -222,7 +164,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        @endcan
                         <div class="mb-3">
                             <label class="form-label">Sub Category ID</label>
                             <input type="text" required wire:model.defer="subcode" class="form-control">

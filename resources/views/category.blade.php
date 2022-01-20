@@ -3,7 +3,7 @@
 <livewire:category/>
 @stop
 @push('scripts')
-<script>
+<!-- <script>
     $(function () {
     $('#locmaster').on('change', function () {
         axios.post('{{ route('catdrop') }}', {loc: $(this).val()})
@@ -16,5 +16,5 @@
             });
     });
 });
-</script>
+</script> -->
 @endpush

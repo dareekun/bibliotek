@@ -17,7 +17,6 @@ class Category extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('desc');
-            $table->string('location');
         });
     }
 

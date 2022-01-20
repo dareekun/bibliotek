@@ -18,7 +18,6 @@ class Subcategory extends Migration
             $table->string('code')->unique();
             $table->string('cat');
             $table->string('desc');
-            $table->string('location');
         });
     }
 
