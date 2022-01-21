@@ -46,7 +46,7 @@ class InternalSender extends Mailable
         $easter  = DB::table('easter')->where('id', rand(1,450))->value('text');
         return $this->from('notify.no_reply@mli.panasonic.co.id')
                     ->subject('Reminder Near Expired Document')
-                    ->attach(public_path().'\doc\4OT5863J.pdf')
+                    ->attach(public_path().'\doc\'.$docname.'.pdf')
                     ->markdown('mail.internal')
                     ->with([
                         'nama'   => $this->pic,
