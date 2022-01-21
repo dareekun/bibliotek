@@ -79,7 +79,7 @@ class Users extends Component
 
     public function submit()
     {
-        if (DB::table('users')->where('nik', $this->inputnik)->orwhere('email', $this->inputemail)->doesntExist()) {
+        if (DB::table('users')->where('nik', $this->inputnik)->doesntExist()) {
             if (strlen($this->inputpass) < 5) {
                 $this->dispatchBrowserEvent('closemodal', ['modalid' => '#exampleModal']);
                 $this->dispatchBrowserEvent('toaster', ['message' => 'Password must contain atleast 6 character', 'color' => '#dc3545', 'title' => 'Password Length']);
@@ -109,8 +109,7 @@ class Users extends Component
 
     public function save($tag, $ind){
         $copynik  = DB::table('users')->where('id', $tag)->value('nik');
-        $copymail = DB::table('users')->where('id', $tag)->value('email');
-        if ($copymail == $this->users[$ind]['email'] && $copynik == $this->users[$ind]['nik']) {
+        if ($copynik == $this->users[$ind]['nik']) {
             DB::table('users')->where('id', $tag)->update([
                 'name' => $this->users[$ind]['name'],
                 'department' => $this->users[$ind]['idpt'],
@@ -121,9 +120,7 @@ class Users extends Component
         }else {
             if (DB::table('users')->where('id', '<>' ,$tag)->where('nik', $this->users[$ind]['nik'])->exists()) {
                 $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate data user', 'color' => '#dc3545', 'title' => 'Duplicate User']);
-            } elseif (DB::table('users')->where('id', '<>', $tag)->where('email', $this->users[$ind]['email'])->exists()) {
-                $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate data user', 'color' => '#dc3545', 'title' => 'Duplicate User']);
-            }else {
+            } else {
                 DB::table('users')->where('id', $tag)->update([
                 'nik' => $this->users[$ind]['nik'],
                 'name' => $this->users[$ind]['name'],

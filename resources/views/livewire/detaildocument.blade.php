@@ -6,11 +6,17 @@
                     <div class="row">
                         <div class="col-3"><b>{{$pass}}</b></div>
                         <div class="col-9 text-end">
+                            @if ($docstatus == 0)
+                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                data-bs-target="#Modal0">
+                                <i class="fas fa-file-upload"></i> <span> Reactive Document</span></button>
+                            @else 
                             <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
                                 data-bs-target="#Modal1">
                                 <i class="fas fa-file-upload"></i> <span> Update Document</span></button>
+                            @endif
                             @if ($statusdoc == 0)
-                            <button class="btn btn-sm btn-outline-primary" wire:click="editdoc()">
+                            <button class="btn btn-sm btn-outline-info" wire:click="editdoc()">
                                 <i class="fas fa-pencil-alt"></i> <span> Edit</span></button>
                             @else
                             <button class="btn btn-sm btn-outline-danger" wire:click="canceldoc()">
@@ -41,7 +47,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-2">Person In Charge</div>
+                        <div class="col-2">Document Owner</div>
                         <div class="col-3">
                             <select class="form-select" required wire:model.defer="records.{{$index}}.idpic"
                                 aria-label="Default select example">
@@ -89,29 +95,45 @@
                     @else
                     <div class="row">
                         <div class="col-2">Issue Date</div>
-                        <div class="col-3">{{$rcd->issuedate}}</div>
+                        <div class="col-3">{{date('d-m-Y', strtotime($rcd->issuedate))}}</div>
                         <div class="col-2">Expired Date</div>
-                        <div class="col-3">{{$rcd->expireddate}}</div>
+                        <div class="col-3">{{date('d-m-Y', strtotime($rcd->expireddate))}}</div>
                     </div>
                     <div class="row">
                         <div class="col-2">Reminder Days</div>
-                        <div class="col-3">{{$rcd->reminder}}</div>
+                        <div class="col-3">{{$rcd->reminder}} Before</div>
                         <div class="col-2">Status Document</div>
                         <div class="col-3">
-                            @if ($rcd->statusdoc == 3)
-                            <span class="text-danger">Expired</span>
+                            @if ($rcd->statusdoc == 1)
+                            <i class="fas fa-check-circle text-success"> Valid</i> 
                             @elseif ($rcd->statusdoc == 2)
-                            <span class="text-warning">Deadline</span>
-                            @elseif ($rcd->statusdoc == 1)
-                            <span class="text-success">Valid</span>
+                            <i class="fas fa-check-circle text-danger"> Pending</i> 
+                            @elseif ($rcd->statusdoc == 3)
+                            <i class="fas fa-check-circle text-warning"> On Going</i> 
+                            @elseif ($rcd->statusdoc == 4)
+                            <i class="fas fa-check-circle text-info"> Waiting</i> 
+                            @else
+                            <i class="fas fa-check-circle text-secondary"> Deactive</i> 
                             @endif
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-2">Person In Charge</div>
-                        <div class="col-3">{{$rcd->name}}</div>
+                        <div class="col-2">Document Owner</div>
+                        <div class="col-3">
+                            @if ($rcd->name == '')
+                            <span class="text-danger"> No Document Owner!</span>
+                            @else 
+                            {{$rcd->name}}
+                            @endif
+                        </div>
                         <div class="col-2">Remark</div>
-                        <div class="col-3">{{$rcd->remark}}</div>
+                        <div class="col-3">
+                            @if ($rcd->remark == '')
+                            <span class="text-danger"> -</span>
+                            @else 
+                            {{$rcd->remark}}
+                            @endif
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-2">Person In Notify</div>
@@ -143,29 +165,59 @@
                 <tbody>
                     @foreach ($table as $index => $tbl)
                     <tr>
-                        <td><button class="btn btn-sm btn-outline-link" wire:click="showpdf('{{$tbl->file}}')">{{$tbl->code}}</button></td>
-                        <td>{{$tbl->issuedate}}</td>
-                        <td>{{$tbl->expirdate}}</td>
+                        <td><button class="btn btn-sm btn-outline-link" wire:click="showpdf('{{$tbl->file}}')">
+                            @if ($tbl->code == '')
+                                <span class="text-danger"> No Document ID!</span>
+                            @else 
+                                {{$tbl->code}}
+                            @endif    
+                        </button></td>
+                        <td>{{date('d-m-Y', strtotime($tbl->issuedate))}}</td>
+                        <td>{{date('d-m-Y', strtotime($tbl->expirdate))}}</td>
                         <td>
-                            @if ($rcd->statusdoc == 5)
-                            <span><button class="btn btn-sm btn-warning">Waiting</button></span>
-                            @elseif ($rcd->statusdoc == 4)
-                            <span><button class="btn btn-sm btn-warning">Pending</button></span>
-                            @elseif ($rcd->statusdoc == 3)
-                            <span class="text-danger"><i class="fas fa-check-circle"></i></span>
-                            @elseif ($rcd->statusdoc == 2)
-                            <span class="text-warning"><i class="fas fa-check-circle"></i></span>
-                            @elseif ($rcd->statusdoc == 1)
-                            <span class="text-success"><i class="fas fa-check-circle"></i></span>
-                            @elseif ($rcd->statusdoc == 0)
-                            <span class="text-secondary"><i class="fas fa-check-circle"></i></span>
+                            @if ($tbl->statusdoc == 1) 
+                            <i class="fas fa-check-circle text-success"> Valid</i> 
+                            @elseif ($tbl->statusdoc == 2) 
+                            <i class="fas fa-check-circle text-danger"> Pending</i> 
+                            @elseif ($tbl->statusdoc == 3)
+                            <i class="fas fa-check-circle text-warning"> On Going</i> 
+                            @elseif ($tbl->statusdoc == 4)
+                            <i class="fas fa-check-circle text-info"> Waiting</i> 
+                            @else
+                            <i class="fas fa-check-circle text-secondary"> Deactive</i> 
                             @endif
-
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+    <!-- Modal 0-->
+    <div class="modal fade" id="Modal0" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reactive Document</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row py-2">
+                        <div class="col-12 text-center">
+                            Its look like your document have been deactive, Do you want to reactive it again?
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-6 text-center">
+                            <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-dismiss="modal"
+                                data-bs-target="#Modal2">Yes</button>
+                        </div>
+                        <div class="col-6 text-center">
+                            <button class="btn btn-outline-danger" data-bs-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Modal 1-->
@@ -197,19 +249,20 @@
         </div>
     </div>
     <!-- Modal 2-->
-    <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" wire:ignore aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Upload New Document</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form wire:submit.prevent="newdoc">
                 <div class="modal-body">
                     <div class="row py-2">
-                        <div class="col-12 text-center">
+                        <div class="col-12">
                             <div class="mb-3">
                                 <label for="start" class="form-label">No Document</label>
-                                <input type="text" required wire:model.defer="newnodoc" class="form-control">
+                                <input type="text" wire:model.defer="newnodoc" class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="end" class="form-label">Issued date</label>
@@ -226,13 +279,14 @@
                     </div>
                     <div class="row py-2">
                         <div class="col-6 text-center">
-                            <button class="btn btn-outline-success" wire:click="newdoc">Save</button>
+                            <button class="btn btn-outline-success" type="submit">Save</button>
                         </div>
                         <div class="col-6 text-center">
                             <button class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
+            </form>
             </div>
         </div>
     </div>
@@ -242,7 +296,7 @@
         <div class="modal-dialog modal-xl h-100">
             <div class="modal-content h-90">
                 <div class="modal-body">
-                    <embed id="pdfloc" src="{{asset('storage/docs/'.$document.'.pdf')}}" type="application/pdf" width="100%" height="100%">
+                    <embed id="pdfloc" src="{{asset('doc/'.$document.'.pdf')}}" type="application/pdf" width="100%" height="100%">
                 </div>
             </div>
         </div>

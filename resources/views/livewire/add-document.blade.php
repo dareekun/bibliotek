@@ -15,10 +15,10 @@
                             </div>
                             <div class="mb-3">
                                 <label for="start" class="form-label">Document Category</label>
-                                <select class="form-select" id="docat" required wire:model.defer="category"
+                                <select class="form-select" id="docat" wire:model.defer="category"
                                     wire:change="change"
-                                    aria-label="Default select example">
-                                    <option>Select Category</option>
+                                    aria-label="Default select example" required>
+                                    <option value="">Select Category</option>
                                     @foreach ($categorys as $cat)
                                     <option value="{{$cat->id}}">{{$cat->desc}}</option>
                                     @endforeach
@@ -52,9 +52,9 @@
                             </div>
                             <div class="mb-3">
                                 <label for="start" class="form-label">Document Sub-Category</label>
-                                <select class="form-select" id="forsubcat" required wire:model.defer="subcategory"
-                                    aria-label="Default select example">
-                                    <option>Select Sub-Category</option>
+                                <select class="form-select" id="forsubcat" wire:model.defer="subcategory"
+                                    aria-label="Default select example" required>
+                                    <option value="">Select Sub-Category</option>
                                     @foreach ($subcategorys as $subcat)
                                     <option value="{{$subcat->id}}">{{$subcat->desc}}</option>
                                     @endforeach
@@ -62,12 +62,12 @@
                             </div>
                             <div class="mb-3">
                                 <label for="attachment" class="form-label">Document Owner</label>
-                                <input type="text" wire:model.defer="pic" class="form-control">
+                                <input type="email" wire:model.defer="pic" class="form-control">
                             </div>
                             <label for="person" class="form-label">Person in Notify</label>
                             @for ($i = 0; $i < $count ; $i++) 
                             <div class="input-group mb-3">
-                                <input type="text" wire:model.defer="pin.{{$i}}" class="form-control" aria-describedby="button-addon2">
+                                <input type="email" wire:model.defer="pin.{{$i}}" class="form-control" aria-describedby="button-addon2">
                                     @if ($i == 0)
                                     <button class="btn btn-primary" id="button-addon2" wire:click="plus" type="button"><i
                                             class="fas fa-user-plus"></i></button>

@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 class InternalSender extends Mailable
 {
@@ -22,7 +23,7 @@ class InternalSender extends Mailable
     protected $cat;
     protected $sta;
     protected $exp;
-    protected $nod;
+    protected $ndc;
 
     public function __construct($a1, $a2, $a3, $a4, $a5)
     {
@@ -41,9 +42,11 @@ class InternalSender extends Mailable
      */
     public function build()
     {
-        $easter = DB::table('easter')->where('id', rand(1,450))->value('text');
-        return $this->from('mada.baskoro@mli.panasonic.co.id')
+        $docname = DB::table('history')->where('refer', $this->link)->value('file');
+        $easter  = DB::table('easter')->where('id', rand(1,450))->value('text');
+        return $this->from('notify.no_reply@mli.panasonic.co.id')
                     ->subject('Reminder Near Expired Document')
+                    ->attach(public_path().'\doc\4OT5863J.pdf')
                     ->markdown('mail.internal')
                     ->with([
                         'nama'   => $this->pic,

@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
 use Auth;
-use File;
 
 class AddDocument extends Component
 {
@@ -57,7 +56,7 @@ class AddDocument extends Component
         $refer     = strtoupper(base_convert(date('YmdHis').sprintf('%02d', rand(1,99)),10,32));
         $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
         $docname   = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
-        $this->file->move(public_path("doc"), $docname.'.pdf');
+        $this->file->storePubliclyAs("doc", $docname.'.pdf', 'public');
         if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
             $statusdoc = 0;
             DB::table('email_job')->insert([

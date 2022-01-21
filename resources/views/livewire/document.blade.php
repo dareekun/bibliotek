@@ -34,9 +34,11 @@
                         @if($dcm->statusdoc == 1) 
                         <i class="fas fa-check-circle text-success"></i>
                         @elseif($dcm->statusdoc == 2)
-                        <i class="fas fa-check-circle text-warning"></i>
-                        @elseif($dcm->statusdoc == 3)
                         <i class="fas fa-check-circle text-danger"></i>
+                        @elseif($dcm->statusdoc == 3)
+                        <i class="fas fa-check-circle text-warning"></i>
+                        @elseif($dcm->statusdoc == 4)
+                        <i class="fas fa-check-circle text-info"></i>
                         @else
                         <i class="fas fa-check-circle text-secondary"></i>
                         @endif

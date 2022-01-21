@@ -87,10 +87,10 @@ class ApiController extends Controller
         foreach ($records as $rcds) {
             $cc  = DB::table('notify')->where('refer', $rcds->refer)->join('users', 'users.id', '=', 'notify.user')->pluck('users.email');
             $mst = DB::table('users')->where('id', $rcds->creator)->value('email');
-            $pic = DB::table('users')->where('id', $rcds->pic)->value('email');
+            $pic = DB::table('document')->where('id', $rcds->refer)->value('pic');
             $nma = DB::table('users')->where('id', $rcds->pic)->value('name');
             $ndc = DB::table('history')->where('refer', $rcds->refer)->orderBy('id', 'desc')->limit(1)->value('code');
-            $mgr = DB::table('users')->where('role', 'manager')->where('department', $rcds->department)->limit(1)->value('email');
+            $mgr = DB::table('users')->where('role', 'manager')->where('department', $rcds->department)->value('email');
             array_push($cc, $mgr);
             array_push($cc, $mst);
             $cc  = array_filter($cc);

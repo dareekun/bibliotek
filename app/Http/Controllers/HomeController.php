@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
+use App\Mail\InternalSender;
+use Illuminate\Support\Facades\Mail;
 
 use Auth;
 
@@ -19,7 +21,11 @@ class HomeController extends Controller
     }
 
     public function test(){
-        return Activity::all();
+        return 'pancen oye';
+        // Mail::to('mada.baskoro@mli.panasonic.co.id')
+        //     ->cc('madabaskoro@yahoo.com')
+        //     ->queue(new InternalSender('test', 'manuk', 'asuransi jiwa', date('now'), 'test'));
+        // return 'mail';
     }
 
     public function newdocument(){

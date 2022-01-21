@@ -3,11 +3,16 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Models\Activity;
 use Auth;
 
 class Detaildocument extends Component
 {
+    use WithFileUploads;
+
     public $pass;
     public $notif     = [];
     public $records   = [];
@@ -19,6 +24,7 @@ class Detaildocument extends Component
     public $newissuedate;
     public $newexpiredate;
     public $newfile;
+    public $docstatus;
 
     public function editdoc(){
         $this->statusdoc = 1;
@@ -36,13 +42,22 @@ class Detaildocument extends Component
     public function update(){
         $status = DB::table('document')->where('id', $this->pass)->value('statusdoc');
         if ($status == 4) {
+            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#Modal1']);
             $this->dispatchBrowserEvent('openmodal', ['modalid' => '#Modal2']);
-        } else {
+        } elseif($status == 1){
+            DB::table('document')->where('id', $this->pass)->update([
+                'statusdoc' => 3
+            ]);
+            activity()->log('Update Document ('.$this->pass.')');
+            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#Modal1']);
+        }
+        else {
             $newstatus = $status + 1;
             DB::table('document')->where('id', $this->pass)->update([
                 'statusdoc' => $newstatus
             ]);
             activity()->log('Update Document ('.$this->pass.')');
+            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#Modal1']);
         }
     }
 
@@ -119,56 +134,48 @@ class Detaildocument extends Component
         }
     }
     public function newdoc(){
+
+        $this->validate([
+            'newfile' => 'max:20480',
+        ]);
+
+        $docname   = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
+        $this->newfile->storePubliclyAs("doc", $docname.'.pdf', 'public');
         DB::table('history')->insert([
             'refer' => $this->pass,
             'code' => $this->newnodoc,
             'statusdoc' => 1,
             'issuedate' => $this->newissuedate,
             'expirdate' => $this->newexpiredate,
-            'file' => $this->newfile
+            'file' => $docname
         ]);
         DB::table('document')->where('id', $this->pass)->update([
-            'issuedate' => $this->newissuedate,
-            'expirdate' => $this->newexpiredate,
-            'statusdoc' => 1
+            'issuedate'   => $this->newissuedate,
+            'expireddate' => $this->newexpiredate,
+            'statusdoc'   => 1
         ]);
-        $this->dispatchBrowserEvent('openmodal', ['modalid' => '#Modal2']);
+        $this->dispatchBrowserEvent('closemodal', ['modalid' => '#Modal2']);
         $this->dispatchBrowserEvent('toaster', ['message' => 'Document Successfully Updated', 'color' => '#28a745', 'title' => 'Updated Document']);
         activity()->log('Upload Document ('.$this->pass.')');
     }
 
     public function render()
     {
-        if (Auth::user()->role == 'developer') { 
-            $this->records = DB::table('document')->join('users', 'users.id', '=', 'document.pic')
-            ->select('document.issuedate as issuedate', 'document.expireddate as expireddate', 'document.reminder as reminder',
-            'document.pic as idpic', 'document.docloc as docloc',
-            'users.name as name', 'document.remark as remark', 'document.statusdoc as statusdoc')
-            ->where('document.id', $this->pass)->get();
-            $this->notif = DB::table('notify')->leftJoin('users', 'users.id', '=', 'notify.user')
-            ->select('notify.id as id','notify.user as uid', 'users.name as name', 'notify.user as iduser')
-            ->where('refer', $this->pass)->get();
-            $this->users = DB::table('users')->leftjoin('department', 'users.department', '=', 'department.id')
-            ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
-            'users.role as role', 'department.id as idpt')
-            ->get();
-            $this->table = DB::table('history')->where('refer', $this->pass)->get();
-        } else {
-            $location = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-            $this->records = DB::table('document')->join('users', 'users.id', '=', 'document.pic')
-            ->select('document.issuedate as issuedate', 'document.expireddate as expireddate', 'document.reminder as reminder',
-            'document.pic as idpic', 'document.docloc as docloc',
-            'users.name as name', 'document.remark as remark', 'document.statusdoc as statusdoc')
-            ->where('document.id', $this->pass)->get();
-            $this->notif = DB::table('notify')->join('users', 'users.id', '=', 'notify.user')
-            ->select('notify.user as uid', 'users.name as name', 'notify.user as iduser')
-            ->where('refer', $this->pass)->get();
-            $this->users = DB::table('users')->leftjoin('department', 'users.department', '=', 'department.id')->where('department.location', $location)
-            ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
-            'users.role as role', 'department.id as idpt')
-            ->get();
-            $this->table = DB::table('history')->where('refer', $this->pass)->get();
-        }
+        $this->docstatus = DB::table('document')->where('document.id', $this->pass)->value('statusdoc');
+        $location        = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+        $this->records   = DB::table('document')->leftJoin('users', 'users.id', '=', 'document.pic')
+        ->select('document.issuedate as issuedate', 'document.expireddate as expireddate', 'document.reminder as reminder',
+        'document.pic as idpic', 'document.docloc as docloc',
+        'users.name as name', 'document.remark as remark', 'document.statusdoc as statusdoc')
+        ->where('document.id', $this->pass)->get();
+        $this->notif     = DB::table('notify')->leftJoin('users', 'users.id', '=', 'notify.user')
+        ->select('notify.user as uid', 'users.name as name', 'notify.user as iduser')
+        ->where('refer', $this->pass)->get();
+        $this->users     = DB::table('users')->leftjoin('department', 'users.department', '=', 'department.id')
+        ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
+        'users.role as role', 'department.id as idpt')
+        ->get();
+        $this->table     = DB::table('history')->where('refer', $this->pass)->get();
         return view('livewire.detaildocument');
     }
 }
