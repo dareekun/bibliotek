@@ -117,7 +117,7 @@
     </div>
 
     <!-- Modal for add category -->
-    <div class="modal fade" id="addcategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div wire:ignore class="modal fade" id="addcategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -145,7 +145,7 @@
     </div>
 
     <!-- Modal for add subcategory -->
-    <div class="modal fade" id="addsubcategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div wire:ignore class="modal fade" id="addsubcategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -158,7 +158,7 @@
                             <label class="form-label">Category</label>
                             <select class="form-select" required wire:model.defer="subcat"
                                 aria-label="Default select example">
-                                <option>Select Category</option>
+                                <option value="">Select Category</option>
                                 @foreach ($categorys as $cat)
                                 <option value="{{$cat->id}}">{{$cat->desc}}</option>
                                 @endforeach

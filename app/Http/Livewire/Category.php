@@ -38,7 +38,7 @@ class Category extends Component
         $this->dispatchBrowserEvent('toaster', ['message' => 'Location added successfully', 'color' => '#28a745', 'title' => 'Success Add Category']);
         } else {
         $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addcategory']);
-        $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#dc3545', 'title' => 'Duplicate Data']);
         }
     }
 
@@ -56,7 +56,7 @@ class Category extends Component
         $this->dispatchBrowserEvent('toaster', ['message' => 'Location added successfully', 'color' => '#28a745', 'title' => 'Success Add Category']);
         } else {
         $this->dispatchBrowserEvent('closemodal', ['modalid' => '#addsubcategory']);
-        $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#dc3545', 'title' => 'Duplicate Data']);
         }
     }
     public function editcat($id){
@@ -93,7 +93,7 @@ class Category extends Component
             $this->statussub[$index] = 0;
             $this->dispatchBrowserEvent('toaster', ['message' => 'Sub-Category data changed successfully', 'color' => '#28a745', 'title' => 'Change location data']);
         } else {
-            $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Location Data', 'color' => '#dc3545', 'title' => 'Duplicate Data']);
         }
     }
 
@@ -113,7 +113,7 @@ class Category extends Component
             $this->statuscat[$index] = 0;       
             $this->dispatchBrowserEvent('toaster', ['message' => 'Category data changed successfully', 'color' => '#28a745', 'title' => 'Change location data']);
         } else {
-            $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Category Data', 'color' => '#28a745', 'title' => 'Duplicate Data']);
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate Category Data', 'color' => '#dc3545', 'title' => 'Duplicate Data']);
         }
     }
 
