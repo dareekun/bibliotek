@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 Route::post('catdrop',  [HomeController::class, 'catdrop'])->name('catdrop');
 Route::post('subcatdrop',  [HomeController::class, 'subcatdrop'])->name('subcatdrop');
-Route::get('/test', [HomeController::class, 'test']);
+Route::get('/test/{id}', [HomeController::class, 'test']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 Route::middleware(['auth:sanctum', 'verified'])->get('/detail/{id}', [HomeController::class, 'detail'])->name('detail');

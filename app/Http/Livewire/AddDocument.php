@@ -53,62 +53,70 @@ class AddDocument extends Component
         $this->validate([
             'file' => 'max:20480',
         ]);
-        $refer     = strtoupper(base_convert(date('YmdHis').sprintf('%02d', rand(1,99)),10,32));
-        $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-        $docname   = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
-        $this->file->storePubliclyAs("doc", $docname.'.pdf', 'public');
-        if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
-            $statusdoc = 0;
-            DB::table('email_job')->insert([
-                'refer'     => $refer,
-                'condition' => 0
-            ]);
-        }elseif (date('Ymd', strtotime($this->expiredate.' - '.  $this->reminder. ' days')) < date('Ymd') && (date('Ymd', strtotime($this->expiredate)) > date('Ymd'))) {
-            $statusdoc = 2;
-            DB::table('email_job')->insert([
-                'refer'     => $refer,
-                'condition' => 0
-            ]);
-        } else {
-            $statusdoc = 1;
-        }
-        DB::table('document')->insert([
-            'id'          => $refer,
-            'pic'         => $this->pic,
-            'creator'     => Auth::user()->id,
-            'title'       => $this->title,
-            'department'  => Auth::user()->department,
-            'category'    => $this->category,
-            'subcategory' => $this->subcategory,
-            'issuedate'   => $this->createdate,
-            'expireddate' => $this->expiredate,
-            'reminder'    => $this->reminder,
-            'remark'      => $this->remark,
-            'statusdoc'   => $statusdoc,
-            'location'    => $location,
-            'docloc'      => $this->docloc,
-        ]);
-        DB::table('history')->insert([
-            'refer'       => $refer,
-            'code'        => $this->nodoc,
-            'statusdoc'   => $statusdoc,
-            'file'        => $docname,
-            'issuedate'   => $this->createdate,
-            'expirdate'   => $this->expiredate,
-        ]);
-        for ($i = 0; $i < count($this->pin); $i++) {
-            if ($this->pin[$i] != '') {
-                DB::table('notify')->insert([
-                    'refer'  => $refer,
-                    'user'   => $this->pin[$i],
+        if (strtotime($this->expiredate) >= strtotime($this->createdate)) {
+            $refer     = strtoupper(base_convert(date('YmdHis').sprintf('%02d', rand(1,99)),10,32));
+            $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+            $docname   = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
+            $this->file->storePubliclyAs("doc", $docname.'.pdf', 'public');
+            if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
+                $statusdoc = 0;
+                DB::table('email_job')->insert([
+                    'refer'     => $refer,
+                    'condition' => 0
+                ]);
+            }elseif (date('Ymd', strtotime($this->expiredate.' - '.  $this->reminder. ' days')) < date('Ymd') && (date('Ymd', strtotime($this->expiredate)) > date('Ymd'))) {
+                $statusdoc = 2;
+                DB::table('email_job')->insert([
+                    'refer'     => $refer,
+                    'condition' => 0
                 ]);
             } else {
-                // Do Nothing
+                $statusdoc = 1;
             }
+            DB::table('document')->insert([
+                'id'          => $refer,
+                'pic'         => $this->pic,
+                'creator'     => Auth::user()->id,
+                'title'       => $this->title,
+                'department'  => Auth::user()->department,
+                'category'    => $this->category,
+                'subcategory' => $this->subcategory,
+                'issuedate'   => $this->createdate,
+                'expireddate' => $this->expiredate,
+                'reminder'    => $this->reminder,
+                'remark'      => $this->remark,
+                'statusdoc'   => $statusdoc,
+                'location'    => $location,
+                'docloc'      => $this->docloc,
+            ]);
+            DB::table('history')->insert([
+                'refer'       => $refer,
+                'code'        => $this->nodoc,
+                'statusdoc'   => $statusdoc,
+                'file'        => $docname,
+                'issuedate'   => $this->createdate,
+                'expirdate'   => $this->expiredate,
+            ]);
+            for ($i = 0; $i < count($this->pin); $i++) {
+                if ($this->pin[$i] != '') {
+                    if(DB::table('notify')->where('refer', $refer)->where('user', $this->pin[$i])->doesntExist()) {
+                        DB::table('notify')->insert([
+                            'refer'  => $refer,
+                            'user'   => $this->pin[$i],
+                        ]);
+                    } else {
+                        // Do Nothing
+                    }
+                } else {
+                    // Do Nothing
+                }
+            }
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Save Successfull']);
+            activity()->log('Add Document ('.$refer.')');
+            return redirect()->route('detail', [$refer]);
+        } else {
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Opps, date data have some issue', 'color' => '#dc3545', 'title' => 'Input Date Error']);
         }
-        $this->dispatchBrowserEvent('toaster', ['message' => 'Document Added Successfully', 'color' => '#28a745', 'title' => 'Save Successfull']);
-        activity()->log('Add Document ('.$refer.')');
-        return redirect()->route('detail', [$refer]);
     }
 
     public function render()

@@ -25,18 +25,31 @@ class Detaildocument extends Component
     public $newexpiredate;
     public $newfile;
     public $docstatus;
+    public $tempdatadel = [];
+    public $tempdataupd = [];
+
+
+    public function mount(){
+        DB::table('notify')->where('refer', $this->pass)->where('user', '')->delete();
+    }
 
     public function editdoc(){
-        $this->statusdoc = 1;
+        $this->statusdoc   = 1;
+        $this->tempdataupd = [];
+        $this->tempdatadel = [];
+        $nonf = DB::table('notify')->where('refer', $this->pass)->get();
+        foreach ($nonf as $nft) {
+            $nano = [];
+            array_push($nano, $nft->id);
+            array_push($nano, $nft->user);
+            array_push($this->tempdataupd, $nano);
+        }
     }
 
     public function canceldoc(){
-        DB::table('notify')->where('refer', $this->pass)->where('user', '-')->delete();
-        $this->statusdoc = 0;
-    }
-
-    public function mount(){
-        DB::table('notify')->where('refer', $this->pass)->where('user', '-')->delete();
+        $this->statusdoc   = 0;
+        $this->tempdatadel = [];
+        $this->tempdataupd = [];
     }
 
     public function update(){
@@ -70,44 +83,26 @@ class Detaildocument extends Component
         $this->dispatchBrowserEvent('toaster', ['message' => 'Document Successfully Deactivate', 'color' => '#28a745', 'title' => 'Deactivate Document']);
     }
 
-    public function savedoc($index){
-        if (strtotime($this->records[$index]['expireddate'].' - '.  $this->records[$index]['reminder']. ' days') < strtotime('now') && strtotime($this->records[$index]['expireddate']) > strtotime('now')){
-            $newstatus = 2;
-            DB::table('email_job')->insert([
-                'refer'     => $refer,
-                'condition' => 0
-            ]);
-        } else if (strtotime($this->records[$index]['expireddate']) <= strtotime('now')) {
-            $newstatus = 0;
-            DB::table('email_job')->insert([
-                'refer'     => $refer,
-                'condition' => 0
-            ]);
-        } else {
-            $newstatus = 1;
-        }
-        DB::table('document')->where('id', $this->pass)->update([
-            'issuedate'   => $this->records[$index]['issuedate'],
-            'expireddate' => $this->records[$index]['expireddate'],
-            'reminder'    => $this->records[$index]['reminder'],
-            'pic'         => $this->records[$index]['idpic'],
-            'remark'      => $this->records[$index]['remark'],
-            'statusdoc'   => $newstatus
-        ]);
-        DB::table('notify')->where('refer', $this->pass)->where('user', '-')->delete();
-        activity()->log('Edited Document ('.$this->pass.')');
-        $this->statusdoc = 0;
-        $this->dispatchBrowserEvent('toaster', ['message' => 'Change Successfully Saved', 'color' => '#28a745', 'title' => 'Edit Document']);
-    }
-
     public function showpdf($file){
         $this->document = $file;
         $this->dispatchBrowserEvent('openmodal', ['modalid' => '#modalpdf']);
     }
 
-    public function deletepin($pinid){
-        DB::table('notify')->where('refer', $this->pass)->where('id', $pinid)->delete();
-        activity()->log('Deleted Person Notify On Document ('.$this->pass.')');
+    public function tempdelete($index){
+            $value = $this->tempdataupd[$index][1];
+        if (DB::table('notify')->where('refer', $this->pass)->where('user', $value)->exists()) {
+            $key = array_search($value, array_column($this->tempdataupd, 1));
+            $this->dispatchBrowserEvent('toaster', ['message' => $key, 'color' => '#dc3545', 'title' => 'Input Date Error']);
+            unset($this->tempdataupd[$key]);
+            $this->tempdataupd  = array_values($this->tempdataupd);
+            $tempo = DB::table('notify')->where('refer', $this->pass)->where('user', $value)->limit(1)->value('id');
+            array_push($this->tempdatadel, $tempo);
+        } else {
+            $key = array_search($value, array_column($this->tempdataupd, 1));
+            $this->dispatchBrowserEvent('toaster', ['message' => $value, 'color' => '#dc3545', 'title' => 'Input Date Error']);
+            unset($this->tempdataupd[$key]);
+            $this->tempdataupd  = array_values($this->tempdataupd);
+        }
     }
 
     public function changepin($pinid, $no){
@@ -124,58 +119,121 @@ class Detaildocument extends Component
     }
 
     public function addpin(){
-        if (count($this->notif) < 3) {
-            DB::table('notify')->insert([
-                'refer' => $this->pass,
-                'user' => '-'
-            ]);
+        if (count($this->tempdataupd) < 3) {
+            $nano = [];
+            array_push($nano, '');
+            array_push($nano, '');
+            array_push($this->tempdataupd, $nano);
         } else {
             $this->dispatchBrowserEvent('toaster', ['message' => 'Maximal Notification 3 Person', 'color' => '#dc3545', 'title' => 'Email Limit']);
         }
     }
-    public function newdoc(){
 
+    public function savedoc($index){
+        if (strtotime($this->records[$index]['expireddate']) > strtotime($this->records[$index]['issuedate'])) {
+            if (strtotime($this->records[$index]['expireddate'].' - '.  $this->records[$index]['reminder']. ' days') < strtotime('now') && strtotime($this->records[$index]['expireddate']) > strtotime('now')){
+                $newstatus = 2;
+                DB::table('email_job')->insert([
+                    'refer'     => $this->pass,
+                    'condition' => $newstatus
+                ]);
+            } else if (strtotime($this->records[$index]['expireddate']) <= strtotime('now')) {
+                $newstatus = 0;
+                DB::table('email_job')->insert([
+                    'refer'     => $this->pass,
+                    'condition' => $newstatus
+                ]);
+            } else {
+                $newstatus = 1;
+            }
+            DB::table('document')->where('id', $this->pass)->update([
+                'issuedate'   => $this->records[$index]['issuedate'],
+                'expireddate' => $this->records[$index]['expireddate'],
+                'reminder'    => $this->records[$index]['reminder'],
+                'pic'         => $this->records[$index]['emailpic'],
+                'remark'      => $this->records[$index]['remark'],
+                'statusdoc'   => $newstatus
+            ]);
+            for ($i = 0; $i < count($this->tempdatadel); $i++) {
+                if (DB::table('notify')->where('id', $this->tempdatadel[$i])->exists()) {
+                    DB::table('notify')->where('id', $this->tempdatadel[$i])->delete();
+                }else {
+                    //Do Nothing
+                }
+            }
+            for ($n = 0; $n < count($this->tempdataupd); $n++) {
+                if (DB::table('notify')->where('refer', $this->pass)->where('user', $this->tempdataupd[$n][1])->exists()) {
+                    // Do Nothing
+                }else {
+                    if ($this->tempdataupd[$n][0] == NULL) {
+                        DB::table('notify')->insert([
+                            'refer' => $this->pass,
+                            'user' => $this->tempdataupd[$n][1]
+                        ]);
+                    } else {
+                        DB::table('notify')->where('id', $this->tempdataupd[$n][0])->update([
+                            'refer' => $this->pass,
+                            'user' => $this->tempdataupd[$n][1]
+                        ]);
+                    }
+                }
+            }
+            DB::table('notify')->where('refer', $this->pass)->where('user', '-')->delete();
+            activity()->log('Edited Document ('.$this->pass.')');
+            $this->statusdoc = 0;
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Change Successfully Saved', 'color' => '#28a745', 'title' => 'Edit Document']);
+        } else {
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Opps, date data have some issue', 'color' => '#dc3545', 'title' => 'Input Date Error']);
+        }
+    }
+
+    public function newdoc(){
         $this->validate([
             'newfile' => 'max:20480',
         ]);
-
-        $docname   = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
-        $this->newfile->storePubliclyAs("doc", $docname.'.pdf', 'public');
-        DB::table('history')->insert([
-            'refer' => $this->pass,
-            'code' => $this->newnodoc,
-            'statusdoc' => 1,
-            'issuedate' => $this->newissuedate,
-            'expirdate' => $this->newexpiredate,
-            'file' => $docname
-        ]);
-        DB::table('document')->where('id', $this->pass)->update([
-            'issuedate'   => $this->newissuedate,
-            'expireddate' => $this->newexpiredate,
-            'statusdoc'   => 1
-        ]);
-        $this->dispatchBrowserEvent('closemodal', ['modalid' => '#Modal2']);
-        $this->dispatchBrowserEvent('toaster', ['message' => 'Document Successfully Updated', 'color' => '#28a745', 'title' => 'Updated Document']);
-        activity()->log('Upload Document ('.$this->pass.')');
+        if (strtotime($this->newexpiredate) > strtotime($this->newissuedate)) {
+            $docname   = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
+            $this->newfile->storePubliclyAs("doc", $docname.'.pdf', 'public');
+            $coundown = DB::table('document')->where('id', $this->pass)->value('reminder');
+            if (strtotime($this->newexpiredate.' - '.  $coundown. ' days') < strtotime('now') && strtotime($this->newexpiredate) > strtotime('now')) {
+                $newstatusdoc = 2;
+            } elseif (strtotime($this->newexpiredate) <= strtotime('now')) {
+                $newstatusdoc = 0;
+            }else {
+                $newstatusdoc = 1;
+            }
+            DB::table('history')->insert([
+                'refer' => $this->pass,
+                'code' => $this->newnodoc,
+                'statusdoc' => $newstatusdoc,
+                'issuedate' => $this->newissuedate,
+                'expirdate' => $this->newexpiredate,
+                'file' => $docname
+            ]);
+            DB::table('document')->where('id', $this->pass)->update([
+                'issuedate'   => $this->newissuedate,
+                'expireddate' => $this->newexpiredate,
+                'statusdoc'   => $newstatusdoc
+            ]);
+            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#Modal2']);
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Document Successfully Updated', 'color' => '#28a745', 'title' => 'Updated Document']);
+            activity()->log('Upload Document ('.$this->pass.')');
+        } else {
+            $this->dispatchBrowserEvent('closemodal', ['modalid' => '#Modal2']);
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Opps, date data have some issue', 'color' => '#dc3545', 'title' => 'Input Date Error']);
+        }
     }
 
     public function render()
     {
         $this->docstatus = DB::table('document')->where('document.id', $this->pass)->value('statusdoc');
-        $location        = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-        $this->records   = DB::table('document')->leftJoin('users', 'users.id', '=', 'document.pic')
+        $this->records   = DB::table('document')->leftJoin('users', 'users.email', '=', 'document.pic')
         ->select('document.issuedate as issuedate', 'document.expireddate as expireddate', 'document.reminder as reminder',
-        'document.pic as idpic', 'document.docloc as docloc',
+        'document.pic as emailpic', 'document.docloc as docloc',
         'users.name as name', 'document.remark as remark', 'document.statusdoc as statusdoc')
         ->where('document.id', $this->pass)->get();
-        $this->notif     = DB::table('notify')->leftJoin('users', 'users.id', '=', 'notify.user')
-        ->select('notify.user as uid', 'users.name as name', 'notify.user as iduser')
-        ->where('refer', $this->pass)->get();
-        $this->users     = DB::table('users')->leftjoin('department', 'users.department', '=', 'department.id')
-        ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
-        'users.role as role', 'department.id as idpt')
-        ->get();
         $this->table     = DB::table('history')->where('refer', $this->pass)->get();
+        $this->notif     = DB::table('notify')->where('refer', $this->pass)->get();
         return view('livewire.detaildocument');
     }
 }

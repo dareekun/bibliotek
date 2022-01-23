@@ -69,10 +69,10 @@
                             <div class="input-group mb-3">
                                 <input type="email" wire:model.defer="pin.{{$i}}" class="form-control" aria-describedby="button-addon2">
                                     @if ($i == 0)
-                                    <button class="btn btn-primary" id="button-addon2" wire:click="plus" type="button"><i
+                                    <button class="btn btn-primary" wire:click="plus" type="button"><i
                                             class="fas fa-user-plus"></i></button>
                                     @else
-                                    <button class="btn btn-danger" id="button-addon2" wire:click="minus({{$i}})" type="button"><i
+                                    <button class="btn btn-danger" wire:click="minus({{$i}})" type="button"><i
                                             class="fas fa-user-minus"></i></button>
                                     @endif
                             </div>

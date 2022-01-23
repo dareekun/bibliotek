@@ -7,14 +7,15 @@
                         <div class="col-3"><b>{{$pass}}</b></div>
                         <div class="col-9 text-end">
                             @if ($docstatus == 0)
-                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                            <button class="btn btn-sm btn-outline-primary" @if ($statusdoc == 0) @else disabled @endif data-bs-toggle="modal"
                                 data-bs-target="#Modal0">
                                 <i class="fas fa-file-upload"></i> <span> Reactive Document</span></button>
-                            @else 
-                            <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
+                            @else
+                            <button class="btn btn-sm btn-outline-success" @if ($statusdoc == 0) @else disabled @endif data-bs-toggle="modal"
                                 data-bs-target="#Modal1">
                                 <i class="fas fa-file-upload"></i> <span> Update Document</span></button>
                             @endif
+                            
                             @if ($statusdoc == 0)
                             <button class="btn btn-sm btn-outline-info" wire:click="editdoc()">
                                 <i class="fas fa-pencil-alt"></i> <span> Edit</span></button>
@@ -30,17 +31,17 @@
                     @if ($statusdoc == 1)
                     <div class="row my-3">
                         <div class="col-2">Issue Date</div>
-                        <div class="col-3"><input class="form-control" wire:model.defer="records.{{$index}}.issuedate"
+                        <div class="col-3"><input wire:ignore class="form-control" wire:model.defer="records.{{$index}}.issuedate"
                                 type="date"></div>
                         <div class="col-2">Expired Date</div>
-                        <div class="col-3"><input class="form-control" wire:model.defer="records.{{$index}}.expireddate"
+                        <div class="col-3"><input wire:ignore class="form-control" wire:model.defer="records.{{$index}}.expireddate"
                                 type="date"></div>
                     </div>
                     <div class="row">
                         <div class="col-2">Reminder Days</div>
                         <div class="col-3 ">
                             <div class="input-group mb-3">
-                                <input class="form-control" wire:model.defer="records.{{$index}}.reminder"
+                                <input class="form-control" wire:ignore wire:model.defer="records.{{$index}}.reminder"
                                     type="number">
                                 <span class="input-group-text">days</span>
                             </div>
@@ -49,13 +50,7 @@
                     <div class="row mb-3">
                         <div class="col-2">Document Owner</div>
                         <div class="col-3">
-                            <select class="form-select" required wire:model.defer="records.{{$index}}.idpic"
-                                aria-label="Default select example">
-                                <option selected>Select Users</option>
-                                @foreach ($users as $usr)
-                                <option value="{{$usr->id}}">{{$usr->nik}} - {{$usr->name}}</option>
-                                @endforeach
-                            </select>
+                            <input class="form-control" wire:ignore wire:model.defer="records.{{$index}}.emailpic" type="email">
                         </div>
                         <div class="col-2">Remark</div>
                         <div class="col-3"><input class="form-control" wire:model.defer="records.{{$index}}.remark"
@@ -63,33 +58,25 @@
                     </div>
                     <div class="row">
                         <div class="col-2">Person In Notify</div>
-                        <div class="col-4">
-                            @foreach ($notif as $no => $ntf)
-                            <div class="row">
-                                <div class="col-10">
-                                    <div class="input-group mb-3">
-                                        <select class="form-select" required wire:model.defer="notif.{{$no}}.iduser"
-                                            wire:change="changepin({{$ntf->id}}, {{$no}})"
-                                            aria-label="Default select example">
-                                            <option selected>Select Users</option>
-                                            @foreach ($users as $usr)
-                                            <option value="{{$usr->id}}">{{$usr->nik}} - {{$usr->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                        <div class="col-3">
+                            @for ($i = 0; $i < count($tempdataupd); $i++)
+                                <div class="input-group mb-3">
+                                    <input wire:model.defer="tempdataupd.{{$i}}.1" type="email" class="form-control"
+                                        placeholder="Recipient's email" aria-label="Recipient's username"
+                                        aria-describedby="button-addon2">
+                                    <button class="btn btn-outline-danger" wire:click="tempdelete({{$i}})"
+                                        type="button"><i class="fas fa-times-circle"></i></button>
                                 </div>
-                                <div class="col-2">
-                                <button class="btn btn-outline-danger" wire:click="deletepin({{$ntf->id}})"><i class="fas fa-times-circle"></i></button>
-                                </div>
-                            </div>
-                            @endforeach
+                            @endfor
                         </div>
                         <div class="col-2">
-                        <button class="btn btn-outline-primary" wire:click="addpin"><i class="fas fa-plus-circle"></i></button>
+                            <button class="btn btn-outline-primary" wire:click="addpin"><i
+                                    class="fas fa-plus-circle"></i> Add</button>
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col-2"><button class="btn btn-outline-success w-100" wire:click="savedoc({{$index}})"><i class="fas fa-save"></i>
+                        <div class="col-2"><button class="btn btn-outline-success w-100"
+                                wire:click="savedoc({{$index}})"><i class="fas fa-save"></i>
                                 Save</button></div>
                     </div>
                     @else
@@ -105,24 +92,26 @@
                         <div class="col-2">Status Document</div>
                         <div class="col-3">
                             @if ($rcd->statusdoc == 1)
-                            <i class="fas fa-check-circle text-success"> Valid</i> 
+                            <i class="fas fa-check-circle text-success"> Valid</i>
                             @elseif ($rcd->statusdoc == 2)
-                            <i class="fas fa-check-circle text-danger"> Pending</i> 
+                            <i class="fas fa-check-circle text-danger"> Pending</i>
                             @elseif ($rcd->statusdoc == 3)
-                            <i class="fas fa-check-circle text-warning"> On Going</i> 
+                            <i class="fas fa-check-circle text-warning"> On Going</i>
                             @elseif ($rcd->statusdoc == 4)
-                            <i class="fas fa-check-circle text-info"> Waiting</i> 
+                            <i class="fas fa-check-circle text-info"> Waiting</i>
                             @else
-                            <i class="fas fa-check-circle text-secondary"> Deactive</i> 
+                            <i class="fas fa-check-circle text-secondary"> Deactive</i>
                             @endif
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-2">Document Owner</div>
                         <div class="col-3">
-                            @if ($rcd->name == '')
+                            @if ($rcd->emailpic == '')
                             <span class="text-danger"> No Document Owner!</span>
-                            @else 
+                            @elseif ($rcd->name == '')
+                            {{$rcd->emailpic}}
+                            @else
                             {{$rcd->name}}
                             @endif
                         </div>
@@ -130,7 +119,7 @@
                         <div class="col-3">
                             @if ($rcd->remark == '')
                             <span class="text-danger"> -</span>
-                            @else 
+                            @else
                             {{$rcd->remark}}
                             @endif
                         </div>
@@ -139,7 +128,7 @@
                         <div class="col-2">Person In Notify</div>
                         <div class="col-3">
                             @foreach ($notif as $ntf)
-                            {{$ntf->name}} <br>
+                            {{$ntf->user}} <br>
                             @endforeach
                         </div>
                         <div class="col-2">Location</div>
@@ -166,25 +155,25 @@
                     @foreach ($table as $index => $tbl)
                     <tr>
                         <td><button class="btn btn-sm btn-outline-link" wire:click="showpdf('{{$tbl->file}}')">
-                            @if ($tbl->code == '')
+                                @if ($tbl->code == '')
                                 <span class="text-danger"> No Document ID!</span>
-                            @else 
+                                @else
                                 {{$tbl->code}}
-                            @endif    
-                        </button></td>
+                                @endif
+                            </button></td>
                         <td>{{date('d-m-Y', strtotime($tbl->issuedate))}}</td>
                         <td>{{date('d-m-Y', strtotime($tbl->expirdate))}}</td>
                         <td>
-                            @if ($tbl->statusdoc == 1) 
-                            <i class="fas fa-check-circle text-success"> Valid</i> 
-                            @elseif ($tbl->statusdoc == 2) 
-                            <i class="fas fa-check-circle text-danger"> Pending</i> 
+                            @if ($tbl->statusdoc == 1)
+                            <i class="fas fa-check-circle text-success"> Valid</i>
+                            @elseif ($tbl->statusdoc == 2)
+                            <i class="fas fa-check-circle text-danger"> Pending</i>
                             @elseif ($tbl->statusdoc == 3)
-                            <i class="fas fa-check-circle text-warning"> On Going</i> 
+                            <i class="fas fa-check-circle text-warning"> On Going</i>
                             @elseif ($tbl->statusdoc == 4)
-                            <i class="fas fa-check-circle text-info"> Waiting</i> 
+                            <i class="fas fa-check-circle text-info"> Waiting</i>
                             @else
-                            <i class="fas fa-check-circle text-secondary"> Deactive</i> 
+                            <i class="fas fa-check-circle text-secondary"> Deactive</i>
                             @endif
                         </td>
                     </tr>
@@ -249,7 +238,8 @@
         </div>
     </div>
     <!-- Modal 2-->
-    <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" wire:ignore aria-hidden="true">
+    <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" wire:ignore
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -257,36 +247,37 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form wire:submit.prevent="newdoc">
-                <div class="modal-body">
-                    <div class="row py-2">
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="start" class="form-label">No Document</label>
-                                <input type="text" wire:model.defer="newnodoc" class="form-control">
+                    <div class="modal-body">
+                        <div class="row py-2">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="start" class="form-label">No Document</label>
+                                    <input type="text" wire:model.defer="newnodoc" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="end" class="form-label">Issued date</label>
+                                    <input type="date" required wire:model.defer="newissuedate" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="end" class="form-label">Expired date</label>
+                                    <input type="date" required wire:model.defer="newexpiredate" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="file" accept=".pdf" required wire:model.defer="newfile"
+                                        class="form-control">
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="end" class="form-label">Issued date</label>
-                                <input type="date" required wire:model.defer="newissuedate" class="form-control">
+                        </div>
+                        <div class="row py-2">
+                            <div class="col-6 text-center">
+                                <button class="btn btn-outline-success" type="submit">Save</button>
                             </div>
-                            <div class="mb-3">
-                                <label for="end" class="form-label">Expired date</label>
-                                <input type="date" required wire:model.defer="newexpiredate" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <input type="file" accept=".pdf" required wire:model.defer="newfile" class="form-control">
+                            <div class="col-6 text-center">
+                                <button class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
                             </div>
                         </div>
                     </div>
-                    <div class="row py-2">
-                        <div class="col-6 text-center">
-                            <button class="btn btn-outline-success" type="submit">Save</button>
-                        </div>
-                        <div class="col-6 text-center">
-                            <button class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                </form>
             </div>
         </div>
     </div>
@@ -296,7 +287,8 @@
         <div class="modal-dialog modal-xl h-100">
             <div class="modal-content h-90">
                 <div class="modal-body">
-                    <embed id="pdfloc" src="{{asset('doc/'.$document.'.pdf')}}" type="application/pdf" width="100%" height="100%">
+                    <embed id="pdfloc" src="{{asset('doc/'.$document.'.pdf')}}" type="application/pdf" width="100%"
+                        height="100%">
                 </div>
             </div>
         </div>
