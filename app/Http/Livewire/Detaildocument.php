@@ -155,8 +155,8 @@ class Detaildocument extends Component
                 'statusdoc'   => $newstatus
             ]);
             for ($i = 0; $i < count($this->tempdatadel); $i++) {
-                if (DB::table('notify')->where('id', $this->tempdatadel[$i])->exists()) {
-                    DB::table('notify')->where('id', $this->tempdatadel[$i])->delete();
+                if (DB::table('notify')->where('refer', $this->pass)->where('id', $this->tempdatadel[$i])->exists()) {
+                    DB::table('notify')->where('refer', $this->pass)->where('id', $this->tempdatadel[$i])->delete();
                 }else {
                     //Do Nothing
                 }
