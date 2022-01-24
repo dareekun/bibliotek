@@ -21,21 +21,21 @@ class HomeController extends Controller
     }
 
     public function test($id){
-        $temp = [];
-        $data = DB::table('notify')->where('refer', $id)->get();
-        foreach ($data as $nft){
-            $nano = [];
-            array_push($nano, $nft->id);
-            array_push($nano, $nft->user);
-            array_push($temp, $nano);
-        }
-        unset($temp[1]);
-        $temp  = array_values($temp);
-        return $temp;
-        // return 'pancen oye';
+        // $temp = [];
+        // $data = DB::table('notify')->where('refer', $id)->get();
+        // foreach ($data as $nft){
+        //     $nano = [];
+        //     array_push($nano, $nft->id);
+        //     array_push($nano, $nft->user);
+        //     array_push($temp, $nano);
+        // }
+        // unset($temp[1]);
+        // $temp  = array_values($temp);
+        // return $temp;
+        return 'pancen oye';
         // Mail::to('mada.baskoro@mli.panasonic.co.id')
         //     ->cc('madabaskoro@yahoo.com')
-        //     ->queue(new InternalSender('test', 'manuk', 'asuransi jiwa', date('now'), 'test'));
+        //     ->queue(new InternalSender($id, 'manuk', 'asuransi jiwa', date('now'), 'test'));
         // return 'mail';
     }
 

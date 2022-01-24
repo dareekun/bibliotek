@@ -42,12 +42,12 @@ class InternalSender extends Mailable
      */
     public function build()
     {
-        $docname = DB::table('history')->where('refer', $this->link)->value('file');
+        $docname = DB::table('history')->where('refer', $this->link)->orderBy('created_at', 'desc')->limit(1)->value('file');
         $easter  = DB::table('easter')->where('id', rand(1,450))->value('text');
         return $this->from('notify.no_reply@mli.panasonic.co.id')
                     ->subject('Reminder Near Expired Document')
-                    ->attach(public_path().'\doc\'.$docname.'.pdf')
-                    ->markdown('mail.internal')
+                    ->attach(public_path('doc\\').$docname.'.pdf')
+                    ->text('mail.internal')
                     ->with([
                         'nama'   => $this->pic,
                         'cat'    => $this->cat,

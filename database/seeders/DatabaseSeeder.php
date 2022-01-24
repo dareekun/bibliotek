@@ -14,23 +14,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'name' => 'developer',
-            'email' => 'mada.baskoro@id.panasonic.com',
-            'nik' => 'developer',
-            'department' => '1',
-            'password' => bcrypt('developer123'),
-            'role' => 'developer',
-        ]);
-        DB::table('users')->insert([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'nik' => 'admin',
-            'department' => '1',
-            'password' => bcrypt('admin123'),
-            'role' => 'admin',
-        ]);
-        DB::table('easter')->insert(
+        // DB::table('users')->insert([
+        //     'name' => 'developer',
+        //     'email' => 'mada.baskoro@id.panasonic.com',
+        //     'nik' => 'developer',
+        //     'department' => '1',
+        //     'password' => bcrypt('developer123'),
+        //     'role' => 'developer',
+        // ]);
+        // DB::table('users')->insert([
+        //     'name' => 'admin',
+        //     'email' => 'admin@gmail.com',
+        //     'nik' => 'admin',
+        //     'department' => '1',
+        //     'password' => bcrypt('admin123'),
+        //     'role' => 'admin',
+        // ]);
+        DB::table('easter')->insert([
         ["text" => "Did you know the Internet was originally called ARPANet (Advanced Research Projects Agency Network) designed by the US department of defense"],
         ["text" => "Did you know there are only 4 words in the English language which end in 'dous' (they are: hazardous, horrendous, stupendous and tremendous)"],
         ["text" => "Did you know ice skating rinks always go counter clock wise (for the majority of people that are right handed needing to hang onto the rail)"],
@@ -481,6 +481,6 @@ class DatabaseSeeder extends Seeder
         ["text" => "Did you know before 1920, some people used to send children in the mail?"],
         ["text" => "Did you know blinking could serve as mental rest, not eye lubrication?"],
         ["text" => "Did you know goats have emotional intelligence? "],
-        );
+        ]);
     }
 }

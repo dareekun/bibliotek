@@ -11,25 +11,6 @@ use Auth;
 
 class ApiController extends Controller
 {
-    public function datauser(){
-        if (Auth::user()->role == 'developer') {
-            $data = DB::table('users')->select('nik', 'name', 'email', 'department', 'role')->get();
-        } else { 
-            $data = DB::table('users')
-            ->select('nik', 'name', 'email', 'department', 'role')->where('role', '<>' ,'developer')->get();
-        }
-        return Datatables::of($data)->make(true);
-    }
-    public function datadepartment(){
-        if (Auth::user()->role == 'developer') {
-            $data = DB::table('department')->select('code', 'department', 'location')->get();
-        } else { 
-            $loca = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-            $data = DB::table('department')->select('id', 'code', 'department', 'location')->where('location', $loca)->get();
-        }
-        return Datatables::of($data)->make(true);
-    }
-
     public function changestatus(){
         $document = DB::table('document')->where('statusdoc', '>', 0)->get();
         foreach($document as $dcm) {
@@ -39,7 +20,6 @@ class ApiController extends Controller
                 ]);
                 DB::table('email_job')->insert([
                     'refer' => $dcm->id,
-                    'status' => 0,
                     'condition' => 0,
                 ]);
             } elseif (strtotime('now') >= strtotime($dcm->expireddate.'-'.$dcm->reminder.' days') && $dcm->statusdoc == 1){
@@ -86,17 +66,17 @@ class ApiController extends Controller
         $records = DB::table('email_job')->join('document', 'document.id', '=', 'email_job.refer')->get();
         foreach ($records as $rcds) {
             $cc  = DB::table('notify')->where('refer', $rcds->refer)->join('users', 'users.id', '=', 'notify.user')->pluck('users.email');
-            $mst = DB::table('users')->where('id', $rcds->creator)->value('email');
-            $pic = DB::table('document')->where('id', $rcds->refer)->value('pic');
-            $nma = DB::table('users')->where('id', $rcds->pic)->value('name');
-            $ndc = DB::table('history')->where('refer', $rcds->refer)->orderBy('id', 'desc')->limit(1)->value('code');
-            $mgr = DB::table('users')->where('role', 'manager')->where('department', $rcds->department)->value('email');
+            $crt = DB::table('user')->where('id', $rcds->creator)->value('email');
+            $nma = DB::table('users')->where('id', $rcds->creator)->value('name');
+            $ndc = DB::table('history')->where('refer', $rcds->refer)->orderBy('created_at', 'desc')->limit(1)->value('code');
+            $mgr = DB::table('users')->where('role', 'manager')->where('department', $rcds->department)->limit(1)->value('email');
             array_push($cc, $mgr);
             array_push($cc, $mst);
+            array_push($cc, $rcds->pic);
             $cc  = array_filter($cc);
-            Mail::to($pic)
+            Mail::to($crt)
             ->cc($cc)
-            ->queue(new InternalSender($rcds->refer, $name, $rcds->category, $rcds->expireddate, $ndc));
+            ->queue(new InternalSender($rcds->refer, $nma, $rcds->category, $rcds->expireddate, $ndc));
         }
     }
 }
