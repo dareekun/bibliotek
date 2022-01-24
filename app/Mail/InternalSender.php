@@ -47,7 +47,7 @@ class InternalSender extends Mailable
         return $this->from('notify.no_reply@mli.panasonic.co.id')
                     ->subject('Reminder Near Expired Document')
                     ->attach(public_path('doc\\').$docname.'.pdf')
-                    ->text('mail.internal')
+                    ->view('mail.internal')
                     ->with([
                         'nama'   => $this->pic,
                         'cat'    => $this->cat,
