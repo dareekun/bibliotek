@@ -94,7 +94,7 @@
                         </li>
                         <li class="sidebar-item">
                             <a href="{{ route('email_horizon') }}" class='sidebar-link'>
-                                <i class="fas fa-history"></i>
+                                <i class="fas fa-envelope"></i>
                                 <span>Email Log</span>
                             </a>
                         </li>
