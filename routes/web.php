@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/users', [AdminController:
 
 // Level Super Admin Be Advice
 Route::middleware(['auth:sanctum', 'verified'])->get('/loghorizon', [AdminController::class, 'loghorizon'])->name('log_horizon')->middleware('can:isSadmin');
+Route::middleware(['auth:sanctum', 'verified'])->get('/emailhorizon', [AdminController::class, 'emailhorizon'])->name('email_horizon')->middleware('can:isSadmin');
 Route::middleware(['auth:sanctum', 'verified'])->get('/location', [AdminController::class, 'location'])->name('location')->middleware('can:isSadmin');
 
 //Level Developer please be Advice

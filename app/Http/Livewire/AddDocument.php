@@ -60,16 +60,16 @@ class AddDocument extends Component
             $this->file->storePubliclyAs("doc", $docname.'.pdf', 'public');
             if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
                 $statusdoc = 0;
-                DB::table('email_job')->insert([
-                    'refer'     => $refer,
-                    'condition' => 0
-                ]);
+                // DB::table('email_job')->insert([
+                //     'refer'     => $refer,
+                //     'condition' => 0
+                // ]);
             }elseif (date('Ymd', strtotime($this->expiredate.' - '.  $this->reminder. ' days')) < date('Ymd') && (date('Ymd', strtotime($this->expiredate)) > date('Ymd'))) {
                 $statusdoc = 2;
-                DB::table('email_job')->insert([
-                    'refer'     => $refer,
-                    'condition' => 0
-                ]);
+                // DB::table('email_job')->insert([
+                //     'refer'     => $refer,
+                //     'condition' => 0
+                // ]);
             } else {
                 $statusdoc = 1;
             }

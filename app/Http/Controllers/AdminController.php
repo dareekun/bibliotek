@@ -41,4 +41,8 @@ class AdminController extends Controller
         }
         return view('sessions', ['logs' => $horizon]);
     }
+    public function emailhorizon(){
+        $horizon = DB::table('email_job')->where('condition', '>', 0)->limit(300)->get();
+        return view('emailsessions', ['logs' => $horizon]);
+    }
 }

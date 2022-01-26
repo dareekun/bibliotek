@@ -92,6 +92,12 @@
                                 <span>Session Log</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a href="{{ route('email_horizon') }}" class='sidebar-link'>
+                                <i class="fas fa-history"></i>
+                                <span>Email Log</span>
+                            </a>
+                        </li>
                         @endcan
                     </ul>
                 </div>

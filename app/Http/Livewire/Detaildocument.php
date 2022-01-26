@@ -133,16 +133,16 @@ class Detaildocument extends Component
         if (strtotime($this->records[$index]['expireddate']) > strtotime($this->records[$index]['issuedate'])) {
             if (strtotime($this->records[$index]['expireddate'].' - '.  $this->records[$index]['reminder']. ' days') < strtotime('now') && strtotime($this->records[$index]['expireddate']) > strtotime('now')){
                 $newstatus = 2;
-                DB::table('email_job')->insert([
-                    'refer'     => $this->pass,
-                    'condition' => $newstatus
-                ]);
+                // DB::table('email_job')->insert([
+                //     'refer'     => $this->pass,
+                //     'condition' => $newstatus
+                // ]);
             } else if (strtotime($this->records[$index]['expireddate']) <= strtotime('now')) {
                 $newstatus = 0;
-                DB::table('email_job')->insert([
-                    'refer'     => $this->pass,
-                    'condition' => $newstatus
-                ]);
+                // DB::table('email_job')->insert([
+                //     'refer'     => $this->pass,
+                //     'condition' => $newstatus
+                // ]);
             } else {
                 $newstatus = 1;
             }
