@@ -16,7 +16,7 @@ class EmailJob extends Migration
         Schema::create('email_job', function (Blueprint $table) {
             $table->id();
             $table->string('refer');
-            $table->boolean('condition');
+            $table->bigInteger('condition');
         });
     }
 
