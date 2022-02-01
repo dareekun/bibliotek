@@ -17,7 +17,7 @@
                     <tr>
                         <td>{{$index + 1}}</td>
                         <td>{{$log->refer}}</td>
-                        <td>{{date('Y/m/d - H:i:s', strtotime($log->condition))}}</td>
+                        <td>{{date('Y/m/d - H:i:s', $log->condition)}}</td>
                     </tr>
                     @endforeach
                 </tbody>
