@@ -51,11 +51,11 @@ class MailSender extends Command
             $ndc = DB::table('history')->where('refer', $rcds->refer)->orderBy('created_at', 'desc')->limit(1)->value('code');
             $mgr = DB::table('users')->where('role', 'manager')->where('department', $rcds->department)->pluck('email')->toArray();
             $cat = DB::table('category')->where('id', $rcds->category)->value('desc');
-            array_merge($cc, $mgr);
-            array_push($cc, $rcds->pic);
-            $cc  = array_filter($cc);
+            $new = array_merge($cc, $mgr);
+            array_push($new, $rcds->pic);
+            $new  = array_filter($cc);
             Mail::to($crt)
-            ->cc($cc)
+            ->cc($new)
             ->queue(new InternalSender($rcds->refer, $nma, $cat, $rcds->expireddate, $ndc));
             DB::table('email_job')->where('id', $rcds->id)->update([
                 'condition' => time()

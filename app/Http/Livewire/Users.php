@@ -108,29 +108,20 @@ class Users extends Component
     }
 
     public function save($tag, $ind){
-        $copynik  = DB::table('users')->where('id', $tag)->value('nik');
-        if ($copynik == $this->users[$ind]['nik']) {
+        $a = $this->users[$ind]['nik'];
+        $b = $this->users[$ind]['email'];
+        if (DB::table('users')->where('id', '<>' ,$tag)->where(function ($query) use ($a,$b) {$query->where('nik', $a)->orWhere('email', $b);})->exists()) {
+            $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate data user', 'color' => '#dc3545', 'title' => 'Duplicate User']);
+        } else {
             DB::table('users')->where('id', $tag)->update([
-                'name' => $this->users[$ind]['name'],
-                'department' => $this->users[$ind]['idpt'],
-                'role' => $this->users[$ind]['role'],
-            ]);                
-            $this->status[$ind] = 0;
-            $this->dispatchBrowserEvent('toaster', ['message' => 'User data changed successfully', 'color' => '#28a745', 'title' => 'Change user data']);
-        }else {
-            if (DB::table('users')->where('id', '<>' ,$tag)->where('nik', $this->users[$ind]['nik'])->exists()) {
-                $this->dispatchBrowserEvent('toaster', ['message' => 'Duplicate data user', 'color' => '#dc3545', 'title' => 'Duplicate User']);
-            } else {
-                DB::table('users')->where('id', $tag)->update([
-                'nik' => $this->users[$ind]['nik'],
-                'name' => $this->users[$ind]['name'],
-                'email' => $this->users[$ind]['email'],
-                'department' => $this->users[$ind]['idpt'],
-                'role' => $this->users[$ind]['role'],
-            ]);                
-            $this->status[$ind] = 0;
-            $this->dispatchBrowserEvent('toaster', ['message' => 'User data changed successfully', 'color' => '#28a745', 'title' => 'Change user data']);
-            }
+            'nik' => $this->users[$ind]['nik'],
+            'name' => $this->users[$ind]['name'],
+            'email' => $this->users[$ind]['email'],
+            'department' => $this->users[$ind]['idpt'],
+            'role' => $this->users[$ind]['role'],
+        ]);                
+        $this->status[$ind] = 0;
+        $this->dispatchBrowserEvent('toaster', ['message' => 'User data changed successfully', 'color' => '#28a745', 'title' => 'Change user data']);
         }
     }
 
