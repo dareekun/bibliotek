@@ -21,8 +21,8 @@ class Documents extends Migration
             $table->string('department');
             $table->string('category');
             $table->string('subcategory');
-            $table->string('issuedate');
-            $table->string('expireddate');
+            $table->date('issuedate');
+            $table->date('expireddate');
             $table->integer('reminder');
             $table->string('remark')->nullable();
             $table->string('docloc');

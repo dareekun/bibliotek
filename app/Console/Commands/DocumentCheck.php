@@ -83,6 +83,16 @@ class DocumentCheck extends Command
                 }
             }
         }
+        $history = DB::table('history')->where('statusdoc', '>', 0)->get();
+        foreach($history as $hst) {
+            if (strtotime('now') >= strtotime($hst->expirdate)) {
+                DB::table('history')->where('id', $hst->id)->update([
+                    'statusdoc' => 0
+                ]);
+            } else {
+                // Do Nothing
+            }
+        }
         // return Command::SUCCESS;
         $this->info('Successfully checcking document condition.');
     }

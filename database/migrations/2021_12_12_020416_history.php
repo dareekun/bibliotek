@@ -18,8 +18,8 @@ class History extends Migration
             $table->string('refer');
             $table->string('code')->nullable();
             $table->boolean('statusdoc');
-            $table->string('issuedate');
-            $table->string('expirdate');
+            $table->date('issuedate');
+            $table->date('expirdate');
             $table->string('file');
             $table->timestamp('created_at', $precision = 0)->useCurrent();
         });

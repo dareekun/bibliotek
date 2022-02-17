@@ -32,7 +32,7 @@ class HomeController extends Controller
         // unset($temp[1]);
         // $temp  = array_values($temp);
         // return $temp;
-        return 'pancen oye';
+        return 'pancen oye - '.$id;
         // Mail::to('mada.baskoro@mli.panasonic.co.id')
         //     ->cc('madabaskoro@yahoo.com')
         //     ->queue(new InternalSender($id, 'manuk', 'asuransi jiwa', date('now'), 'test'));
