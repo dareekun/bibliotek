@@ -36,5 +36,8 @@
             </div>
             <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Log in</button>
         </form>
+            @if (Route::has('password.request'))
+            <p><a class="font-bold" style="color:red" href="{{route('password.request')}}">Forgot password?</a>.</p>
+            @endif
     </div>
 </x-guest-layout>

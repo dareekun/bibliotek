@@ -15,6 +15,7 @@ class Documents extends Migration
     {
         Schema::create('document', function (Blueprint $table) {
             $table->string('id')->primary();
+            $table->integer('no');
             $table->string('title');
             $table->string('creator');
             $table->string('pic')->nullable();
@@ -30,7 +31,7 @@ class Documents extends Migration
             $table->boolean('statusdoc');
             $table->timestamp('created_at', $precision = 0);
         });
-        DB::statement('ALTER TABLE document ADD no INT(5) NOT NULL AUTO_INCREMENT AFTER id, ADD UNIQUE (no)');
+        // DB::statement('ALTER TABLE document ADD no INT(5) NOT NULL AUTO_INCREMENT AFTER id, ADD UNIQUE (no)');
     }
     
     // ALTER TABLE `document` ADD `no` INT(5) NOT NULL AUTO_INCREMENT AFTER `id`, ADD UNIQUE (`no`);

@@ -54,9 +54,10 @@ class AddDocument extends Component
             'file' => 'max:20480',
         ]);
         if (strtotime($this->expiredate) >= strtotime($this->createdate)) {
-            $refer     = strtoupper(base_convert(date('YmdHis').sprintf('%02d', rand(1,99)),10,32));
-            $location  = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
-            $docname   = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
+            $refer    = strtoupper(base_convert(date('YmdHis').sprintf('%02d', rand(1,99)),10,32));
+            $location = DB::table('department')->where('id', Auth::user()->department)->limit(1)->value('location');
+            $docname  = strtoupper(base_convert(time().sprintf('%02d', rand(1,99)),10,32));
+            $nomo     = DB::table('document')->where('department', Auth::user()->department)->where('category', $this->category)->where('subcategory', $this->category)->whereMonth('created_at', date('m'))->count() + 1;
             $this->file->storePubliclyAs("doc", $docname.'.pdf', 'public');
             if (date('Ymd', strtotime($this->expiredate)) <= date('Ymd')) {
                 $statusdoc = 0;
