@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <div id="auth-left">
         <div class="auth-logo">
             <a href="/"><img src="{{ asset('/images/logo/logo.png') }}" alt="Logo"></a>
         </div>
@@ -31,4 +32,5 @@
             </div>
             <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Send Password Reset Link</button>
         </form>
+    </div>
 </x-guest-layout>
