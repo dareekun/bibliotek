@@ -1,36 +1,34 @@
 <x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
+        <div class="auth-logo">
+            <a href="/"><img src="{{ asset('/images/logo/logo.png') }}" alt="Logo"></a>
+        </div>
 
         <x-jet-validation-errors class="mb-4" />
-
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
 
             <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-            <div class="block">
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus />
+            <div class="form-group position-relative has-icon-left mb-4">
+                <input type="email" class="form-control form-control-xl" placeholder="Email" :value="old('email', $request->email)" name="email">
+                <div class="form-control-icon">
+                    <i class="bi bi-envelope"></i>
+                </div>
             </div>
 
-            <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            <div class="form-group position-relative has-icon-left mb-4">
+                <input id="password" type="password" class="form-control form-control-xl" name="password" required autocomplete="new-password">
+                <div class="form-control-icon">
+                    <i class="bi bi-key"></i>
+                </div>
             </div>
-
-            <div class="mt-4">
-                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+            
+            <div class="form-group position-relative has-icon-left mb-4">
+                <input id="password" type="password" class="form-control form-control-xl" name="password" required autocomplete="new-password">
+                <div class="form-control-icon">
+                    <i class="bi bi-key"></i>
+                </div>
             </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-jet-button>
-                    {{ __('Reset Password') }}
-                </x-jet-button>
-            </div>
+            <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Send Password Reset Link</button>
         </form>
-    </x-jet-authentication-card>
 </x-guest-layout>
