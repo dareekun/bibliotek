@@ -11,7 +11,7 @@
             <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
             <div class="form-group position-relative has-icon-left mb-4">
-                <input type="email" class="form-control form-control-xl" placeholder="Email" :value="old('email', $request->email)" name="email">
+                <x-jet-input id="email" class="form-control form-control-xl" type="email" name="email" :value="old('email', $request->email)" required autofocus />
                 <div class="form-control-icon">
                     <i class="bi bi-envelope"></i>
                 </div>
