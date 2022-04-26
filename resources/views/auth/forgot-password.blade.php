@@ -6,7 +6,7 @@
         <h1 style="color:white">Forgot Password</h1>
         <p style="color:white">Please input your NIK. </p>
         @if (session('status'))
-        <div class="my-1 text-green-600">
+        <div class="my-1 text-success">
             {{ session('status') }}
         </div>
         @endif
