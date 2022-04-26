@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
 use App\Mail\InternalSender;
+use App\Mail\ResetPassword;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 use Auth;
 
@@ -18,6 +21,37 @@ class HomeController extends Controller
 
     public function detail($id){
         return view('detaildocument', ['refer' => $id]);
+    }
+
+    public function forgot_password(){
+        return view('auth.forgot-password');
+    }
+
+    public function password_reset(Request $request) {
+        //You can add validation login here
+        $user = DB::table('users')->where('nik', '=', $request->nik)->first();
+        //Check if the user exists
+        if (DB::table('users')->where('nik', '=', $request->nik)->doesntExist()) {
+        return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
+        } else {
+            //Create Password Reset Token
+            DB::table('password_resets')->insert([
+            'email' => $request->nik,
+            'token' => Str::random(60),
+            'created_at' => Carbon::now()
+            ]);
+            //Get the token just created above
+            $tokenData = DB::table('password_resets')
+            ->where('email', $request->nik)->first();
+            $email = DB::table('users')->where('nik', $request->nik)->value('email');
+            if ($this->query_reset($email, $request->nik, $tokenData->token)) {
+            return redirect()->back()->withErrors('error', trans('A reset link has been sent to your email address.'));
+            }
+        }
+    }
+
+    public function query_reset($email, $nik, $token) {
+        Mail::to($email)->queue(new ResetPassword($nik,$token));
     }
 
     public function test($id){

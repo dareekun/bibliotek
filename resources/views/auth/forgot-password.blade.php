@@ -3,15 +3,19 @@
         <div class="auth-logo">
             <a href="/"><img src="{{ asset('/images/logo/logo.png') }}" alt="Logo"></a>
         </div>
-        <h1>Forgot Password</h1>
-        <p class="mb-5" style="color:white">Input your email and we will send you reset password link.</p>
-
-        <form action="{{ route('password.email') }}" method="POST">
+        <h1 style="color:white">Forgot Password</h1>
+        <p style="color:white">Input your NIK and we will send you reset password link.</p>
+        @if (count($errors) > 0)
+        @foreach ($errors->all() as $error)
+        <p class="my-3" style="color:white">{{$error}}</p>
+        @endforeach
+        @endif
+        <form class="mt-4" action="{{ route('password_reset') }}" method="POST">
             @csrf
             <div class="form-group position-relative has-icon-left mb-4">
-                <input type="email" class="form-control form-control-xl" placeholder="Email" value="{{ old('email') }}" name="email">
+                <input type="text" class="form-control form-control-xl" placeholder="NIK" value="{{ old('nik') }}" name="nik">
                 <div class="form-control-icon">
-                    <i class="bi bi-envelope"></i>
+                    <i class="fas fa-user"></i>
                 </div>
             </div>
             <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Send Password Reset Link</button>
