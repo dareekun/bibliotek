@@ -81,6 +81,7 @@ class AddDocument extends Component
                 'title'       => $this->title,
                 'department'  => Auth::user()->department,
                 'category'    => $this->category,
+                'no'          => $nomo,
                 'subcategory' => $this->subcategory,
                 'issuedate'   => $this->createdate,
                 'expireddate' => $this->expiredate,
