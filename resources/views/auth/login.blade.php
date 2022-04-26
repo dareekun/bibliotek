@@ -3,12 +3,12 @@
     <div id="auth-left">
         <h1 class="auth-title text-white">Log in.</h1>
         @if (session('status'))
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ session('status') }}
+        <div class="my-1 text-success">
+           <p> {{ session('status') }}</p>
         </div>
         @endif
         @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="my-1 text-danger">
             {{ $errors->first() }}
         </div>
         @endif

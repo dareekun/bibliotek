@@ -10,6 +10,7 @@ use App\Mail\ResetPassword;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 use Auth;
 
@@ -28,15 +29,13 @@ class HomeController extends Controller
     }
 
     public function password_reset(Request $request) {
-        //You can add validation login here
-        $user = DB::table('users')->where('nik', '=', $request->nik)->first();
         //Check if the user exists
         if (DB::table('users')->where('nik', '=', $request->nik)->doesntExist()) {
         return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
         } else {
             //Create Password Reset Token
-            DB::table('password_resets')->insert([
-            'email' => $request->nik,
+            DB::table('password_resets')->updateOrInsert ([
+            'email' => $request->nik],[
             'token' => Str::random(60),
             'created_at' => Carbon::now()
             ]);
@@ -44,14 +43,36 @@ class HomeController extends Controller
             $tokenData = DB::table('password_resets')
             ->where('email', $request->nik)->first();
             $email = DB::table('users')->where('nik', $request->nik)->value('email');
-            if ($this->query_reset($email, $request->nik, $tokenData->token)) {
-            return redirect()->back()->withErrors('error', trans('A reset link has been sent to your email address.'));
-            }
+            
+            try {
+                Mail::to($email)->queue(new ResetPassword($request->nik,$tokenData->token));
+                return redirect()->back()->with('status', trans('A reset link has been sent to your email address.'));
+                } catch (\Exception $e) {
+                    return redirect()->back()->withErrors(['email' => trans('A Network Error occurred. Please try again.')]);
+                }
         }
     }
 
-    public function query_reset($email, $nik, $token) {
-        Mail::to($email)->queue(new ResetPassword($nik,$token));
+    public function password_update(Request $request){
+        $validator = Validator::make($request->all(), [
+            'nik' => 'required|exists:users,nik',
+            'password' => 'required|min:6',
+            'token' => 'required']);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors(['password' => 'Password minimal 6 character']);
+        }
+
+        $nik = DB::table('password_resets')->where('token', $request->token)->value('email');
+        if ($request->password == $request->password_confirmation) {
+            DB::table('users')->where('nik', $nik)->update([
+                'password' => bcrypt($request->password)
+            ]);
+            DB::table('password_resets')->where('token', $request->token)->delete();
+            return redirect('/login')->with('status', trans('Password successfully changed. Please login'));
+        } else {
+            return redirect()->back()->withErrors(['password' => trans('Password missmatch')]);
+        }
     }
 
     public function test($id){
@@ -71,6 +92,20 @@ class HomeController extends Controller
         //     ->cc('madabaskoro@yahoo.com')
         //     ->queue(new InternalSender($id, 'manuk', 'asuransi jiwa', date('now'), 'test'));
         // return 'mail';
+    }
+
+    public function reset_password($token){
+        if (DB::table('password_resets')->where('token', $token)->exists()) {
+            $time = DB::table('password_resets')->where('token', $token)->value('created_at');
+            if ((strtotime($time) + 7200) >= time()) {
+                $nik  = DB::table('password_resets')->where('token', $token)->value('email');
+                return view('auth.reset-password', ['nik' => $nik, 'token' => $token]);
+            } else {
+                return view('auth.expires');
+            }
+        } else {
+            return view('auth.expires');
+        }
     }
 
     public function newdocument(){

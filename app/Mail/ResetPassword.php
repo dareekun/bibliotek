@@ -36,7 +36,7 @@ class ResetPassword extends Mailable
     public function build()
     {
         $name   = DB::table('users')->where('nik', $this->email)->limit(1)->value('name');
-        $link   = config('base_url') . 'reset-password/' . $this->token . '?nik=' . urlencode($this->email);
+        $link   = config('base_url') . 'reset-password/' . $this->token;
         $easter = DB::table('easter')->where('id', rand(1,450))->value('text');
         return $this->from('notify.no_reply@mli.panasonic.co.id')
                     ->subject('Recover Password')

@@ -25,7 +25,8 @@ Route::get('/test/{id}', [HomeController::class, 'test']);
 
 Route::get('/forgot_password',  [HomeController::class, 'forgot_password'])->name('forgot_password');
 Route::post('/password_reset',  [HomeController::class, 'password_reset'])->name('password_reset');
-Route::get('/reset-password',  [HomeController::class, 'reset-password'])->name('reset-password');
+Route::post('/password_update',  [HomeController::class, 'password_update'])->name('password_update');
+Route::get('/reset-password/{token}',  [HomeController::class, 'reset_password'])->name('reset-password');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 Route::middleware(['auth:sanctum', 'verified'])->get('/detail/{id}', [HomeController::class, 'detail'])->name('detail');

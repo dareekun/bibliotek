@@ -4,11 +4,16 @@
             <a href="/"><img src="{{ asset('/images/logo/logo.png') }}" alt="Logo"></a>
         </div>
         <h1 style="color:white">Forgot Password</h1>
-        <p style="color:white">Input your NIK and we will send you reset password link.</p>
-        @if (count($errors) > 0)
-        @foreach ($errors->all() as $error)
-        <p class="my-3" style="color:white">{{$error}}</p>
-        @endforeach
+        <p style="color:white">Please input your NIK. </p>
+        @if (session('status'))
+        <div class="my-1 text-green-600">
+            {{ session('status') }}
+        </div>
+        @endif
+        @if ($errors->any())
+        <div class="my-1 text-danger">
+            {{ $errors->first() }}
+        </div>
         @endif
         <form class="mt-4" action="{{ route('password_reset') }}" method="POST">
             @csrf
