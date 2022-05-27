@@ -40,7 +40,10 @@ class DocumentCheck extends Command
     {
         $document1 = DB::table('document')->where('statusdoc', '>', 0)->get();
         foreach($document1 as $dcm1) {
-            if (strtotime('now') >= strtotime($dcm1->expireddate)) {
+            $now    = strtotime('now');
+            $diff   = (strtotime($dcm1->expireddate) - strtotime('now')) / 86400;
+            $newexp = strtotime('now') + ($diff * 60);
+            if (strtotime('now') >= $newexp) {
                 DB::table('document')->where('id', $dcm1->id)->update([
                     'statusdoc' => 0
                 ]);
@@ -48,7 +51,7 @@ class DocumentCheck extends Command
                     'refer' => $dcm1->id,
                     'condition' => 0,
                 ]);
-            } elseif (strtotime('now') >= strtotime($dcm1->expireddate.'-'.$dcm1->reminder.' days') && $dcm1->statusdoc == 1){
+            } elseif (strtotime('now') >= strtotime($newexp.'-'.$dcm1->reminder.' minutes') && $dcm1->statusdoc == 1){
                 DB::table('document')->where('id', $dcm1->id)->update([
                     'statusdoc' => 2
                 ]);
@@ -56,22 +59,25 @@ class DocumentCheck extends Command
         }
         $document2 = DB::table('document')->where('statusdoc', '>', 1)->get();
         foreach($document2 as $dcm2) {
-            if (date('Ymd', strtotime($dcm2->expireddate.'-7 days')) <= date('Ymd') && date('Ymd') < date('Ymd', strtotime($dcm2->expireddate))){
+            $now    = strtotime('now');
+            $diff   = (strtotime($dcm2->expireddate) - strtotime('now')) / 86400;
+            $newexp = strtotime('now') + ($diff * 60);
+            if (strtotime($newexp.'-7 minutes') <= strtotime('now') && strtotime('now') < $newexp){
                 DB::table('email_job')->insert([
                     'refer' => $dcm2->id,
                     'condition' => 0,
                 ]);
             }
-            elseif (date('Ymd', strtotime($dcm2->expireddate.'-28 days')) == date('Ymd') || date('Ymd', strtotime($dcm2->expireddate.'-21 days')) == date('Ymd') || date('Ymd', strtotime($dcm2->expireddate.'-14 days')) == date('Ymd')){
+            elseif (strtotime($newexp.'-28 minutes') == strtotime('now') || strtotime($newexp.'-21 minutes') == strtotime('now') || strtotime($newexp.'-14 minutes') == strtotime('now')){
                 DB::table('email_job')->insert([
                     'refer' => $dcm2->id,
                     'condition' => 0,
                 ]);
             } 
-            elseif (date('Ymd', strtotime($dcm2->expireddate.'-'.$dcm2->reminder.' days')) <= date('Ymd') && date('Ymd', strtotime($dcm2->expireddate.'-30 days')) >= date('Ymd')) {
+            elseif (strtotime($newexp.'-'.$dcm2->reminder.' minutes') <= strtotime('now') && strtotime($newexp.'-30 minutes') >= strtotime('now')) {
                 for($i = $dcm2->reminder; $i >= 30; $i=$i-30)
                 {
-                    if(date('Ymd', strtotime($dcm2->expireddate.'-'.$i.' days')) == date('Ymd')){
+                    if(date('Ymd', strtotime($dcm2->expireddate.'-'.$i.' minutes')) == date('Ymd')){
                         DB::table('email_job')->insert([
                             'refer' => $dcm2->id,
                             'condition' => 0,
@@ -85,6 +91,9 @@ class DocumentCheck extends Command
         }
         $history = DB::table('history')->where('statusdoc', '>', 0)->get();
         foreach($history as $hst) {
+            $now    = strtotime('now');
+            $diff   = (strtotime($hst->expirdate) - strtotime('now')) / 86400;
+            $newexp = strtotime('now') + ($diff * 60);
             if (strtotime('now') >= strtotime($hst->expirdate)) {
                 DB::table('history')->where('id', $hst->id)->update([
                     'statusdoc' => 0
