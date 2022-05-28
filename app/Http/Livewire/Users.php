@@ -79,7 +79,7 @@ class Users extends Component
 
     public function submit()
     {
-        if (DB::table('users')->where('nik', $this->inputnik)->doesntExist()) {
+        if (DB::table('users')->where('nik', $this->inputnik)->orWhere('email', $this->inputemail)->doesntExist()) {
             if (strlen($this->inputpass) < 5) {
                 $this->dispatchBrowserEvent('closemodal', ['modalid' => '#exampleModal']);
                 $this->dispatchBrowserEvent('toaster', ['message' => 'Password must contain atleast 6 character', 'color' => '#dc3545', 'title' => 'Password Length']);
