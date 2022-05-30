@@ -56,13 +56,13 @@ class DocumentCheck extends Command
         }
         $document2 = DB::table('document')->where('statusdoc', '>', 1)->get();
         foreach($document2 as $dcm2) {
-            if (($dcm2->epoch - (7*60)) <= strtotime('now') && strtotime('now') < $dcm1->epoch){
+            if (($dcm2->epoch - (7*60)) <= strtotime('now') && strtotime('now') < $dcm2->epoch){
                 DB::table('email_job')->insert([
                     'refer' => $dcm2->id,
                     'condition' => 0,
                 ]);
             }
-            elseif (($dcm1->epoch. - (28*60)) == strtotime('now') || ($dcm2->epoch - (21*60)) == strtotime('now') || ($dcm2->epoch - (14*60)) == strtotime('now')){
+            elseif (($dcm2->epoch. - (28*60)) == strtotime('now') || ($dcm2->epoch - (21*60)) == strtotime('now') || ($dcm2->epoch - (14*60)) == strtotime('now')){
                 DB::table('email_job')->insert([
                     'refer' => $dcm2->id,
                     'condition' => 0,
@@ -71,7 +71,7 @@ class DocumentCheck extends Command
             elseif (($dcm2->epoch - ($dcm2->reminder *60)) <= strtotime('now') && ($dcm2->epoch - (30*60)) >= strtotime('now')) {
                 for($i = $dcm2->reminder; $i >= 30; $i=$i-30)
                 {
-                    if(date('Ymd', strtotime($dcm2->expireddate.'-'.$i.' minutes')) == date('Ymd')){
+                    if(($dcm2->epoch - ($i*60)) == strtotime('now')){
                         DB::table('email_job')->insert([
                             'refer' => $dcm2->id,
                             'condition' => 0,
