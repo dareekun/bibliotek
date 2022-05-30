@@ -90,6 +90,7 @@ class AddDocument extends Component
                 'statusdoc'   => $statusdoc,
                 'location'    => $location,
                 'docloc'      => $this->docloc,
+                'epoch'       => (strtotime('now') + ((strtotime($dcm2->expireddate) - strtotime('now')) / 1440))
             ]);
             DB::table('history')->insert([
                 'refer'       => $refer,
@@ -98,6 +99,7 @@ class AddDocument extends Component
                 'file'        => $docname,
                 'issuedate'   => $this->createdate,
                 'expirdate'   => $this->expiredate,
+                'epoch'       => (strtotime('now') + ((strtotime($dcm2->expireddate) - strtotime('now')) / 1440))
             ]);
             for ($i = 0; $i < count($this->pin); $i++) {
                 if ($this->pin[$i] != '') {

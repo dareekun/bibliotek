@@ -51,7 +51,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-select" wire:model.defer="users.{{$index}}.role" 
+                            <select class="form-select" required wire:model.defer="users.{{$index}}.role" 
                                     aria-label="Default select example">
                                     <option value="sadmin">Super Admin</option>
                                     <option value="admin">Admin</option>

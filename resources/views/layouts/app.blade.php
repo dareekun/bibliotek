@@ -54,7 +54,7 @@
                                     <a href="{{ route('documenttype', 'ongoing') }}">On Going</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="{{ route('documenttype', 'wiating') }}">Waiting</a>
+                                    <a href="{{ route('documenttype', 'waiting') }}">Waiting</a>
                                 </li>
                                 <li class="submenu-item ">
                                     <a href="{{ route('documenttype', 'deactive') }}">Deactive</a>

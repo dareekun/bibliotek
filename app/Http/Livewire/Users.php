@@ -121,7 +121,7 @@ class Users extends Component
             'role' => $this->users[$ind]['role'],
         ]);                
         $this->status[$ind] = 0;
-        $this->dispatchBrowserEvent('toaster', ['message' => 'User data changed successfully', 'color' => '#28a745', 'title' => 'Change user data']);
+        $this->dispatchBrowserEvent('toaster', ['message' => 'User data changed successfully - '. $this->users[$ind]['idpt'], 'color' => '#28a745', 'title' => 'Change user data']);
         }
     }
 
