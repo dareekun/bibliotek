@@ -46,7 +46,7 @@
                             <select class="form-select" required wire.model.defer="users.{{$index}}.idpt"
                                 aria-label="Default select example">
                                 @foreach ($departments as $dpt)
-                                <option @if($usr->idpt == $dpt->id) selected @else @endif value="{{$dpt->id}}">{{$dpt->department}}</option>
+                                <option value="{{$dpt->id}}">{{$dpt->department}}</option>
                                 @endforeach
                             </select>
                         </td>
