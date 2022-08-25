@@ -43,7 +43,7 @@
                         <td><input class="form-control" wire:model.defer="users.{{$index}}.name" type="text"></td>
                         <td><input class="form-control" wire:model.defer="users.{{$index}}.email" type="email"></td>
                         <td>
-                            <select class="form-select" required wire.model.defer="users.{{$index}}.idpt"
+                            <select class="form-select" required wire:model.defer="users.{{$index}}.idpt"
                                 aria-label="Default select example">
                                 @foreach ($departments as $dpt)
                                 <option value="{{$dpt->id}}">{{$dpt->department}}</option>
@@ -51,7 +51,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-select" required wire:model.defer="users.{{$index}}.role" 
+                            <select class="form-select" required wire:model.defer="users.{{$index}}.role"
                                     aria-label="Default select example">
                                     <option value="sadmin">Super Admin</option>
                                     <option value="admin">Admin</option>

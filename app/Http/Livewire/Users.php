@@ -26,6 +26,12 @@ class Users extends Component
     public $inputpass1;
     public $inputpass2;
 
+    protected $listeners = ['rubah' => 'change'];    
+    
+    public function change($payload){
+        $this->dispatchBrowserEvent('toaster', ['message' => 'Data '. $payload['data'], 'color' => '#dc3545', 'title' => 'Debug Message']);
+    }
+
     public function delete($id){
         $this->deleteid   = $id;
         $this->deletenik  = DB::table('users')->where('id', $id)->value('nik');
@@ -130,7 +136,7 @@ class Users extends Component
         if (Auth::user()->can('isDeveloper')) {
             $this->users = DB::table('users')->leftjoin('department', 'users.department', '=', 'department.id')
             ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
-            'users.role as role', 'department.id as idpt')
+            'users.role as role', 'users.department as idpt')
             ->get();
             $this->departments = DB::table('department')->get();
             for ($i = 0; $i < count($this->users); $i++) {
@@ -141,7 +147,7 @@ class Users extends Component
             $this->users = DB::table('users')->join('department', 'users.department', '=', 'department.id')
             ->where('department.location', $location)->where('users.role', '<>', 'developer')
             ->select('users.id as id', 'users.nik as nik', 'users.name as name', 'users.email as email', 'department.department as department', 
-            'users.role as role', 'department.id as idpt')
+            'users.role as role', 'users.department as idpt')
             ->get();
             $this->departments = DB::table('department')->where('location', $location)->get();
             for ($i = 0; $i < count($this->users); $i++) {
